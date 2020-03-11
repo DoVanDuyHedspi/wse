@@ -1,0 +1,250 @@
+<template>
+  <div>
+    <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
+        <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
+        <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
+        <el-breadcrumb-item>Danh sách quyền</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="container mt-3">
+      <div class="mb-2">
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <!-- <div class="grid-content">Có x mục đã được chọn</div> -->
+          </el-col>
+          <el-col :span="6" :offset="18">
+            <div class="grid-content">
+              <el-dropdown split-button type="danger">
+                Thao tác
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>Xóa</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+              <el-button
+                icon="el-icon-plus"
+                type="success"
+                @click="dialogCreateVisible = true"
+              >Thêm mới</el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <el-dialog title="Tạo quyền mới" width="40%" center :visible.sync="dialogCreateVisible">
+        <el-form :model="form" :rules="rules" ref="permissionForm" label-width="120px">
+          <el-form-item label="Tên" prop="slug">
+            <el-input v-model="form.slug"></el-input>
+          </el-form-item>
+          <el-form-item label="Nội dung" prop="name">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogCreateVisible = false">Hủy</el-button>
+          <el-button type="primary" @click="createPermission('permissionForm')">Tạo mới</el-button>
+        </span>
+      </el-dialog>
+      <div class="error" v-if="error.message.length">
+        <div class="alert alert-danger" role="alert">{{ error.message }}</div>
+      </div>
+      <div class="noti" v-if="noti.length">
+        <div class="alert alert-success" role="alert">{{ noti }}</div>
+      </div>
+      <el-table
+        ref="multipleTable"
+        :data="dataTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        style="width: 100%"
+      >
+        <!-- <el-table-column type="selection" width="55"></el-table-column> -->
+        <el-table-column property="slug" label="Tên"></el-table-column>
+        <el-table-column property="name" label="Nội dung"></el-table-column>
+        <el-table-column align="right">
+          <template slot="header" slot-scope="scope">
+            <el-input v-model="search" size="mini" placeholder="Tìm kiếm" />
+          </template>
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Sửa</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click.native.prevent="deletePermisson(scope.$index, scope.row)"
+            >Xóa</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-dialog title="Chỉnh sửa quyền" width="40%" center :visible.sync="dialogEditVisible">
+        <el-form :model="editForm" :rules="rules" ref="editForm" label-width="120px">
+          <el-form-item label="Tên" prop="slug">
+            <el-input v-model="editForm.slug"></el-input>
+          </el-form-item>
+          <el-form-item label="Nội dung" prop="name">
+            <el-input v-model="editForm.name"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogEditVisible = false">Hủy</el-button>
+          <el-button type="primary" @click="editPermission('editForm')">Cập nhật</el-button>
+        </span>
+      </el-dialog>
+      <div class="mt-3">
+        <pagination :data="permissions" :align="'center'" @pagination-change-page="getPermissions"></pagination>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      permissions: {},
+      dataTable: [],
+      error: {
+        message: ""
+      },
+      noti: "",
+      search: "",
+      dialogCreateVisible: false,
+      dialogEditVisible: false,
+      form: {
+        slug: "",
+        name: ""
+      },
+      editForm: {
+        slug: "",
+        name: "",
+        index: "",
+        id: ""
+      },
+      rules: {
+        name: [{ required: true, message: "Hãy nhập tên", trigger: "blur" }],
+        slug: [
+          { required: true, message: "Hãy nhập nội dung", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  created() {
+    this.getPermissions();
+  },
+  methods: {
+    getPermissions(page = 1) {
+      axios
+        .get("/permissions?page=" + page)
+        .then(response => {
+          if (response.data.status === false) {
+            this.error.message = response.data.message;
+          } else {
+            console.log(response.data);
+            this.permissions = response.data;
+            this.dataTable = this.permissions.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    createPermission(formName) {
+      this.$refs[formName].validate(valid => {
+        console.log(valid);
+        if (valid) {
+          axios
+            .post("/permissions", {
+              slug: this.form.slug,
+              name: this.form.name
+            })
+            .then(response => {
+              this.dialogCreateVisible = false;
+              if (response.data.status === false) {
+                this.error.message = response.data.message;
+                setTimeout(() => {
+                  this.error.message = "";
+                }, 3000);
+              } else {
+                this.noti = "Tạo mới thành công!";
+                this.dataTable.push(response.data);
+                setTimeout(() => {
+                  this.noti = "";
+                }, 3000);
+              }
+            });
+        }
+      });
+    },
+    handleEdit(index, permission) {
+      this.editForm.slug = permission.slug;
+      this.editForm.name = permission.name;
+      this.editForm.index = index;
+      this.editForm.id = permission.id;
+      this.dialogEditVisible = true;
+    },
+    editPermission(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          axios
+            .put("/permissions/" + this.editForm.id, {
+              slug: this.editForm.slug,
+              name: this.editForm.name,
+              id: this.editForm.id
+            })
+            .then(response => {
+              this.dialogEditVisible = false;
+              if (response.data.status === false) {
+                this.error.message = response.data.message;
+                setTimeout(() => {
+                  this.error.message = "";
+                }, 3000);
+              } else {
+                this.noti = "Sửa quyền thành công!";
+                this.dataTable[this.editForm.index].slug = response.data.slug;
+                this.dataTable[this.editForm.index].name = response.data.name;
+                setTimeout(() => {
+                  this.noti = "";
+                }, 3000);
+              }
+            });
+        }
+      });
+    },
+    deletePermisson(index, permisson) {
+      this.$confirm("Bạn có chắc chắn muốn xóa quyền này?", "Cảnh báo", {
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy",
+        type: "warning"
+      })
+        .then(() => {
+          axios.delete("/permissions/" + permisson.id).then(response => {
+            if (response.data.status === false) {
+              this.error.message = response.data.message;
+              setTimeout(() => {
+                this.error.message = "";
+              }, 3000);
+            } else {
+              this.dataTable.splice(index, 1);
+              this.noti = "Xóa thành công!";
+            }
+          });
+        })
+        .catch(() => {
+          this.error.message = "Xóa thất bại!";
+          setTimeout(() => {
+            this.error.message = "";
+          }, 3000);
+        });
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+.el-row {
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.el-col {
+  border-radius: 4px;
+}
+</style>
