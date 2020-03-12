@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Permission;
+use App\Role;
 // use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PermissionController extends Controller
+class RoleController extends Controller
 {
   public function __construct()
   {
@@ -21,12 +21,12 @@ class PermissionController extends Controller
   public function index(Request $request)
   {
     if ($request->user()->hasRole('manager')) {
-      return response()->json(Permission::paginate(20));
+      return response()->json(Role::paginate(20));
     }
 
     return response([
       'status' => false,
-      'message' => 'You don\'t have permission to view permissions!'
+      'message' => 'You don\'t have permission to view roles!'
     ], 200);
   }
 
@@ -40,25 +40,25 @@ class PermissionController extends Controller
       if ($validator->fails()) {
         return response([
           'status' => false,
-          'message' => 'Tạo quyền mới thất bại!'
+          'message' => 'Tạo vai trò mới thất bại!'
         ], 200);
       }
-      $permission = new Permission();
-      $permission->slug = $request->input('slug');
-      $permission->name = $request->input('name');
-      if ($permission->save()) {
-        return response()->json($permission);
+      $role = new Role();
+      $role->slug = $request->input('slug');
+      $role->name = $request->input('name');
+      if ($role->save()) {
+        return response()->json($role);
       }
     }
     return response([
       'status' => false,
-      'message' => 'Xin lỗi bạn không có quyền tạo quyền này!'
+      'message' => 'Xin lỗi bạn không có quyền tạo vai trò!'
     ], 200);
   }
 
   public function update(Request $request, $id)
   {
-    if($request->user()->hasRole('manager')) {
+    if ($request->user()->hasRole('manager')) {
       $validator = Validator::make($request->all(), [
         'slug' => 'required',
         'name' => 'required',
@@ -70,12 +70,12 @@ class PermissionController extends Controller
         ], 200);
       }
 
-      $permission = Permission::find($id);
-      if($permission) {
-        $permission->slug = $request->input('slug');
-        $permission->name = $request->input('name');
-        $permission->save();
-        return response()->json($permission);
+      $role = Role::find($id);
+      if ($role) {
+        $role->slug = $request->input('slug');
+        $role->name = $request->input('name');
+        $role->save();
+        return response()->json($role);
       }
     }
   }
@@ -83,22 +83,22 @@ class PermissionController extends Controller
   public function destroy(Request $request, $id)
   {
     if ($request->user()->hasRole('manager')) {
-      $permission = Permission::find($id);
-      if ($permission->delete()) {
+      $role = Role::find($id);
+      if ($role->delete()) {
         return response([
           'status' => true
         ], 200);
       } else {
         return response([
           'status' => false,
-          'message' => 'Xóa quyền thất bại!'
+          'message' => 'Xóa vai trò thất bại!'
         ], 200);
       }
     }
 
     return response([
       'status' => false,
-      'message' => 'Bạn không có quyền xóa quyền!'
+      'message' => 'Bạn không có quyền xóa vai tr!'
     ], 200);
   }
 }
