@@ -6,6 +6,7 @@
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
         <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
         <el-breadcrumb-item>Danh sách quyền</el-breadcrumb-item>
+        <el-breadcrumb-item>Danh sách vai trò</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container mt-3">
@@ -14,7 +15,7 @@
           <el-col :span="24">
             <div class="grid-content">
               <h3>
-                Danh sách quyền
+                Danh sách vai trò
                 <el-tooltip effect="dark" :content="info" placement="right-start">
                   <i class="el-icon-question" style="font-size: 20px"></i>
                 </el-tooltip>
@@ -39,15 +40,12 @@
                 type="success"
                 @click="dialogCreateVisible = true"
               >Thêm mới</el-button>
-              <router-link to="/role">
-                <el-button icon="el-icon-s-custom" type="primary">Vai trò</el-button>
-              </router-link>
             </div>
           </el-col>
         </el-row>
       </div>
       <el-dialog title="Tạo quyền mới" width="40%" center :visible.sync="dialogCreateVisible">
-        <el-form :model="form" :rules="rules" ref="permissionForm" label-width="120px">
+        <el-form :model="form" :rules="rules" ref="roleForm" label-width="120px">
           <el-form-item label="Tên" prop="slug">
             <el-input v-model="form.slug"></el-input>
           </el-form-item>
@@ -57,7 +55,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogCreateVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="createPermission('permissionForm')">Tạo mới</el-button>
+          <el-button type="primary" @click="createRole('roleForm')">Tạo mới</el-button>
         </span>
       </el-dialog>
       <div class="error" v-if="error.message.length">
@@ -84,12 +82,12 @@
             <el-button
               size="mini"
               type="danger"
-              @click.native.prevent="deletePermisson(scope.$index, scope.row)"
+              @click.native.prevent="deleteRole(scope.$index, scope.row)"
             >Xóa</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="Chỉnh sửa quyền" width="40%" center :visible.sync="dialogEditVisible">
+      <el-dialog title="Chỉnh sửa vai trò" width="40%" center :visible.sync="dialogEditVisible">
         <el-form :model="editForm" :rules="rules" ref="editForm" label-width="120px">
           <el-form-item label="Tên" prop="slug">
             <el-input v-model="editForm.slug"></el-input>
@@ -100,11 +98,11 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogEditVisible = false">Hủy</el-button>
-          <el-button type="primary" @click="editPermission('editForm')">Cập nhật</el-button>
+          <el-button type="primary" @click="editRole('editForm')">Cập nhật</el-button>
         </span>
       </el-dialog>
       <div class="mt-3">
-        <pagination :data="permissions" :align="'center'" @pagination-change-page="getPermissions"></pagination>
+        <pagination :data="roles" :align="'center'" @pagination-change-page="getRoles"></pagination>
       </div>
     </div>
   </div>
@@ -114,8 +112,8 @@
 export default {
   data() {
     return {
-      info: "Danh sách các quyền của người dùng trong hệ thống",
-      permissions: {},
+      info: "Danh sách các vai trò của người dùng trong hệ thống",
+      roles: {},
       dataTable: [],
       error: {
         message: ""
@@ -143,31 +141,30 @@ export default {
     };
   },
   created() {
-    this.getPermissions();
+    this.getRoles();
   },
   methods: {
-    getPermissions(page = 1) {
+    getRoles(page = 1) {
       axios
-        .get("/permissions?page=" + page)
+        .get("/roles?page=" + page)
         .then(response => {
           if (response.data.status === false) {
             this.error.message = response.data.message;
           } else {
-            console.log(response.data);
-            this.permissions = response.data;
-            this.dataTable = this.permissions.data;
+            this.roles = response.data;
+            this.dataTable = this.roles.data;
           }
         })
         .catch(error => {
           console.log(error);
         });
     },
-    createPermission(formName) {
+    createRole(formName) {
       this.$refs[formName].validate(valid => {
         console.log(valid);
         if (valid) {
           axios
-            .post("/permissions", {
+            .post("/roles", {
               slug: this.form.slug,
               name: this.form.name
             })
@@ -189,18 +186,18 @@ export default {
         }
       });
     },
-    handleEdit(index, permission) {
-      this.editForm.slug = permission.slug;
-      this.editForm.name = permission.name;
+    handleEdit(index, role) {
+      this.editForm.slug = role.slug;
+      this.editForm.name = role.name;
       this.editForm.index = index;
-      this.editForm.id = permission.id;
+      this.editForm.id = role.id;
       this.dialogEditVisible = true;
     },
-    editPermission(formName) {
+    editRole(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
-            .put("/permissions/" + this.editForm.id, {
+            .put("/roles/" + this.editForm.id, {
               slug: this.editForm.slug,
               name: this.editForm.name,
               id: this.editForm.id
@@ -224,14 +221,14 @@ export default {
         }
       });
     },
-    deletePermisson(index, permisson) {
-      this.$confirm("Bạn có chắc chắn muốn xóa quyền này?", "Cảnh báo", {
+    deleteRole(index, role) {
+      this.$confirm("Bạn có chắc chắn muốn xóa vai trò này?", "Cảnh báo", {
         confirmButtonText: "Đồng ý",
         cancelButtonText: "Hủy",
         type: "warning"
       })
         .then(() => {
-          axios.delete("/permissions/" + permisson.id).then(response => {
+          axios.delete("/roles/" + role.id).then(response => {
             if (response.data.status === false) {
               this.error.message = response.data.message;
               setTimeout(() => {
