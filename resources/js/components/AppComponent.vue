@@ -51,10 +51,12 @@
             <i class="el-icon-document"></i>
             <span slot="title">Navigator Three</span>
           </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">Navigator Four</span>
-          </el-menu-item>
+          <router-link to="/branches">
+            <el-menu-item index="4">
+              <i class="el-icon-map-location"></i>
+              <span slot="title">Dữ liệu workspace</span>
+            </el-menu-item>
+          </router-link>
         </el-menu>
       </el-aside>
       <el-container>

@@ -14,3 +14,5 @@ Route::get('/users', 'UserController@index');
 Route::resource('/permissions', 'PermissionController');
 
 Route::resource('/roles', 'RoleController');
+
+Route::resource('/branches', 'BranchController');

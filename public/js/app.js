@@ -3406,6 +3406,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3421,6 +3423,104 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/branches/ListBranchesComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/branches/ListBranchesComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      error: {
+        message: ""
+      },
+      noti: "",
+      search: "",
+      dialogCreateVisible: false,
+      form: {
+        name: "",
+        description: "",
+        image: ""
+      },
+      rules: {
+        name: [{
+          required: true,
+          message: "Hãy nhập tên",
+          trigger: "blur"
+        }],
+        description: [{
+          required: true,
+          message: "Hãy nhập mô tả",
+          trigger: "blur"
+        }],
+        image: [{
+          required: true,
+          message: "Hãy thêm ảnh",
+          trigger: "blur"
+        }]
+      }
+    };
   }
 });
 
@@ -101175,13 +101275,22 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("el-menu-item", { attrs: { index: "4" } }, [
-                    _c("i", { staticClass: "el-icon-setting" }),
-                    _vm._v(" "),
-                    _c("span", { attrs: { slot: "title" }, slot: "title" }, [
-                      _vm._v("Navigator Four")
-                    ])
-                  ])
+                  _c(
+                    "router-link",
+                    { attrs: { to: "/branches" } },
+                    [
+                      _c("el-menu-item", { attrs: { index: "4" } }, [
+                        _c("i", { staticClass: "el-icon-map-location" }),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          { attrs: { slot: "title" }, slot: "title" },
+                          [_vm._v("Dữ liệu workspace")]
+                        )
+                      ])
+                    ],
+                    1
+                  )
                 ],
                 1
               )
@@ -101246,6 +101355,233 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/branches/ListBranchesComponent.vue?vue&type=template&id=1628bf8c&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/branches/ListBranchesComponent.vue?vue&type=template&id=1628bf8c& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "bg-white p-3",
+        staticStyle: { "border-bottom": "1px solid rgba(128,128,128, 0.3)" }
+      },
+      [
+        _c(
+          "el-breadcrumb",
+          { attrs: { "separator-class": "el-icon-arrow-right" } },
+          [
+            _c("el-breadcrumb-item", { attrs: { to: { path: "/" } } }, [
+              _vm._v("homepage")
+            ]),
+            _vm._v(" "),
+            _c("el-breadcrumb-item", [_vm._v("Dữ liệu workspace")])
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "el-row",
+          { attrs: { gutter: 20 } },
+          [
+            _c("el-col", { attrs: { span: 6 } }, [
+              _c("h5", { staticClass: "grid-content" }, [
+                _vm._v("Có tổng số 2 văn phòng")
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "el-col",
+              { attrs: { span: 6, offset: 12 } },
+              [
+                _c(
+                  "div",
+                  { staticClass: "grid-content float-right" },
+                  [
+                    _c(
+                      "el-button",
+                      {
+                        attrs: { icon: "el-icon-plus", type: "success" },
+                        on: {
+                          click: function($event) {
+                            _vm.dialogCreateVisible = true
+                          }
+                        }
+                      },
+                      [_vm._v("Thêm mới")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "el-dialog",
+                  {
+                    attrs: {
+                      title: "Tạo chi nhánh mới",
+                      width: "40%",
+                      center: "",
+                      visible: _vm.dialogCreateVisible
+                    },
+                    on: {
+                      "update:visible": function($event) {
+                        _vm.dialogCreateVisible = $event
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "el-form",
+                      {
+                        ref: "branchForm",
+                        attrs: {
+                          model: _vm.form,
+                          rules: _vm.rules,
+                          "label-width": "120px"
+                        }
+                      },
+                      [
+                        _c(
+                          "el-form-item",
+                          { attrs: { label: "Tên", prop: "name" } },
+                          [
+                            _c("el-input", {
+                              model: {
+                                value: _vm.form.name,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "name", $$v)
+                                },
+                                expression: "form.name"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-form-item",
+                          { attrs: { label: "Mô tả", prop: "description" } },
+                          [
+                            _c("el-input", {
+                              attrs: { type: "textarea", rows: 2 },
+                              model: {
+                                value: _vm.form.description,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "description", $$v)
+                                },
+                                expression: "form.description"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-form-item",
+                          { attrs: { label: "Ảnh", prop: "image" } },
+                          [
+                            _c("el-input", {
+                              attrs: { type: "file" },
+                              model: {
+                                value: _vm.form.image,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "image", $$v)
+                                },
+                                expression: "form.image"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "dialog-footer",
+                        attrs: { slot: "footer" },
+                        slot: "footer"
+                      },
+                      [
+                        _c(
+                          "el-button",
+                          {
+                            on: {
+                              click: function($event) {
+                                _vm.dialogCreateVisible = false
+                              }
+                            }
+                          },
+                          [_vm._v("Hủy")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-button",
+                          {
+                            attrs: { type: "primary" },
+                            on: {
+                              click: function($event) {
+                                return _vm.createBranch("branchForm")
+                              }
+                            }
+                          },
+                          [_vm._v("Tạo mới")]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center mt-3 mb-5" }, [
+      _c("h3", [_vm._v("Danh sách văn phòng")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -117598,6 +117934,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view/user */ "./resources/js/view/user/index.js");
 /* harmony import */ var _view_permissions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view/permissions */ "./resources/js/view/permissions/index.js");
+/* harmony import */ var _view_branches__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view/branches */ "./resources/js/view/branches/index.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -117623,7 +117960,96 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 // export default router
 
 
-/* harmony default export */ __webpack_exports__["default"] = ([].concat(_toConsumableArray(_view_user__WEBPACK_IMPORTED_MODULE_0__["default"]), _toConsumableArray(_view_permissions__WEBPACK_IMPORTED_MODULE_1__["default"])));
+
+/* harmony default export */ __webpack_exports__["default"] = ([].concat(_toConsumableArray(_view_user__WEBPACK_IMPORTED_MODULE_0__["default"]), _toConsumableArray(_view_permissions__WEBPACK_IMPORTED_MODULE_1__["default"]), _toConsumableArray(_view_branches__WEBPACK_IMPORTED_MODULE_2__["default"])));
+
+/***/ }),
+
+/***/ "./resources/js/view/branches/ListBranchesComponent.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/view/branches/ListBranchesComponent.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListBranchesComponent_vue_vue_type_template_id_1628bf8c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListBranchesComponent.vue?vue&type=template&id=1628bf8c& */ "./resources/js/view/branches/ListBranchesComponent.vue?vue&type=template&id=1628bf8c&");
+/* harmony import */ var _ListBranchesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListBranchesComponent.vue?vue&type=script&lang=js& */ "./resources/js/view/branches/ListBranchesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ListBranchesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListBranchesComponent_vue_vue_type_template_id_1628bf8c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListBranchesComponent_vue_vue_type_template_id_1628bf8c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/view/branches/ListBranchesComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/view/branches/ListBranchesComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/view/branches/ListBranchesComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBranchesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListBranchesComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/branches/ListBranchesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBranchesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/view/branches/ListBranchesComponent.vue?vue&type=template&id=1628bf8c&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/view/branches/ListBranchesComponent.vue?vue&type=template&id=1628bf8c& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBranchesComponent_vue_vue_type_template_id_1628bf8c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListBranchesComponent.vue?vue&type=template&id=1628bf8c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/branches/ListBranchesComponent.vue?vue&type=template&id=1628bf8c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBranchesComponent_vue_vue_type_template_id_1628bf8c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListBranchesComponent_vue_vue_type_template_id_1628bf8c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/view/branches/index.js":
+/*!*********************************************!*\
+  !*** ./resources/js/view/branches/index.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListBranchesComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListBranchesComponent */ "./resources/js/view/branches/ListBranchesComponent.vue");
+
+/* harmony default export */ __webpack_exports__["default"] = ([{
+  path: '/branches',
+  component: _ListBranchesComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
+  name: 'branches.index'
+}]);
 
 /***/ }),
 

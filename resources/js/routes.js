@@ -18,8 +18,10 @@
 
 import userRoutes from './view/user';
 import permissionRoutes from './view/permissions';
+import branchRoutes from './view/branches';
 
 export default [
   ...userRoutes,
   ...permissionRoutes, 
+  ...branchRoutes,
 ]
