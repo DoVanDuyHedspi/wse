@@ -35,5 +35,36 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birthday' => 'date:d-m-Y',
+        'official_start_day' => 'date:d-m-Y',
+        'identity_card_passport' => 'array',
+        'vehicles' => 'array',
+        'bank' => 'array',
+        'education' => 'array',
     ];
+
+    public function position()
+    {
+      return $this->belongsTo(Position::class);
+    }
+
+    public function branch()
+    {
+      return $this->belongsTo(Branch::class);
+    }
+
+    public function group()
+    {
+      return $this->belongsTo(Group::class);
+    }
+
+    public function slary_rank()
+    {
+      return $this->belongsTo(SalaryRank::class);
+    }
+
+    public function employee_type()
+    {
+      return $this->belongsTo(EmployeeType::class);
+    }
 }

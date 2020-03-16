@@ -9,10 +9,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/users', 'UserController@index');
+Route::resource('/users', 'UserController');
 
 Route::resource('/permissions', 'PermissionController');
 
 Route::resource('/roles', 'RoleController');
 
 Route::resource('/branches', 'BranchController');
+
+Route::resource('/groups', 'GroupController');

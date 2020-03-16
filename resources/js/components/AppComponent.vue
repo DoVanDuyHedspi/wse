@@ -23,25 +23,29 @@
             </template>
             <el-menu-item-group>
               <span slot="title">Nhân sự</span>
-              <router-link to="/user">
+              <router-link to="/users">
                 <el-menu-item index="1-1">
                   <i class="el-icon-user"></i>
                   <span slot="title">Nhân viên</span>
                 </el-menu-item>
               </router-link>
             </el-menu-item-group>
+            <el-menu-item-group title="Tổ chức">
+              <router-link to="/organization">
+                <el-menu-item index="1-2">
+                  <i class="el-icon-connection"></i>
+                  <span slot="title">Sơ đồ tổ chức</span>
+                </el-menu-item>
+              </router-link>
+            </el-menu-item-group>
             <el-menu-item-group title="Phân quyền hệ thống">
               <router-link to="/permission">
-                <el-menu-item index="1-2">
-                  <i class="el-icon-user-solid"></i>
+                <el-menu-item index="1-3">
+                  <i class="el-icon-s-claim"></i>
                   <span slot="title">Danh sách quyền</span>
                 </el-menu-item>
               </router-link>
             </el-menu-item-group>
-            <el-submenu index="1-4">
-              <span slot="title">item four</span>
-              <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-menu-item index="2">
             <i class="el-icon-menu"></i>
@@ -88,7 +92,13 @@ export default {
       isCollapse: false
     };
   },
+  created() {
+    this.goToUserInfo();
+  },
   methods: {
+    goToUserInfo() {
+      // this.$router.push("/users/" + this.$root.user.id);
+    },
     logout: function() {
       axios
         .post("logout")
@@ -115,6 +125,7 @@ export default {
   height: 100vh;
   a {
     color: white;
+    text-decoration: blink;
   }
 }
 </style>
