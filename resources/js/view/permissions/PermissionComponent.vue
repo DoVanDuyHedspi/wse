@@ -69,7 +69,7 @@
       <el-table
         ref="multipleTable"
         :data="dataTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-        style="width: 100%"
+        style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
         border
       >
         <!-- <el-table-column type="selection" width="55"></el-table-column> -->

@@ -16,6 +16,7 @@ class AddAttrToUsers extends Migration
   {
     Schema::table('users', function (Blueprint $table) {
       $table->string('phone_number')->nullable();
+      $table->string('employee_code')->unique();
       $table->string('nationality')->nullable();
       $table->enum('gender', ['Nam', 'Nữ', 'Khác']);
       $table->date('birthday')->nullable();
@@ -30,10 +31,10 @@ class AddAttrToUsers extends Migration
       $table->string('current_address')->nullable();
       $table->string('permanent_address')->nullable();
       $table->unsignedBigInteger('salary_rank_id');
-      $table->json('identity_card_passport')->nullable();
-      $table->json('vehicles')->nullable();
-      $table->json('bank')->nullable();
-      $table->json('education')->nullable();
+      // $table->json('identity_card_passport')->nullable();
+      // $table->json('vehicles')->nullable();
+      // $table->json('bank')->nullable();
+      // $table->json('education')->nullable();
       $table->foreign('position_id')->references('id')->on('positions');
       $table->foreign('branch_id')->references('id')->on('branches');
       $table->foreign('group_id')->references('id')->on('groups');
@@ -57,8 +58,7 @@ class AddAttrToUsers extends Migration
       $table->dropForeign(['group_id']);
       $table->dropColumn([
         'phone_number',  'nationality', 'gender', 'birthday', 'official_start_day', 'position_id', 'tax_code', 'employee_type_id',
-        'branch_id', 'group_id', 'personal_email', 'birthplace', 'current_address', 'permanent_address', 'salary_rank_id', 'identity_card_passport',
-        'vehicles', 'bank', 'education'
+        'branch_id', 'group_id', 'personal_email', 'birthplace', 'current_address', 'permanent_address', 'salary_rank_id', 'employee_code'
       ]);
     });
   }

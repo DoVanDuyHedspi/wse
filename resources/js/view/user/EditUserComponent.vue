@@ -9,8 +9,11 @@
     <div class="error" v-if="error.message.length">
       <div class="alert alert-danger" role="alert">{{ error.message }}</div>
     </div>
+    <div class="noti" v-if="noti.length">
+      <div class="alert alert-success" role="alert">{{ noti }}</div>
+    </div>
     <div class="container">
-      <div class="content">
+      <div class="content" v-if="user">
         <div class="content-header">
           <b>Chỉnh sửa thông tin cá nhân</b>
         </div>
@@ -20,12 +23,15 @@
               <div class="grid-content">
                 <el-card :body-style="{ padding: '0px' }">
                   <img
-                    src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                    :src="user.avatar"
                     class="image"
                   />
                   <div class="px-3">
-                    <div class="bottom clearfix">
-                      <el-button type="text" class="button">Operating</el-button>
+                    <div class="bottom clearfix text-center">
+                      <div class="upload-btn-wrapper">
+                        <button class="btn">Chọn ảnh</button>
+                        <input type="file" name="myfile" ref="file" @change="handleImageUpload()" />
+                      </div>
                     </div>
                   </div>
                 </el-card>
@@ -88,7 +94,8 @@
                             placeholder="Chọn ngày sinh"
                             v-model="user.birthday"
                             style="width: 100%;"
-                            format="dd/MM/yyyy"
+                            format="dd-MM-yyyy"
+                            value-format="dd-MM-yyyy"
                           ></el-date-picker>
                         </el-col>
                       </el-row>
@@ -150,7 +157,8 @@
                                 placeholder="Chọn ngày bắt đầu làm việc"
                                 v-model="user.official_start_day"
                                 style="width: 100%;"
-                                format="dd/MM/yyyy"
+                                format="dd-MM-yyyy"
+                                value-format="dd-MM-yyyy"
                               ></el-date-picker>
                             </el-col>
                           </el-row>
@@ -225,7 +233,7 @@
                             <el-col :span="6" class="label">Trường</el-col>
                             <el-col :span="12">
                               <el-input
-                                v-model="user.education"
+                                v-model="user.education.school"
                                 class="input"
                                 suffix-icon="el-icon-school"
                               ></el-input>
@@ -235,7 +243,7 @@
                             <el-col :span="6" class="label">Chuyên ngành</el-col>
                             <el-col :span="12">
                               <el-input
-                                v-model="user.education"
+                                v-model="user.education.specialized"
                                 class="input"
                                 suffix-icon="el-icon-reading"
                               ></el-input>
@@ -245,7 +253,7 @@
                             <el-col :span="6" class="label">Năm tốt nghiệp</el-col>
                             <el-col :span="12">
                               <el-input
-                                v-model="user.education"
+                                v-model="user.education.graduation_years"
                                 class="input"
                                 suffix-icon="el-icon-date"
                               ></el-input>
@@ -257,18 +265,19 @@
                             <el-col :span="24" class="label text-left">Phương tiện đi lại</el-col>
                             <el-col :span="6" class="label">Loại xe</el-col>
                             <el-col :span="6">
-                              <el-input
-                                v-model="user.vihicle"
-                                class="input"
-                                suffix-icon="el-icon-date"
-                              ></el-input>
+                              <el-select v-model="user.vehicle.type" class="w-100">
+                                <el-option label="Xe máy" value="Xe máy"></el-option>
+                                <el-option label="Ô tô" value="Ô tô"></el-option>
+                                <el-option label="Xe buýt" value="Xe buýt"></el-option>
+                                <el-option label="Đi bộ" value="Đi bộ"></el-option>
+                              </el-select>
                             </el-col>
                             <el-col :span="6" class="label">Dòng xe</el-col>
                             <el-col :span="6">
                               <el-input
-                                v-model="user.vihicle"
+                                v-model="user.vehicle.brand"
                                 class="input"
-                                suffix-icon="el-icon-date"
+                                suffix-icon="el-icon-tickets"
                               ></el-input>
                             </el-col>
                           </el-row>
@@ -276,37 +285,47 @@
                             <el-col :span="6" class="label">Biển số xe</el-col>
                             <el-col :span="6">
                               <el-input
-                                v-model="user.vihicle"
+                                v-model="user.vehicle.license_plates"
                                 class="input"
-                                suffix-icon="el-icon-date"
+                                suffix-icon="el-icon-s-unfold"
                               ></el-input>
                             </el-col>
                           </el-row>
 
                           <el-row :gutter="15" class="mb-3">
                             <el-col :span="24" class="label text-left">Tài khoản ngân hàng</el-col>
+                            <el-col :span="6" class="label">Loại thẻ</el-col>
+                            <el-col :span="6">
+                              <el-select v-model="user.bank.type" class="w-100">
+                                <el-option label="Thanh toán" value="Thanh toán"></el-option>
+                                <el-option label="Doanh nghiệp" value="Doanh nghiệp"></el-option>
+                                <el-option label="Tiết kiệm" value="Tiết kiệm"></el-option>
+                                <el-option label="Tín dụng" value="Tín dụng"></el-option>
+                                <el-option label="Ký gửi" value="Ký gửi"></el-option>
+                              </el-select>
+                            </el-col>
                             <el-col :span="6" class="label">Ngân hàng</el-col>
                             <el-col :span="6">
                               <el-input
-                                v-model="user.vihicle"
+                                v-model="user.bank.name"
                                 class="input"
-                                suffix-icon="el-icon-date"
-                              ></el-input>
-                            </el-col>
-                            <el-col :span="6" class="label">Số tài khoản</el-col>
-                            <el-col :span="6">
-                              <el-input
-                                v-model="user.vihicle"
-                                class="input"
-                                suffix-icon="el-icon-date"
+                                suffix-icon="el-icon-s-finance"
                               ></el-input>
                             </el-col>
                           </el-row>
                           <el-row :gutter="20" class="mb-3">
+                            <el-col :span="6" class="label">Số tài khoản</el-col>
+                            <el-col :span="6">
+                              <el-input
+                                v-model="user.bank.account_number"
+                                class="input"
+                                suffix-icon="el-icon-tickets"
+                              ></el-input>
+                            </el-col>
                             <el-col :span="6" class="label">Mã số thuế</el-col>
                             <el-col :span="6">
                               <el-input
-                                v-model="user.vihicle"
+                                v-model="user.tax_code"
                                 class="input"
                                 suffix-icon="el-icon-date"
                               ></el-input>
@@ -314,33 +333,41 @@
                           </el-row>
                           <el-row :gutter="15" class="mb-3">
                             <el-col :span="24" class="label text-left">CMND/Hộ chiếu</el-col>
+                            <el-col :span="6" class="label">Loại</el-col>
+                            <el-col :span="6">
+                              <el-select v-model="user.identity_card_passport.type" class="w-100">
+                                <el-option label="CMND" value="CMND"></el-option>
+                                <el-option label="Hộ chiếu" value="Hộ chiếu"></el-option>
+                              </el-select>
+                            </el-col>
                             <el-col :span="6" class="label">Mã số</el-col>
                             <el-col :span="6">
                               <el-input
-                                v-model="user.vihicle"
+                                v-model="user.identity_card_passport.code"
                                 class="input"
-                                suffix-icon="el-icon-date"
+                                suffix-icon="el-icon-postcard"
                               ></el-input>
-                            </el-col>
-                            <el-col :span="6" class="label">Ngày cấp</el-col>
-                            <el-col :span="6">
-                              <el-date-picker
-                                type="date"
-                                placeholder="Chọn ngày bắt đầu làm việc"
-                                v-model="user.official_start_day"
-                                style="width: 100%;"
-                                format="dd/MM/yyyy"
-                              ></el-date-picker>
                             </el-col>
                           </el-row>
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Nơi cấp</el-col>
                             <el-col :span="6">
                               <el-input
-                                v-model="user.vihicle"
+                                v-model="user.identity_card_passport.issued_by"
                                 class="input"
-                                suffix-icon="el-icon-date"
+                                suffix-icon="eel-icon-location-outline"
                               ></el-input>
+                            </el-col>
+                            <el-col :span="6" class="label">Ngày cấp</el-col>
+                            <el-col :span="6">
+                              <el-date-picker
+                                type="date"
+                                placeholder="Ngày cấp"
+                                v-model="user.identity_card_passport.efective_date"
+                                style="width: 100%;"
+                                format="dd-MM-yyyy"
+                                value-format="dd-MM-yyyy"
+                              ></el-date-picker>
                             </el-col>
                           </el-row>
                         </el-tab-pane>
@@ -350,7 +377,7 @@
                 </div>
               </div>
               <el-row class="mt-3">
-                <el-button type="primary">Cập nhật</el-button>
+                <el-button type="primary" @click="updateUser">Cập nhật</el-button>
               </el-row>
             </el-col>
           </el-row>
@@ -364,17 +391,23 @@
 export default {
   data() {
     return {
-      user: {},
+      user: '',
       error: {
         message: ""
+      },
+      noti: "",
+      imageFile: "",
+      rules: {
+        name: [{ required: true, message: "Hãy nhập tên", trigger: "blur" }],
+        email: [{ required: true, message: "Hãy nhập email", trigger: "blur" }]
       }
     };
   },
   created() {
-    this.getUsers();
+    this.getUser();
   },
   methods: {
-    getUsers() {
+    getUser() {
       axios
         .get("/users/" + this.$route.params.id + "/edit")
         .then(response => {
@@ -388,6 +421,55 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    handleImageUpload() {
+      this.imageFile = this.$refs.file.files[0];
+      let formData = new FormData();
+      formData.append("image", this.imageFile);
+      formData.append("_method", "PATCH")
+      axios
+        .post("/users/" + this.user.id, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(response => {
+          if (response.data.status === false) {
+            this.error.message = response.data.message;
+            this.$notify.error({
+              title: "Thất bại",
+              message: response.data.message,
+              position: "bottom-right"
+            });
+          } else {
+            this.user.avatar = response.data.avatar;
+            this.$notify({
+              title: "Hoàn thành",
+              message: "Cập nhật thông tin nhân viên thành công",
+              type: "success",
+              position: "bottom-right"
+            });
+          }
+        });
+    },
+    updateUser(formName) {
+      axios.put("/users/" + this.user.id, this.user).then(response => {
+        if (response.data.status === false) {
+          this.error.message = response.data.message;
+          this.$notify.error({
+            title: "Thất bại",
+            message: response.data.message,
+            position: "bottom-right"
+          });
+        } else {
+          this.$notify({
+            title: "Hoàn thành",
+            message: "Cập nhật thông tin nhân viên thành công",
+            type: "success",
+            position: "bottom-right"
+          });
+        }
+      });
     }
   }
 };
@@ -428,17 +510,39 @@ export default {
   font-size: 16px;
 }
 
-.el-input {
-  // max-width: 300px !important;
-}
-
 .label {
   line-height: 2.5;
   text-align: right;
   font-size: 16px;
   font-weight: bold;
 }
+
 .input .el-input-group__prepend {
   background-color: #fff;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  height: 50px;
 }
 </style>

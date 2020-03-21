@@ -4735,20 +4735,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      user: {},
+      user: '',
       error: {
         message: ""
+      },
+      noti: "",
+      imageFile: "",
+      rules: {
+        name: [{
+          required: true,
+          message: "Hãy nhập tên",
+          trigger: "blur"
+        }],
+        email: [{
+          required: true,
+          message: "Hãy nhập email",
+          trigger: "blur"
+        }]
       }
     };
   },
   created: function created() {
-    this.getUsers();
+    this.getUser();
   },
   methods: {
-    getUsers: function getUsers() {
+    getUser: function getUser() {
       var _this = this;
 
       axios.get("/users/" + this.$route.params.id + "/edit").then(function (response) {
@@ -4760,6 +4801,60 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    handleImageUpload: function handleImageUpload() {
+      var _this2 = this;
+
+      this.imageFile = this.$refs.file.files[0];
+      var formData = new FormData();
+      formData.append("image", this.imageFile);
+      formData.append("_method", "PATCH");
+      axios.post("/users/" + this.user.id, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function (response) {
+        if (response.data.status === false) {
+          _this2.error.message = response.data.message;
+
+          _this2.$notify.error({
+            title: "Thất bại",
+            message: response.data.message,
+            position: "bottom-right"
+          });
+        } else {
+          _this2.user.avatar = response.data.avatar;
+
+          _this2.$notify({
+            title: "Hoàn thành",
+            message: "Cập nhật thông tin nhân viên thành công",
+            type: "success",
+            position: "bottom-right"
+          });
+        }
+      });
+    },
+    updateUser: function updateUser(formName) {
+      var _this3 = this;
+
+      axios.put("/users/" + this.user.id, this.user).then(function (response) {
+        if (response.data.status === false) {
+          _this3.error.message = response.data.message;
+
+          _this3.$notify.error({
+            title: "Thất bại",
+            message: response.data.message,
+            position: "bottom-right"
+          });
+        } else {
+          _this3.$notify({
+            title: "Hoàn thành",
+            message: "Cập nhật thông tin nhân viên thành công",
+            type: "success",
+            position: "bottom-right"
+          });
+        }
       });
     }
   }
@@ -5126,13 +5221,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: "",
       error: {
         message: ""
-      }
+      },
+      noti: ""
     };
   },
   created: function created() {
@@ -5201,13 +5300,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       users: [],
       error: {
         message: ""
-      }
+      },
+      info: "Danh sách thành viên có thể xem thông tin trong quyền của người dùng này"
     };
   },
   created: function created() {
@@ -5221,7 +5371,6 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data.status === false) {
           _this.error.message = response.data.message;
         } else {
-          console.log(response.data);
           _this.users = response.data;
         }
       })["catch"](function (error) {
@@ -11655,7 +11804,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".content[data-v-ede47280] {\n  border: 1px solid rgba(128, 128, 128, 0.3);\n  border-radius: 5px 5px 0 0;\n}\n.content-header[data-v-ede47280] {\n  padding: 15px;\n  border-radius: 5px 5px 0 0;\n  border-bottom: 1px solid rgba(128, 128, 128, 0.3);\n  background: white;\n}\n.content-body[data-v-ede47280] {\n  padding: 10px 5px;\n}\n.info[data-v-ede47280] {\n  border: 1px solid rgba(128, 128, 128, 0.3);\n  border-radius: 5px 5px 0 0;\n  background: white;\n  line-height: 1.2;\n}\n.info .header[data-v-ede47280] {\n  border-radius: 5px 5px 0 0;\n  background: white;\n  border-bottom: 1px solid rgba(128, 128, 128, 0.3);\n}\n.el-form-item__label[data-v-ede47280] {\n  font-weight: bold !important;\n  font-size: 16px;\n}\n.label[data-v-ede47280] {\n  line-height: 2.5;\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.input .el-input-group__prepend[data-v-ede47280] {\n  background-color: #fff;\n}", ""]);
+exports.push([module.i, ".content[data-v-ede47280] {\n  border: 1px solid rgba(128, 128, 128, 0.3);\n  border-radius: 5px 5px 0 0;\n}\n.content-header[data-v-ede47280] {\n  padding: 15px;\n  border-radius: 5px 5px 0 0;\n  border-bottom: 1px solid rgba(128, 128, 128, 0.3);\n  background: white;\n}\n.content-body[data-v-ede47280] {\n  padding: 10px 5px;\n}\n.info[data-v-ede47280] {\n  border: 1px solid rgba(128, 128, 128, 0.3);\n  border-radius: 5px 5px 0 0;\n  background: white;\n  line-height: 1.2;\n}\n.info .header[data-v-ede47280] {\n  border-radius: 5px 5px 0 0;\n  background: white;\n  border-bottom: 1px solid rgba(128, 128, 128, 0.3);\n}\n.el-form-item__label[data-v-ede47280] {\n  font-weight: bold !important;\n  font-size: 16px;\n}\n.label[data-v-ede47280] {\n  line-height: 2.5;\n  text-align: right;\n  font-size: 16px;\n  font-weight: bold;\n}\n.input .el-input-group__prepend[data-v-ede47280] {\n  background-color: #fff;\n}\n.upload-btn-wrapper[data-v-ede47280] {\n  position: relative;\n  overflow: hidden;\n  display: inline-block;\n}\n.btn[data-v-ede47280] {\n  border: 2px solid gray;\n  color: gray;\n  background-color: white;\n  padding: 8px 20px;\n  border-radius: 8px;\n  font-size: 14px;\n  font-weight: bold;\n}\n.upload-btn-wrapper input[type=file][data-v-ede47280] {\n  font-size: 100px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  height: 50px;\n}", ""]);
 
 // exports
 
@@ -102611,12 +102760,10 @@ var render = function() {
                             { attrs: { to: "/users" } },
                             [
                               _c("el-menu-item", { attrs: { index: "1-1" } }, [
-                                _c("i", { staticClass: "el-icon-user" }),
-                                _vm._v(" "),
                                 _c(
                                   "span",
                                   { attrs: { slot: "title" }, slot: "title" },
-                                  [_vm._v("Nhân viên")]
+                                  [_vm._v("Thành viên")]
                                 )
                               ])
                             ],
@@ -102635,8 +102782,6 @@ var render = function() {
                             { attrs: { to: "/organization" } },
                             [
                               _c("el-menu-item", { attrs: { index: "1-2" } }, [
-                                _c("i", { staticClass: "el-icon-connection" }),
-                                _vm._v(" "),
                                 _c(
                                   "span",
                                   { attrs: { slot: "title" }, slot: "title" },
@@ -102659,8 +102804,6 @@ var render = function() {
                             { attrs: { to: "/permission" } },
                             [
                               _c("el-menu-item", { attrs: { index: "1-3" } }, [
-                                _c("i", { staticClass: "el-icon-s-claim" }),
-                                _vm._v(" "),
                                 _c(
                                   "span",
                                   { attrs: { slot: "title" }, slot: "title" },
@@ -103709,7 +103852,11 @@ var render = function() {
           "el-table",
           {
             ref: "multipleTable",
-            staticStyle: { width: "100%" },
+            staticStyle: {
+              width: "100%",
+              "box-shadow":
+                "0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+            },
             attrs: {
               data: _vm.dataTable.filter(function(data) {
                 return (
@@ -104031,7 +104178,7 @@ var render = function() {
                         ],
                         1
                       ),
-                      _vm._v(" "),
+                      _vm._v('prop="slug"\n            '),
                       _c(
                         "el-button",
                         {
@@ -104185,7 +104332,11 @@ var render = function() {
           "el-table",
           {
             ref: "multipleTable",
-            staticStyle: { width: "100%" },
+            staticStyle: {
+              width: "100%",
+              "box-shadow":
+                "0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+            },
             attrs: {
               data: _vm.dataTable.filter(function(data) {
                 return (
@@ -104439,639 +104590,715 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
+    _vm.noti.length
+      ? _c("div", { staticClass: "noti" }, [
+          _c(
+            "div",
+            { staticClass: "alert alert-success", attrs: { role: "alert" } },
+            [_vm._v(_vm._s(_vm.noti))]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "content" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "content-body" },
-          [
+      _vm.user
+        ? _c("div", { staticClass: "content" }, [
+            _vm._m(0),
+            _vm._v(" "),
             _c(
-              "el-row",
-              { attrs: { gutter: 20 } },
+              "div",
+              { staticClass: "content-body" },
               [
-                _c("el-col", { attrs: { span: 6 } }, [
-                  _c(
-                    "div",
-                    { staticClass: "grid-content" },
-                    [
+                _c(
+                  "el-row",
+                  { attrs: { gutter: 20 } },
+                  [
+                    _c("el-col", { attrs: { span: 6 } }, [
                       _c(
-                        "el-card",
-                        { attrs: { "body-style": { padding: "0px" } } },
+                        "div",
+                        { staticClass: "grid-content" },
                         [
-                          _c("img", {
-                            staticClass: "image",
-                            attrs: {
-                              src:
-                                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "px-3" }, [
+                          _c(
+                            "el-card",
+                            { attrs: { "body-style": { padding: "0px" } } },
+                            [
+                              _c("img", {
+                                staticClass: "image",
+                                attrs: { src: _vm.user.avatar }
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "px-3" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "bottom clearfix text-center"
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "upload-btn-wrapper" },
+                                      [
+                                        _c("button", { staticClass: "btn" }, [
+                                          _vm._v("Chọn ảnh")
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          ref: "file",
+                                          attrs: {
+                                            type: "file",
+                                            name: "myfile"
+                                          },
+                                          on: {
+                                            change: function($event) {
+                                              return _vm.handleImageUpload()
+                                            }
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "el-col",
+                      { attrs: { span: 18 } },
+                      [
+                        _c("div", { staticClass: "grid-content" }, [
+                          _c("div", { staticClass: "info" }, [
+                            _c("div", { staticClass: "header p-3" }, [
+                              _c("span", [_c("b", [_vm._v("Thông tin chung")])])
+                            ]),
+                            _vm._v(" "),
                             _c(
                               "div",
-                              { staticClass: "bottom clearfix" },
+                              { staticClass: "mt-3" },
                               [
                                 _c(
-                                  "el-button",
+                                  "el-form",
                                   {
-                                    staticClass: "button",
-                                    attrs: { type: "text" }
-                                  },
-                                  [_vm._v("Operating")]
-                                )
-                              ],
-                              1
-                            )
-                          ])
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "el-col",
-                  { attrs: { span: 18 } },
-                  [
-                    _c("div", { staticClass: "grid-content" }, [
-                      _c("div", { staticClass: "info" }, [
-                        _c("div", { staticClass: "header p-3" }, [
-                          _c("span", [_c("b", [_vm._v("Thông tin chung")])])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "mt-3" },
-                          [
-                            _c(
-                              "el-form",
-                              {
-                                attrs: {
-                                  model: _vm.user,
-                                  "label-width": "120px"
-                                }
-                              },
-                              [
-                                _c(
-                                  "el-row",
-                                  {
-                                    staticClass: "mb-3",
-                                    attrs: { gutter: 20 }
+                                    attrs: {
+                                      model: _vm.user,
+                                      "label-width": "120px"
+                                    }
                                   },
                                   [
                                     _c(
-                                      "el-col",
+                                      "el-row",
                                       {
-                                        staticClass: "label",
-                                        attrs: { span: 6 }
-                                      },
-                                      [_vm._v("Tên")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-col",
-                                      { attrs: { span: 12 } },
-                                      [
-                                        _c("el-input", {
-                                          staticClass: "input",
-                                          attrs: {
-                                            "suffix-icon": "el-icon-user-solid"
-                                          },
-                                          model: {
-                                            value: _vm.user.name,
-                                            callback: function($$v) {
-                                              _vm.$set(_vm.user, "name", $$v)
-                                            },
-                                            expression: "user.name"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "el-row",
-                                  {
-                                    staticClass: "mb-3",
-                                    attrs: { gutter: 20 }
-                                  },
-                                  [
-                                    _c(
-                                      "el-col",
-                                      {
-                                        staticClass: "label",
-                                        attrs: { span: 6 }
-                                      },
-                                      [_vm._v("Email")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-col",
-                                      { attrs: { span: 12 } },
-                                      [
-                                        _c("el-input", {
-                                          staticClass: "input",
-                                          attrs: {
-                                            "suffix-icon": "el-icon-message"
-                                          },
-                                          model: {
-                                            value: _vm.user.email,
-                                            callback: function($$v) {
-                                              _vm.$set(_vm.user, "email", $$v)
-                                            },
-                                            expression: "user.email"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "el-row",
-                                  {
-                                    staticClass: "mb-3",
-                                    attrs: { gutter: 20 }
-                                  },
-                                  [
-                                    _c(
-                                      "el-col",
-                                      {
-                                        staticClass: "label",
-                                        attrs: { span: 6 }
-                                      },
-                                      [_vm._v("Giới tính")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-col",
-                                      {
-                                        staticStyle: { "line-height": "2.5" },
-                                        attrs: { span: 12 }
+                                        staticClass: "mb-3",
+                                        attrs: { gutter: 20 }
                                       },
                                       [
                                         _c(
-                                          "el-radio-group",
+                                          "el-col",
                                           {
-                                            model: {
-                                              value: _vm.user.gender,
-                                              callback: function($$v) {
-                                                _vm.$set(
-                                                  _vm.user,
-                                                  "gender",
-                                                  $$v
-                                                )
-                                              },
-                                              expression: "user.gender"
-                                            }
+                                            staticClass: "label",
+                                            attrs: { span: 6 }
                                           },
+                                          [_vm._v("Tên")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-col",
+                                          { attrs: { span: 12 } },
                                           [
-                                            _c("el-radio", {
-                                              attrs: { label: "Nam" }
-                                            }),
-                                            _vm._v(" "),
-                                            _c("el-radio", {
-                                              attrs: { label: "Nữ" }
+                                            _c("el-input", {
+                                              staticClass: "input",
+                                              attrs: {
+                                                "suffix-icon":
+                                                  "el-icon-user-solid"
+                                              },
+                                              model: {
+                                                value: _vm.user.name,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.user,
+                                                    "name",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "user.name"
+                                              }
                                             })
                                           ],
                                           1
                                         )
                                       ],
                                       1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "el-row",
-                                  {
-                                    staticClass: "mb-3",
-                                    attrs: { gutter: 20 }
-                                  },
-                                  [
-                                    _c(
-                                      "el-col",
-                                      {
-                                        staticClass: "label",
-                                        attrs: { span: 6 }
-                                      },
-                                      [_vm._v("Quốc tịch")]
                                     ),
                                     _vm._v(" "),
                                     _c(
-                                      "el-col",
-                                      { attrs: { span: 12 } },
-                                      [
-                                        _c("el-input", {
-                                          staticClass: "input",
-                                          attrs: {
-                                            "suffix-icon": "el-icon-s-flag"
-                                          },
-                                          model: {
-                                            value: _vm.user.nationality,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.user,
-                                                "nationality",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "user.nationality"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "el-row",
-                                  {
-                                    staticClass: "mb-3",
-                                    attrs: { gutter: 20 }
-                                  },
-                                  [
-                                    _c(
-                                      "el-col",
+                                      "el-row",
                                       {
-                                        staticClass: "label",
-                                        attrs: { span: 6 }
-                                      },
-                                      [_vm._v("Ngày sinh")]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-col",
-                                      { attrs: { span: 12 } },
-                                      [
-                                        _c("el-date-picker", {
-                                          staticStyle: { width: "100%" },
-                                          attrs: {
-                                            type: "date",
-                                            placeholder: "Chọn ngày sinh",
-                                            format: "dd/MM/yyyy"
-                                          },
-                                          model: {
-                                            value: _vm.user.birthday,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.user,
-                                                "birthday",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "user.birthday"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "el-tabs",
-                                  {
-                                    staticClass: "pt-4",
-                                    attrs: { type: "card" }
-                                  },
-                                  [
-                                    _c(
-                                      "el-tab-pane",
-                                      {
-                                        attrs: { label: "Thông tin công việc" }
+                                        staticClass: "mb-3",
+                                        attrs: { gutter: 20 }
                                       },
                                       [
                                         _c(
-                                          "el-row",
+                                          "el-col",
                                           {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
+                                            staticClass: "label",
+                                            attrs: { span: 6 }
+                                          },
+                                          [_vm._v("Email")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-col",
+                                          { attrs: { span: 12 } },
+                                          [
+                                            _c("el-input", {
+                                              staticClass: "input",
+                                              attrs: {
+                                                "suffix-icon": "el-icon-message"
+                                              },
+                                              model: {
+                                                value: _vm.user.email,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.user,
+                                                    "email",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "user.email"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "el-row",
+                                      {
+                                        staticClass: "mb-3",
+                                        attrs: { gutter: 20 }
+                                      },
+                                      [
+                                        _c(
+                                          "el-col",
+                                          {
+                                            staticClass: "label",
+                                            attrs: { span: 6 }
+                                          },
+                                          [_vm._v("Giới tính")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-col",
+                                          {
+                                            staticStyle: {
+                                              "line-height": "2.5"
+                                            },
+                                            attrs: { span: 12 }
                                           },
                                           [
                                             _c(
-                                              "el-col",
+                                              "el-radio-group",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Mã nhân viên")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-postcard"
+                                                model: {
+                                                  value: _vm.user.gender,
+                                                  callback: function($$v) {
+                                                    _vm.$set(
+                                                      _vm.user,
+                                                      "gender",
+                                                      $$v
+                                                    )
                                                   },
-                                                  model: {
-                                                    value:
-                                                      _vm.user.employee_code,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "employee_code",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.employee_code"
-                                                  }
+                                                  expression: "user.gender"
+                                                }
+                                              },
+                                              [
+                                                _c("el-radio", {
+                                                  attrs: { label: "Nam" }
+                                                }),
+                                                _vm._v(" "),
+                                                _c("el-radio", {
+                                                  attrs: { label: "Nữ" }
                                                 })
                                               ],
                                               1
                                             )
                                           ],
                                           1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "el-row",
+                                      {
+                                        staticClass: "mb-3",
+                                        attrs: { gutter: 20 }
+                                      },
+                                      [
+                                        _c(
+                                          "el-col",
+                                          {
+                                            staticClass: "label",
+                                            attrs: { span: 6 }
+                                          },
+                                          [_vm._v("Quốc tịch")]
                                         ),
                                         _vm._v(" "),
                                         _c(
-                                          "el-row",
+                                          "el-col",
+                                          { attrs: { span: 12 } },
+                                          [
+                                            _c("el-input", {
+                                              staticClass: "input",
+                                              attrs: {
+                                                "suffix-icon": "el-icon-s-flag"
+                                              },
+                                              model: {
+                                                value: _vm.user.nationality,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.user,
+                                                    "nationality",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "user.nationality"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "el-row",
+                                      {
+                                        staticClass: "mb-3",
+                                        attrs: { gutter: 20 }
+                                      },
+                                      [
+                                        _c(
+                                          "el-col",
                                           {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
+                                            staticClass: "label",
+                                            attrs: { span: 6 }
+                                          },
+                                          [_vm._v("Ngày sinh")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-col",
+                                          { attrs: { span: 12 } },
+                                          [
+                                            _c("el-date-picker", {
+                                              staticStyle: { width: "100%" },
+                                              attrs: {
+                                                type: "date",
+                                                placeholder: "Chọn ngày sinh",
+                                                format: "dd-MM-yyyy",
+                                                "value-format": "dd-MM-yyyy"
+                                              },
+                                              model: {
+                                                value: _vm.user.birthday,
+                                                callback: function($$v) {
+                                                  _vm.$set(
+                                                    _vm.user,
+                                                    "birthday",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "user.birthday"
+                                              }
+                                            })
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "el-tabs",
+                                      {
+                                        staticClass: "pt-4",
+                                        attrs: { type: "card" }
+                                      },
+                                      [
+                                        _c(
+                                          "el-tab-pane",
+                                          {
+                                            attrs: {
+                                              label: "Thông tin công việc"
+                                            }
                                           },
                                           [
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
                                               },
-                                              [_vm._v("Loại nhân viên")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
                                               [
                                                 _c(
-                                                  "el-select",
+                                                  "el-col",
                                                   {
-                                                    staticClass: "w-100",
-                                                    model: {
-                                                      value:
-                                                        _vm.user.employee_type
-                                                          .id,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Mã nhân viên")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-postcard"
+                                                      },
+                                                      model: {
+                                                        value:
                                                           _vm.user
-                                                            .employee_type,
-                                                          "id",
+                                                            .employee_code,
+                                                        callback: function(
                                                           $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "user.employee_type.id"
-                                                    }
-                                                  },
-                                                  _vm._l(
-                                                    _vm.user.employee_types,
-                                                    function(type, index) {
-                                                      return _c("el-option", {
-                                                        key: index,
-                                                        attrs: {
-                                                          label: type.name,
-                                                          value: type.id
-                                                        }
-                                                      })
-                                                    }
-                                                  ),
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "employee_code",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.employee_code"
+                                                      }
+                                                    })
+                                                  ],
                                                   1
                                                 )
                                               ],
                                               1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Vị trí")]
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
                                               [
                                                 _c(
-                                                  "el-select",
+                                                  "el-col",
                                                   {
-                                                    staticClass: "w-100",
-                                                    model: {
-                                                      value:
-                                                        _vm.user.position.id,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.user.position,
-                                                          "id",
-                                                          $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "user.position.id"
-                                                    }
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  _vm._l(
-                                                    _vm.user.positions,
-                                                    function(type, index) {
-                                                      return _c("el-option", {
-                                                        key: index,
-                                                        attrs: {
-                                                          label: type.name,
-                                                          value: type.id
+                                                  [_vm._v("Loại nhân viên")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c(
+                                                      "el-select",
+                                                      {
+                                                        staticClass: "w-100",
+                                                        model: {
+                                                          value:
+                                                            _vm.user
+                                                              .employee_type.id,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.user
+                                                                .employee_type,
+                                                              "id",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "user.employee_type.id"
                                                         }
-                                                      })
-                                                    }
-                                                  ),
+                                                      },
+                                                      _vm._l(
+                                                        _vm.user.employee_types,
+                                                        function(type, index) {
+                                                          return _c(
+                                                            "el-option",
+                                                            {
+                                                              key: index,
+                                                              attrs: {
+                                                                label:
+                                                                  type.name,
+                                                                value: type.id
+                                                              }
+                                                            }
+                                                          )
+                                                        }
+                                                      ),
+                                                      1
+                                                    )
+                                                  ],
                                                   1
                                                 )
                                               ],
                                               1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Phòng ban")]
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-cascader", {
-                                                  staticClass: "w-100",
-                                                  attrs: {
-                                                    options: _vm.user.groups,
-                                                    props: {
-                                                      checkStrictly: true,
-                                                      label: "name",
-                                                      value: "id"
-                                                    },
-                                                    clearable: ""
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.group.id,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user.group,
-                                                        "id",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.group.id"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
                                               },
-                                              [_vm._v("Ngày bắt đầu làm việc")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-date-picker", {
-                                                  staticStyle: {
-                                                    width: "100%"
-                                                  },
-                                                  attrs: {
-                                                    type: "date",
-                                                    placeholder:
-                                                      "Chọn ngày bắt đầu làm việc",
-                                                    format: "dd/MM/yyyy"
-                                                  },
-                                                  model: {
-                                                    value:
-                                                      _vm.user
-                                                        .official_start_day,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "official_start_day",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.official_start_day"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Chi nhánh")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
                                               [
                                                 _c(
-                                                  "el-select",
+                                                  "el-col",
                                                   {
-                                                    staticClass: "w-100",
-                                                    model: {
-                                                      value: _vm.user.branch.id,
-                                                      callback: function($$v) {
-                                                        _vm.$set(
-                                                          _vm.user.branch,
-                                                          "id",
-                                                          $$v
-                                                        )
-                                                      },
-                                                      expression:
-                                                        "user.branch.id"
-                                                    }
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  _vm._l(
-                                                    _vm.user.branches,
-                                                    function(type, index) {
-                                                      return _c("el-option", {
-                                                        key: index,
-                                                        attrs: {
-                                                          label: type.name,
-                                                          value: type.id
+                                                  [_vm._v("Vị trí")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c(
+                                                      "el-select",
+                                                      {
+                                                        staticClass: "w-100",
+                                                        model: {
+                                                          value:
+                                                            _vm.user.position
+                                                              .id,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.user.position,
+                                                              "id",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "user.position.id"
                                                         }
-                                                      })
-                                                    }
-                                                  ),
+                                                      },
+                                                      _vm._l(
+                                                        _vm.user.positions,
+                                                        function(type, index) {
+                                                          return _c(
+                                                            "el-option",
+                                                            {
+                                                              key: index,
+                                                              attrs: {
+                                                                label:
+                                                                  type.name,
+                                                                value: type.id
+                                                              }
+                                                            }
+                                                          )
+                                                        }
+                                                      ),
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Phòng ban")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-cascader", {
+                                                      staticClass: "w-100",
+                                                      attrs: {
+                                                        options:
+                                                          _vm.user.groups,
+                                                        props: {
+                                                          checkStrictly: true,
+                                                          label: "name",
+                                                          value: "id"
+                                                        },
+                                                        clearable: ""
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.group.id,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.group,
+                                                            "id",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.group.id"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "Ngày bắt đầu làm việc"
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-date-picker", {
+                                                      staticStyle: {
+                                                        width: "100%"
+                                                      },
+                                                      attrs: {
+                                                        type: "date",
+                                                        placeholder:
+                                                          "Chọn ngày bắt đầu làm việc",
+                                                        format: "dd-MM-yyyy",
+                                                        "value-format":
+                                                          "dd-MM-yyyy"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .official_start_day,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "official_start_day",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.official_start_day"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Chi nhánh")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c(
+                                                      "el-select",
+                                                      {
+                                                        staticClass: "w-100",
+                                                        model: {
+                                                          value:
+                                                            _vm.user.branch.id,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.user.branch,
+                                                              "id",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "user.branch.id"
+                                                        }
+                                                      },
+                                                      _vm._l(
+                                                        _vm.user.branches,
+                                                        function(type, index) {
+                                                          return _c(
+                                                            "el-option",
+                                                            {
+                                                              key: index,
+                                                              attrs: {
+                                                                label:
+                                                                  type.name,
+                                                                value: type.id
+                                                              }
+                                                            }
+                                                          )
+                                                        }
+                                                      ),
+                                                      1
+                                                    )
+                                                  ],
                                                   1
                                                 )
                                               ],
@@ -105079,55 +105306,260 @@ var render = function() {
                                             )
                                           ],
                                           1
-                                        )
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-tab-pane",
-                                      { attrs: { label: "Thông tin liên hệ" } },
-                                      [
+                                        ),
+                                        _vm._v(" "),
                                         _c(
-                                          "el-row",
+                                          "el-tab-pane",
                                           {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
+                                            attrs: {
+                                              label: "Thông tin liên hệ"
+                                            }
                                           },
                                           [
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
                                               },
-                                              [_vm._v("Email cá nhân")]
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Email cá nhân")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-message"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .personal_email,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "personal_email",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.personal_email"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-message"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value:
-                                                      _vm.user.personal_email,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "personal_email",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.personal_email"
-                                                  }
-                                                })
+                                                  [_vm._v("Số điện thoại")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-phone-outline"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.phone_number,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "phone_number",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.phone_number"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Nơi sinh")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-add-location"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.placebirth,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "placebirth",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.placebirth"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Địa chỉ thường chú")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-map-location"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .permanent_address,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "permanent_address",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.permanent_address"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Địa chỉ hiện tại")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-place"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .current_address,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "current_address",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.current_address"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
                                             )
@@ -105136,45 +105568,159 @@ var render = function() {
                                         ),
                                         _vm._v(" "),
                                         _c(
-                                          "el-row",
+                                          "el-tab-pane",
                                           {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
+                                            attrs: {
+                                              label: "Thông tin giáo dục"
+                                            }
                                           },
                                           [
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
                                               },
-                                              [_vm._v("Số điện thoại")]
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Trường")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-school"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.education
+                                                            .school,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.education,
+                                                            "school",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.education.school"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-phone-outline"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value:
-                                                      _vm.user.phone_number,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "phone_number",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.phone_number"
-                                                  }
-                                                })
+                                                  [_vm._v("Chuyên ngành")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-reading"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.education
+                                                            .specialized,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.education,
+                                                            "specialized",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.education.specialized"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
+                                              ],
+                                              1
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Năm tốt nghiệp")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 12 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-date"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.education
+                                                            .graduation_years,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.education,
+                                                            "graduation_years",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.education.graduation_years"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
                                             )
@@ -105183,702 +105729,634 @@ var render = function() {
                                         ),
                                         _vm._v(" "),
                                         _c(
-                                          "el-row",
+                                          "el-tab-pane",
                                           {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
+                                            staticClass: "px-5",
+                                            attrs: { label: "Thông tin khác" }
                                           },
                                           [
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 15 }
                                               },
-                                              [_vm._v("Nơi sinh")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-add-location"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass:
+                                                      "label text-left",
+                                                    attrs: { span: 24 }
                                                   },
-                                                  model: {
-                                                    value: _vm.user.placebirth,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "placebirth",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.placebirth"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Địa chỉ thường chú")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-map-location"
+                                                  [_vm._v("Phương tiện đi lại")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value:
-                                                      _vm.user
-                                                        .permanent_address,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "permanent_address",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.permanent_address"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Địa chỉ hiện tại")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-place"
+                                                  [_vm._v("Loại xe")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c(
+                                                      "el-select",
+                                                      {
+                                                        staticClass: "w-100",
+                                                        model: {
+                                                          value:
+                                                            _vm.user.vehicle
+                                                              .type,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.user.vehicle,
+                                                              "type",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "user.vehicle.type"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Xe máy",
+                                                            value: "Xe máy"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Ô tô",
+                                                            value: "Ô tô"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Xe buýt",
+                                                            value: "Xe buýt"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Đi bộ",
+                                                            value: "Đi bộ"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value:
-                                                      _vm.user.current_address,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "current_address",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.current_address"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-tab-pane",
-                                      {
-                                        attrs: { label: "Thông tin giáo dục" }
-                                      },
-                                      [
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Trường")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-school"
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.education,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "education",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.education"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Chuyên ngành")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-reading"
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.education,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "education",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.education"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Năm tốt nghiệp")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 12 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.education,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "education",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.education"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-tab-pane",
-                                      {
-                                        staticClass: "px-5",
-                                        attrs: { label: "Thông tin khác" }
-                                      },
-                                      [
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 15 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label text-left",
-                                                attrs: { span: 24 }
-                                              },
-                                              [_vm._v("Phương tiện đi lại")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Loại xe")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
+                                                  [_vm._v("Dòng xe")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-tickets"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.vehicle
+                                                            .brand,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.vehicle,
+                                                            "brand",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.vehicle.brand"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
                                               },
-                                              [_vm._v("Dòng xe")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Biển số xe")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 15 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label text-left",
-                                                attrs: { span: 24 }
-                                              },
-                                              [_vm._v("Tài khoản ngân hàng")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Ngân hàng")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
-                                                  },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
+                                                  [_vm._v("Biển số xe")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-s-unfold"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.vehicle
+                                                            .license_plates,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.vehicle,
+                                                            "license_plates",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.vehicle.license_plates"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 15 }
                                               },
-                                              [_vm._v("Số tài khoản")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass:
+                                                      "label text-left",
+                                                    attrs: { span: 24 }
                                                   },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
+                                                  [
+                                                    _vm._v(
+                                                      "Tài khoản ngân hàng"
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Loại thẻ")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c(
+                                                      "el-select",
+                                                      {
+                                                        staticClass: "w-100",
+                                                        model: {
+                                                          value:
+                                                            _vm.user.bank.type,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.user.bank,
+                                                              "type",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "user.bank.type"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Thanh toán",
+                                                            value: "Thanh toán"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label:
+                                                              "Doanh nghiệp",
+                                                            value:
+                                                              "Doanh nghiệp"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Tiết kiệm",
+                                                            value: "Tiết kiệm"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Tín dụng",
+                                                            value: "Tín dụng"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Ký gửi",
+                                                            value: "Ký gửi"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Ngân hàng")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-s-finance"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.bank.name,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.bank,
+                                                            "name",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.bank.name"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Mã số thuế")]
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
-                                              ],
-                                              1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 15 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label text-left",
-                                                attrs: { span: 24 }
-                                              },
-                                              [_vm._v("CMND/Hộ chiếu")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Mã số")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
-                                              [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
+                                                  [_vm._v("Số tài khoản")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-tickets"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.bank
+                                                            .account_number,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user.bank,
+                                                            "account_number",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.bank.account_number"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
+                                                  [_vm._v("Mã số thuế")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-date"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user.tax_code,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user,
+                                                            "tax_code",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.tax_code"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
+                                              "el-row",
                                               {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 15 }
                                               },
-                                              [_vm._v("Ngày cấp")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
                                               [
-                                                _c("el-date-picker", {
-                                                  staticStyle: {
-                                                    width: "100%"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass:
+                                                      "label text-left",
+                                                    attrs: { span: 24 }
                                                   },
-                                                  attrs: {
-                                                    type: "date",
-                                                    placeholder:
-                                                      "Chọn ngày bắt đầu làm việc",
-                                                    format: "dd/MM/yyyy"
+                                                  [_vm._v("CMND/Hộ chiếu")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value:
-                                                      _vm.user
-                                                        .official_start_day,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "official_start_day",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression:
-                                                      "user.official_start_day"
-                                                  }
-                                                })
+                                                  [_vm._v("Loại")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c(
+                                                      "el-select",
+                                                      {
+                                                        staticClass: "w-100",
+                                                        model: {
+                                                          value:
+                                                            _vm.user
+                                                              .identity_card_passport
+                                                              .type,
+                                                          callback: function(
+                                                            $$v
+                                                          ) {
+                                                            _vm.$set(
+                                                              _vm.user
+                                                                .identity_card_passport,
+                                                              "type",
+                                                              $$v
+                                                            )
+                                                          },
+                                                          expression:
+                                                            "user.identity_card_passport.type"
+                                                        }
+                                                      },
+                                                      [
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "CMND",
+                                                            value: "CMND"
+                                                          }
+                                                        }),
+                                                        _vm._v(" "),
+                                                        _c("el-option", {
+                                                          attrs: {
+                                                            label: "Hộ chiếu",
+                                                            value: "Hộ chiếu"
+                                                          }
+                                                        })
+                                                      ],
+                                                      1
+                                                    )
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Mã số")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "el-icon-postcard"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .identity_card_passport
+                                                            .code,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user
+                                                              .identity_card_passport,
+                                                            "code",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.identity_card_passport.code"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "el-row",
-                                          {
-                                            staticClass: "mb-3",
-                                            attrs: { gutter: 20 }
-                                          },
-                                          [
-                                            _c(
-                                              "el-col",
-                                              {
-                                                staticClass: "label",
-                                                attrs: { span: 6 }
-                                              },
-                                              [_vm._v("Nơi cấp")]
                                             ),
                                             _vm._v(" "),
                                             _c(
-                                              "el-col",
-                                              { attrs: { span: 6 } },
+                                              "el-row",
+                                              {
+                                                staticClass: "mb-3",
+                                                attrs: { gutter: 20 }
+                                              },
                                               [
-                                                _c("el-input", {
-                                                  staticClass: "input",
-                                                  attrs: {
-                                                    "suffix-icon":
-                                                      "el-icon-date"
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
                                                   },
-                                                  model: {
-                                                    value: _vm.user.vihicle,
-                                                    callback: function($$v) {
-                                                      _vm.$set(
-                                                        _vm.user,
-                                                        "vihicle",
-                                                        $$v
-                                                      )
-                                                    },
-                                                    expression: "user.vihicle"
-                                                  }
-                                                })
+                                                  [_vm._v("Nơi cấp")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-input", {
+                                                      staticClass: "input",
+                                                      attrs: {
+                                                        "suffix-icon":
+                                                          "eel-icon-location-outline"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .identity_card_passport
+                                                            .issued_by,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user
+                                                              .identity_card_passport,
+                                                            "issued_by",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.identity_card_passport.issued_by"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  {
+                                                    staticClass: "label",
+                                                    attrs: { span: 6 }
+                                                  },
+                                                  [_vm._v("Ngày cấp")]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "el-col",
+                                                  { attrs: { span: 6 } },
+                                                  [
+                                                    _c("el-date-picker", {
+                                                      staticStyle: {
+                                                        width: "100%"
+                                                      },
+                                                      attrs: {
+                                                        type: "date",
+                                                        placeholder: "Ngày cấp",
+                                                        format: "dd-MM-yyyy",
+                                                        "value-format":
+                                                          "dd-MM-yyyy"
+                                                      },
+                                                      model: {
+                                                        value:
+                                                          _vm.user
+                                                            .identity_card_passport
+                                                            .efective_date,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.$set(
+                                                            _vm.user
+                                                              .identity_card_passport,
+                                                            "efective_date",
+                                                            $$v
+                                                          )
+                                                        },
+                                                        expression:
+                                                          "user.identity_card_passport.efective_date"
+                                                      }
+                                                    })
+                                                  ],
+                                                  1
+                                                )
                                               ],
                                               1
                                             )
@@ -105894,19 +106372,24 @@ var render = function() {
                               ],
                               1
                             )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "el-row",
+                          { staticClass: "mt-3" },
+                          [
+                            _c(
+                              "el-button",
+                              {
+                                attrs: { type: "primary" },
+                                on: { click: _vm.updateUser }
+                              },
+                              [_vm._v("Cập nhật")]
+                            )
                           ],
                           1
                         )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "el-row",
-                      { staticClass: "mt-3" },
-                      [
-                        _c("el-button", { attrs: { type: "primary" } }, [
-                          _vm._v("Cập nhật")
-                        ])
                       ],
                       1
                     )
@@ -105916,10 +106399,8 @@ var render = function() {
               ],
               1
             )
-          ],
-          1
-        )
-      ])
+          ])
+        : _vm._e()
     ])
   ])
 }
@@ -105988,1036 +106469,1409 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
+    _vm.noti.length
+      ? _c("div", { staticClass: "noti" }, [
+          _c(
+            "div",
+            { staticClass: "alert alert-success", attrs: { role: "alert" } },
+            [_vm._v(_vm._s(_vm.noti))]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "content" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "content-body" },
-          [
+      _vm.user
+        ? _c("div", { staticClass: "content" }, [
+            _vm._m(0),
+            _vm._v(" "),
             _c(
-              "el-row",
-              { attrs: { gutter: 20 } },
+              "div",
+              { staticClass: "content-body" },
               [
-                _c("el-col", { attrs: { span: 6 } }, [
-                  _c(
-                    "div",
-                    { staticClass: "grid-content" },
-                    [
-                      _c(
-                        "el-card",
-                        { attrs: { "body-style": { padding: "0px" } } },
-                        [
-                          _c("img", {
-                            staticClass: "image",
-                            attrs: {
-                              src:
-                                "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "px-3" }, [
-                            _c(
-                              "div",
-                              { staticClass: "bottom clearfix" },
-                              [
-                                _c(
-                                  "el-button",
-                                  {
-                                    staticClass: "button",
-                                    attrs: { type: "text" }
-                                  },
-                                  [_vm._v("Operating")]
-                                )
-                              ],
-                              1
-                            )
-                          ])
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
                 _c(
-                  "el-col",
-                  { attrs: { span: 18 } },
+                  "el-row",
+                  { attrs: { gutter: 20 } },
                   [
-                    _c("div", { staticClass: "grid-content" }, [
-                      _c("div", { staticClass: "info" }, [
-                        _c("div", { staticClass: "header p-3" }, [
-                          _c("span", [_c("b", [_vm._v("Thông tin chung")])])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "p-3 body" },
-                          [
-                            _c(
-                              "el-row",
-                              { staticClass: "row", attrs: { gutter: 20 } },
-                              [
-                                _c("el-col", { attrs: { span: 6 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _c("i", {
-                                      staticClass: "el-icon-user-solid"
-                                    }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "title" }, [
-                                      _vm._v("Tên")
-                                    ])
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("el-col", { attrs: { span: 18 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _vm._v(_vm._s(_vm.user.name))
-                                  ])
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "el-row",
-                              { staticClass: "row", attrs: { gutter: 20 } },
-                              [
-                                _c("el-col", { attrs: { span: 6 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _c("i", { staticClass: "el-icon-message" }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "title" }, [
-                                      _vm._v("Email")
-                                    ])
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("el-col", { attrs: { span: 18 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _vm._v(_vm._s(_vm.user.email))
-                                  ])
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "el-row",
-                              { staticClass: "row", attrs: { gutter: 20 } },
-                              [
-                                _c("el-col", { attrs: { span: 6 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _c("i", {
-                                      staticClass: "el-icon-phone-outline"
-                                    }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "title" }, [
-                                      _vm._v("Số điện thoại")
-                                    ])
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("el-col", { attrs: { span: 18 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _vm._v(_vm._s(_vm.user.phone_number))
-                                  ])
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "el-row",
-                              { staticClass: "row", attrs: { gutter: 20 } },
-                              [
-                                _c("el-col", { attrs: { span: 6 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _c("i", { staticClass: "el-icon-s-flag" }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "title" }, [
-                                      _vm._v("Quốc tịch")
-                                    ])
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("el-col", { attrs: { span: 18 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _vm._v(_vm._s(_vm.user.nationality))
-                                  ])
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "el-row",
-                              { staticClass: "row", attrs: { gutter: 20 } },
-                              [
-                                _c("el-col", { attrs: { span: 6 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _c("i", { staticClass: "el-icon-male" }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "title" }, [
-                                      _vm._v("Giới tính")
-                                    ])
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("el-col", { attrs: { span: 18 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _vm._v(_vm._s(_vm.user.gender))
-                                  ])
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "el-row",
-                              { staticClass: "row", attrs: { gutter: 20 } },
-                              [
-                                _c("el-col", { attrs: { span: 6 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _c("i", { staticClass: "el-icon-present" }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "title" }, [
-                                      _vm._v("Ngày sinh")
-                                    ])
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("el-col", { attrs: { span: 18 } }, [
-                                  _c("div", { staticClass: "grid-content" }, [
-                                    _vm._v(_vm._s(_vm.user.birthday))
-                                  ])
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "el-tabs",
-                              [
+                    _c("el-col", { attrs: { span: 6 } }, [
+                      _c(
+                        "div",
+                        { staticClass: "grid-content" },
+                        [
+                          _c(
+                            "el-card",
+                            { attrs: { "body-style": { padding: "0px" } } },
+                            [
+                              _c("img", {
+                                staticClass: "image",
+                                attrs: {
+                                  src:
+                                    "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "px-3" }, [
                                 _c(
-                                  "el-tab-pane",
-                                  { attrs: { label: "Thông tin công việc" } },
+                                  "div",
+                                  { staticClass: "bottom clearfix" },
                                   [
                                     _c(
-                                      "el-row",
+                                      "el-button",
                                       {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
+                                        staticClass: "button",
+                                        attrs: { type: "text" }
                                       },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-postcard"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Mã nhân viên")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.employee_code)
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-date"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [
-                                                  _vm._v(
-                                                    "Ngày bắt đầu làm việc chính thức"
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.official_start_day
-                                                )
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-medal"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Vị trí")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.position.name)
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-postcard"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Mã số thuế")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [_vm._v(_vm._s(_vm.user.tax_code))]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-s-custom"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Loại nhân viên")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.employee_type.name
-                                                )
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass:
-                                                  "el-icon-office-building"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [
-                                                  _vm._v(
-                                                    "Chi nhánh - Mã chỗ ngồi"
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.branch.name)
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass:
-                                                  "el-icon-connection"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Phòng ban")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.name)
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
+                                      [_vm._v("Operating")]
                                     )
+                                  ],
+                                  1
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "el-col",
+                      { attrs: { span: 18 } },
+                      [
+                        _c("div", { staticClass: "grid-content" }, [
+                          _c("div", { staticClass: "info" }, [
+                            _c("div", { staticClass: "header p-3" }, [
+                              _c("span", [_c("b", [_vm._v("Thông tin chung")])])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "p-3 body" },
+                              [
+                                _c(
+                                  "el-row",
+                                  { staticClass: "row", attrs: { gutter: 20 } },
+                                  [
+                                    _c("el-col", { attrs: { span: 6 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [
+                                          _c("i", {
+                                            staticClass: "el-icon-user-solid"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", { staticClass: "title" }, [
+                                            _vm._v("Tên")
+                                          ])
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("el-col", { attrs: { span: 18 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [_vm._v(_vm._s(_vm.user.name))]
+                                      )
+                                    ])
                                   ],
                                   1
                                 ),
                                 _vm._v(" "),
                                 _c(
-                                  "el-tab-pane",
-                                  { attrs: { label: "Thông tin khác" } },
+                                  "el-row",
+                                  { staticClass: "row", attrs: { gutter: 20 } },
+                                  [
+                                    _c("el-col", { attrs: { span: 6 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [
+                                          _c("i", {
+                                            staticClass: "el-icon-message"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", { staticClass: "title" }, [
+                                            _vm._v("Email")
+                                          ])
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("el-col", { attrs: { span: 18 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [_vm._v(_vm._s(_vm.user.email))]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-row",
+                                  { staticClass: "row", attrs: { gutter: 20 } },
+                                  [
+                                    _c("el-col", { attrs: { span: 6 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [
+                                          _c("i", {
+                                            staticClass: "el-icon-phone-outline"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", { staticClass: "title" }, [
+                                            _vm._v("Số điện thoại")
+                                          ])
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("el-col", { attrs: { span: 18 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [_vm._v(_vm._s(_vm.user.phone_number))]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-row",
+                                  { staticClass: "row", attrs: { gutter: 20 } },
+                                  [
+                                    _c("el-col", { attrs: { span: 6 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [
+                                          _c("i", {
+                                            staticClass: "el-icon-s-flag"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", { staticClass: "title" }, [
+                                            _vm._v("Quốc tịch")
+                                          ])
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("el-col", { attrs: { span: 18 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [_vm._v(_vm._s(_vm.user.nationality))]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-row",
+                                  { staticClass: "row", attrs: { gutter: 20 } },
+                                  [
+                                    _c("el-col", { attrs: { span: 6 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [
+                                          _c("i", {
+                                            staticClass: "el-icon-male"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", { staticClass: "title" }, [
+                                            _vm._v("Giới tính")
+                                          ])
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("el-col", { attrs: { span: 18 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [_vm._v(_vm._s(_vm.user.gender))]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-row",
+                                  { staticClass: "row", attrs: { gutter: 20 } },
+                                  [
+                                    _c("el-col", { attrs: { span: 6 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [
+                                          _c("i", {
+                                            staticClass: "el-icon-present"
+                                          }),
+                                          _vm._v(" "),
+                                          _c("span", { staticClass: "title" }, [
+                                            _vm._v("Ngày sinh")
+                                          ])
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("el-col", { attrs: { span: 18 } }, [
+                                      _c(
+                                        "div",
+                                        { staticClass: "grid-content" },
+                                        [_vm._v(_vm._s(_vm.user.birthday))]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-tabs",
                                   [
                                     _c(
-                                      "el-row",
+                                      "el-tab-pane",
                                       {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
+                                        attrs: { label: "Thông tin công việc" }
                                       },
                                       [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-postcard"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("CMND/Hộ chiếu")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group
-                                                    .identity_card_passport
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-postcard"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Mã nhân viên")]
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-date"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Ngày cấp")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group
-                                                    .identity_card_passport
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.employee_code
+                                                      )
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass:
-                                                  "eel-icon-location-outline"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Nơi cấp")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group
-                                                    .identity_card_passport
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-date"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [
+                                                        _vm._v(
+                                                          "Ngày bắt đầu làm việc chính thức"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ])
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user
+                                                          .official_start_day
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-medal"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Vị trí")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.position.name
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-postcard"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Mã số thuế")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(_vm.user.tax_code)
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-s-custom"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Loại nhân viên")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.employee_type
+                                                          .name
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-office-building"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [
+                                                        _vm._v(
+                                                          "Chi nhánh - Mã chỗ ngồi"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.branch.name
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-connection"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Phòng ban")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.group.name
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
                                       ],
                                       1
                                     ),
                                     _vm._v(" "),
                                     _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
+                                      "el-tab-pane",
+                                      { attrs: { label: "Thông tin khác" } },
                                       [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-message"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Email cá nhân")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group.personal_email
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-postcard"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("CMND/Hộ chiếu")]
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass:
-                                                  "el-icon-add-location"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Nơi sinh")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group.placebirth
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user
+                                                          .identity_card_passport
+                                                          .code
+                                                      )
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-place"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Địa chỉ hiện tại")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group.current_address
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-date"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Ngày cấp")]
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass:
-                                                  "el-icon-map-location"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Địa chỉ thường chú")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 18 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm.user.group
-                                                    .permanent_address
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user
+                                                          .identity_card_passport
+                                                          .efective_date
+                                                      )
+                                                    )
+                                                  ]
                                                 )
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-bicycle"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Phương tiện đi lại")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-location-outline"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Nơi cấp")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user
+                                                          .identity_card_passport
+                                                          .issued_by
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.vihicle)
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-message"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Email cá nhân")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.personal_email
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-tickets"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Dòng xe")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-add-location"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Nơi sinh")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.placebirth
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.vihicle)
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-place"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [
+                                                        _vm._v(
+                                                          "Địa chỉ hiện tại"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.current_address
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-s-unfold"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Biển số xe")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-map-location"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [
+                                                        _vm._v(
+                                                          "Địa chỉ thường chú"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 18 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user
+                                                          .permanent_address
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 3 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.vihicle)
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-s-finance"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Ngân hàng")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-bicycle"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [
+                                                        _vm._v(
+                                                          "Phương tiện đi lại"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.vehicle.type
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-tickets"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Dòng xe")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.vehicle.brand
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-s-unfold"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Biển số xe")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 3 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.vehicle
+                                                          .license_plates
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.bank)
-                                              )
-                                            ]
-                                          )
-                                        ]),
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-s-finance"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Ngân hàng")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(_vm.user.bank.name)
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-tickets"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Số tài khoản")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.bank
+                                                          .account_number
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        ),
                                         _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-tickets"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Số tài khoản")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.bank)
-                                              )
-                                            ]
-                                          )
-                                        ])
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "el-row",
-                                      {
-                                        staticClass: "row",
-                                        attrs: { gutter: 20 }
-                                      },
-                                      [
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-school"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Học vấn")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.education)
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-date"
-                                              }),
-                                              _vm._v(" "),
-                                              _c(
-                                                "span",
-                                                { staticClass: "title" },
-                                                [_vm._v("Năm tốt nghiệp")]
-                                              )
-                                            ]
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("el-col", { attrs: { span: 6 } }, [
-                                          _c(
-                                            "div",
-                                            { staticClass: "grid-content" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(_vm.user.group.bank)
-                                              )
-                                            ]
-                                          )
-                                        ])
+                                        _c(
+                                          "el-row",
+                                          {
+                                            staticClass: "row",
+                                            attrs: { gutter: 20 }
+                                          },
+                                          [
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-school"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Học vấn")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.education
+                                                          .school
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _c("i", {
+                                                      staticClass:
+                                                        "el-icon-date"
+                                                    }),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "span",
+                                                      { staticClass: "title" },
+                                                      [_vm._v("Năm tốt nghiệp")]
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "el-col",
+                                              { attrs: { span: 6 } },
+                                              [
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticClass: "grid-content"
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm.user.education
+                                                          .graduation_years
+                                                      )
+                                                    )
+                                                  ]
+                                                )
+                                              ]
+                                            )
+                                          ],
+                                          1
+                                        )
                                       ],
                                       1
                                     )
@@ -107027,27 +107881,29 @@ var render = function() {
                               ],
                               1
                             )
-                          ],
-                          1
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "el-row",
-                      { staticClass: "mt-3" },
-                      [
-                        _c("el-button", { attrs: { type: "primary" } }, [
-                          _vm._v("Đổi mật khẩu")
+                          ])
                         ]),
                         _vm._v(" "),
                         _c(
-                          "router-link",
-                          { attrs: { to: "/users/edit/" + _vm.user.id } },
+                          "el-row",
+                          { staticClass: "mt-3" },
                           [
                             _c("el-button", { attrs: { type: "primary" } }, [
-                              _vm._v("Chỉnh sửa người dùng")
-                            ])
+                              _vm._v("Đổi mật khẩu")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "router-link",
+                              { attrs: { to: "/users/edit/" + _vm.user.id } },
+                              [
+                                _c(
+                                  "el-button",
+                                  { attrs: { type: "primary" } },
+                                  [_vm._v("Chỉnh sửa người dùng")]
+                                )
+                              ],
+                              1
+                            )
                           ],
                           1
                         )
@@ -107060,10 +107916,8 @@ var render = function() {
               ],
               1
             )
-          ],
-          1
-        )
-      ])
+          ])
+        : _vm._e()
     ])
   ])
 }
@@ -107118,7 +107972,7 @@ var render = function() {
             _vm._v(" "),
             _c("el-breadcrumb-item", [_vm._v("Nhân sự")]),
             _vm._v(" "),
-            _c("el-breadcrumb-item", [_vm._v("Nhân viên")])
+            _c("el-breadcrumb-item", [_vm._v("Thành viên")])
           ],
           1
         )
@@ -107126,53 +107980,248 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm.error.message.length
-      ? _c("div", { staticClass: "error" }, [
+    _c("div", { staticClass: "container mt-3" }, [
+      _c(
+        "div",
+        { staticClass: "mb-2" },
+        [
           _c(
-            "div",
-            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-            [_vm._v(_vm._s(_vm.error.message))]
+            "el-row",
+            [
+              _c("el-col", { attrs: { span: 24 } }, [
+                _c("div", { staticClass: "grid-content" }, [
+                  _c(
+                    "h3",
+                    [
+                      _vm._v(
+                        "\n              Danh sách thành viên\n              "
+                      ),
+                      _c(
+                        "el-tooltip",
+                        {
+                          attrs: {
+                            effect: "dark",
+                            content: _vm.info,
+                            placement: "right-start"
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "el-icon-question",
+                            staticStyle: { "font-size": "20px" }
+                          })
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "el-row",
+            { attrs: { gutter: 20 } },
+            [
+              _c("el-col", { attrs: { span: 6 } }),
+              _vm._v(" "),
+              _c("el-col", { attrs: { span: 12, offset: 12 } }, [
+                _c(
+                  "div",
+                  { staticClass: "grid-content float-right" },
+                  [
+                    _c(
+                      "el-dropdown",
+                      { attrs: { "split-button": "", type: "default" } },
+                      [
+                        _vm._v("\n              Chi nhánh\n              "),
+                        _c(
+                          "el-dropdown-menu",
+                          { attrs: { slot: "dropdown" }, slot: "dropdown" },
+                          [
+                            _c("el-dropdown-item", [_vm._v("Chi nhánh 1")]),
+                            _vm._v(" "),
+                            _c("el-dropdown-item", [_vm._v("Chi nhánh 2")])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/users/create" } },
+                      [
+                        _c(
+                          "el-button",
+                          { attrs: { icon: "el-icon-plus", type: "success" } },
+                          [_vm._v("Thêm mới")]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "el-row",
+            [
+              _c(
+                "el-table",
+                {
+                  staticStyle: {
+                    width: "100%",
+                    "box-shadow":
+                      "0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+                  },
+                  attrs: { data: _vm.users, stripe: "" }
+                },
+                [
+                  _c("el-table-column", {
+                    attrs: {
+                      fixed: "",
+                      prop: "employee_code",
+                      label: "Mã nhân viên",
+                      width: "150"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: { prop: "name", label: "Tên", width: "200" }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: { prop: "email", label: "Email", width: "250" }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "position.name",
+                      label: "Vị trí",
+                      width: "200"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: { prop: "gender", label: "Giới tính", width: "100" }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "birthday",
+                      label: "Ngày sinh",
+                      width: "150"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "employee_type.name",
+                      label: "Loại nhân viên",
+                      width: "200"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "group.name",
+                      label: "Phòng ban",
+                      width: "200"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "branch.name",
+                      label: "Chi nhánh",
+                      width: "200"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: { prop: "phone_number", label: "SĐT", width: "200" }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "current_address",
+                      label: "Địa chỉ hiện tại",
+                      width: "250"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "pernentment_address",
+                      label: "Địa chỉ thường chú",
+                      width: "250"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: {
+                      prop: "identity_card_passport.code",
+                      label: "CMND/Hộ chiếu",
+                      width: "150"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
+                    attrs: { fixed: "right", label: "Thao tác", width: "200" },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "default",
+                        fn: function(scope) {
+                          return [
+                            _c(
+                              "router-link",
+                              { attrs: { to: "/users/edit/" + scope.row.id } },
+                              [
+                                _c("el-button", { attrs: { size: "mini" } }, [
+                                  _c("i", { staticClass: "el-icon-edit" })
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "router-link",
+                              { attrs: { to: "/users/" + scope.row.id } },
+                              [
+                                _c(
+                                  "el-button",
+                                  { attrs: { size: "mini", type: "primary" } },
+                                  [_c("i", { staticClass: "el-icon-view" })]
+                                )
+                              ],
+                              1
+                            )
+                          ]
+                        }
+                      }
+                    ])
+                  })
+                ],
+                1
+              )
+            ],
+            1
           )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "p-4" }, [
-      _c("table", { staticClass: "table" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.users, function(user, index) {
-            return _c("tr", { key: "user-" + index }, [
-              _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(user.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.name))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(user.email))])
-            ])
-          }),
-          0
-        )
-      ])
+        ],
+        1
+      )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("ID")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("User name")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Email")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

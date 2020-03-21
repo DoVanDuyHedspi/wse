@@ -9,8 +9,11 @@
     <div class="error" v-if="error.message.length">
       <div class="alert alert-danger" role="alert">{{ error.message }}</div>
     </div>
+    <div class="noti" v-if="noti.length">
+        <div class="alert alert-success" role="alert">{{ noti }}</div>
+      </div>
     <div class="container">
-      <div class="content">
+      <div class="content" v-if="user">
         <div class="content-header">
           <b>Thông tin cá nhân</b>
         </div>
@@ -195,7 +198,7 @@
                             </div>
                           </el-col>
                           <el-col :span="6">
-                            <div class="grid-content">{{user.group.identity_card_passport}}</div>
+                            <div class="grid-content">{{user.identity_card_passport.code}}</div>
                           </el-col>
                           <el-col :span="3">
                             <div class="grid-content">
@@ -204,16 +207,16 @@
                             </div>
                           </el-col>
                           <el-col :span="3">
-                            <div class="grid-content">{{user.group.identity_card_passport}}</div>
+                            <div class="grid-content">{{user.identity_card_passport.efective_date}}</div>
                           </el-col>
                           <el-col :span="3">
                             <div class="grid-content">
-                              <i class="eel-icon-location-outline"></i>
+                              <i class="el-icon-location-outline"></i>
                               <span class="title">Nơi cấp</span>
                             </div>
                           </el-col>
                           <el-col :span="3">
-                            <div class="grid-content">{{user.group.identity_card_passport}}</div>
+                            <div class="grid-content">{{user.identity_card_passport.issued_by}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -224,7 +227,7 @@
                             </div>
                           </el-col>
                           <el-col :span="18">
-                            <div class="grid-content">{{user.group.personal_email}}</div>
+                            <div class="grid-content">{{user.personal_email}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -235,7 +238,7 @@
                             </div>
                           </el-col>
                           <el-col :span="18">
-                            <div class="grid-content">{{user.group.placebirth}}</div>
+                            <div class="grid-content">{{user.placebirth}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -246,7 +249,7 @@
                             </div>
                           </el-col>
                           <el-col :span="18">
-                            <div class="grid-content">{{user.group.current_address}}</div>
+                            <div class="grid-content">{{user.current_address}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -257,7 +260,7 @@
                             </div>
                           </el-col>
                           <el-col :span="18">
-                            <div class="grid-content">{{user.group.permanent_address}}</div>
+                            <div class="grid-content">{{user.permanent_address}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -268,7 +271,7 @@
                             </div>
                           </el-col>
                           <el-col :span="6">
-                            <div class="grid-content">{{user.group.vihicle}}</div>
+                            <div class="grid-content">{{user.vehicle.type}}</div>
                           </el-col>
                           <el-col :span="3">
                             <div class="grid-content">
@@ -277,7 +280,7 @@
                             </div>
                           </el-col>
                           <el-col :span="3">
-                            <div class="grid-content">{{user.group.vihicle}}</div>
+                            <div class="grid-content">{{user.vehicle.brand}}</div>
                           </el-col>
                           <el-col :span="3">
                             <div class="grid-content">
@@ -286,7 +289,7 @@
                             </div>
                           </el-col>
                           <el-col :span="3">
-                            <div class="grid-content">{{user.group.vihicle}}</div>
+                            <div class="grid-content">{{user.vehicle.license_plates}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -297,7 +300,7 @@
                             </div>
                           </el-col>
                           <el-col :span="6">
-                            <div class="grid-content">{{user.group.bank}}</div>
+                            <div class="grid-content">{{user.bank.name}}</div>
                           </el-col>
                           <el-col :span="6">
                             <div class="grid-content">
@@ -306,7 +309,7 @@
                             </div>
                           </el-col>
                           <el-col :span="6">
-                            <div class="grid-content">{{user.group.bank}}</div>
+                            <div class="grid-content">{{user.bank.account_number}}</div>
                           </el-col>
                         </el-row>
                         <el-row class="row" :gutter="20">
@@ -317,7 +320,7 @@
                             </div>
                           </el-col>
                           <el-col :span="6">
-                            <div class="grid-content">{{user.group.education}}</div>
+                            <div class="grid-content">{{user.education.school}}</div>
                           </el-col>
                           <el-col :span="6">
                             <div class="grid-content">
@@ -326,7 +329,7 @@
                             </div>
                           </el-col>
                           <el-col :span="6">
-                            <div class="grid-content">{{user.group.bank}}</div>
+                            <div class="grid-content">{{user.education.graduation_years}}</div>
                           </el-col>
                         </el-row>
                       </el-tab-pane>
@@ -355,7 +358,8 @@ export default {
       user: "",
       error: {
         message: ""
-      }
+      },
+      noti: ""
     };
   },
   created() {
