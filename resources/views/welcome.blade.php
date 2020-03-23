@@ -19,7 +19,7 @@
     <app></app>
   </div>
   <script>
-    window.__user__ = @json($user)
+    window.__user__ = @json($user);
   </script>
   <script src="/js/app.js"></script>
 </body>
