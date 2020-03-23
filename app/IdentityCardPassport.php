@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IdentityCardPassport extends Model
 {
-  protected $fillable = ['type', 'code', 'efective_date', 'issued_by'];
+  protected $fillable = ['type', 'code', 'efective_date', 'issued_by', 'user_id'];
 
   protected $casts = [
     'efective_date' => 'date:d-m-Y',

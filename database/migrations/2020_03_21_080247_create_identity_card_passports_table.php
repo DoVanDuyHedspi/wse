@@ -18,10 +18,10 @@ class CreateIdentityCardPassportsTable extends Migration
       $table->integer('user_id')->unsigned();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       $table->enum('type', ['CMND', 'Hộ chiếu']);
-      $table->string('code');
-      $table->date('efective_date');
+      $table->string('code')->nullable();
+      $table->date('efective_date')->nullable();
       $table->date('expiry_date')->nullable();
-      $table->string('issued_by');
+      $table->string('issued_by')->nullable();
       $table->timestamps();
     });
   }

@@ -23,12 +23,12 @@
               <div class="grid-content">
                 <el-card :body-style="{ padding: '0px' }">
                   <img
-                    src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                    :src="user.avatar"
                     class="image"
                   />
                   <div class="px-3">
                     <div class="bottom clearfix">
-                      <el-button type="text" class="button">Operating</el-button>
+                      <!-- <el-button type="text" class="button">Operating</el-button> -->
                     </div>
                   </div>
                 </el-card>

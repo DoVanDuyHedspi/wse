@@ -114,7 +114,7 @@
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Loại nhân viên</el-col>
                             <el-col :span="12">
-                              <el-select v-model="user.employee_type.id" class="w-100">
+                              <el-select v-model="user.employee_type_id" class="w-100">
                                 <el-option
                                   v-for="(type,index) in user.employee_types"
                                   :label="type.name"
@@ -127,7 +127,7 @@
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Vị trí</el-col>
                             <el-col :span="12">
-                              <el-select v-model="user.position.id" class="w-100">
+                              <el-select v-model="user.position_id" class="w-100">
                                 <el-option
                                   v-for="(type,index) in user.positions"
                                   :label="type.name"
@@ -141,9 +141,10 @@
                             <el-col :span="6" class="label">Phòng ban</el-col>
                             <el-col :span="12">
                               <el-cascader
-                                v-model="user.group.id"
+                                v-model="user.group_id"
                                 :options="user.groups"
                                 :props="{ checkStrictly: true, label: 'name', value: 'id' }"
+                                :change="handleGroupChange()"
                                 clearable
                                 class="w-100"
                               ></el-cascader>
@@ -165,7 +166,7 @@
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Chi nhánh</el-col>
                             <el-col :span="12">
-                              <el-select v-model="user.branch.id" class="w-100">
+                              <el-select v-model="user.branch_id" class="w-100">
                                 <el-option
                                   v-for="(type,index) in user.branches"
                                   :label="type.name"
@@ -313,7 +314,7 @@
                               ></el-input>
                             </el-col>
                           </el-row>
-                          <el-row :gutter="20" class="mb-3">
+                          <el-row :gutter="15" class="mb-3">
                             <el-col :span="6" class="label">Số tài khoản</el-col>
                             <el-col :span="6">
                               <el-input
@@ -407,6 +408,11 @@ export default {
     this.getUser();
   },
   methods: {
+    handleGroupChange() {
+      if (Array.isArray(this.user.group_id)) {
+        this.user.group_id = this.user.group_id[this.user.group_id.length - 1];
+      }
+    },
     getUser() {
       axios
         .get("/users/" + this.$route.params.id + "/edit")

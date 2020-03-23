@@ -18,8 +18,8 @@ class CreateBanksTable extends Migration
       $table->integer('user_id')->unsigned();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       $table->enum('type', ['Thanh toán', 'Doanh nghiệp', 'Tín dụng', 'Ký gửi', 'Tiết kiệm']);
-      $table->string('account_number');
-      $table->string('name');
+      $table->string('account_number')->nullable();
+      $table->string('name')->nullable();
       $table->timestamps();
     });
   }

@@ -4364,6 +4364,628 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/CreateUserComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    var _form;
+
+    return {
+      step: 1,
+      error: {
+        message: ""
+      },
+      imageUrl: "",
+      imageFile: "",
+      form: (_form = {
+        name: "",
+        roles: [],
+        permissions: [],
+        email: "",
+        password: "",
+        confirm_password: "",
+        phone_number: "",
+        nationality: "",
+        gender: "",
+        birthday: "",
+        official_start_day: "",
+        personal_email: "",
+        birthplace: "",
+        current_address: "",
+        permanent_address: "",
+        tax_code: ""
+      }, _defineProperty(_form, "roles", []), _defineProperty(_form, "permissions", []), _defineProperty(_form, "position_id", ""), _defineProperty(_form, "branch_id", ""), _defineProperty(_form, "employee_type_id", ""), _defineProperty(_form, "group_id", []), _defineProperty(_form, "vehicle", {
+        type: "",
+        brand: "",
+        license_plates: ""
+      }), _defineProperty(_form, "bank", {
+        type: "",
+        account_number: "",
+        name: ""
+      }), _defineProperty(_form, "education", {
+        school: "",
+        specialized: "",
+        graduation_years: ""
+      }), _defineProperty(_form, "identity_card_passport", {
+        type: "",
+        code: "",
+        efective_date: "",
+        expiry_date: ""
+      }), _form),
+      infoCompany: {
+        branches: [],
+        positions: [],
+        groups: [],
+        employee_types: [],
+        roles: [],
+        permissions: []
+      }
+    };
+  },
+  created: function created() {
+    this.getInfoOfCompany();
+  },
+  methods: {
+    handleGroupChange: function handleGroupChange() {
+      if (Array.isArray(this.form.group_id)) {
+        console.log(this.form.group_id);
+        this.form.group_id = this.form.group_id[this.form.group_id.length - 1];
+        console.log(this.form.group_id);
+      }
+    },
+    handleNext: function handleNext() {
+      if (this.step < 4) {
+        this.step = this.step + 1;
+      } else {
+        this.createUser();
+      }
+    },
+    handleBack: function handleBack() {
+      if (this.step > 1) {
+        this.step = this.step - 1;
+      }
+    },
+    handlePreviewAvatar: function handlePreviewAvatar(file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageFile = file.raw;
+    },
+    handleRemove: function handleRemove(file) {
+      this.imageFile = "";
+    },
+    getInfoOfCompany: function getInfoOfCompany() {
+      var _this = this;
+
+      axios.get("/users/create").then(function (response) {
+        if (response.data.status === false) {
+          _this.error.message = response.data.message;
+        } else {
+          console.log(response.data);
+          _this.infoCompany = response.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    createUser: function createUser() {
+      var _this2 = this;
+
+      var rawData = this.form;
+      rawData = JSON.stringify(rawData);
+      var formData = new FormData();
+      formData.append("new_user", rawData);
+      formData.append("image", this.imageFile);
+      axios.post("/users", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function (response) {
+        if (response.data.status === false) {
+          _this2.error.message = response.data.message;
+
+          _this2.$notify.error({
+            title: "Thất bại",
+            message: response.data.message,
+            position: "bottom-right"
+          });
+        } else {
+          _this2.$notify({
+            title: "Hoàn thành",
+            message: "Thêm nhân viên mới thành công",
+            type: "success",
+            position: "bottom-right"
+          });
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/EditUserComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/EditUserComponent.vue?vue&type=script&lang=js& ***!
@@ -4373,6 +4995,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -4789,6 +5412,11 @@ __webpack_require__.r(__webpack_exports__);
     this.getUser();
   },
   methods: {
+    handleGroupChange: function handleGroupChange() {
+      if (Array.isArray(this.user.group_id)) {
+        this.user.group_id = this.user.group_id[this.user.group_id.length - 1];
+      }
+    },
     getUser: function getUser() {
       var _this = this;
 
@@ -11786,6 +12414,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, ".el-row {\n  margin-bottom: 20px;\n}\n.el-row:last-child {\n  margin-bottom: 0;\n}\n.el-col {\n  border-radius: 4px;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".label[data-v-2757ee0e] {\n  line-height: 2.5;\n  font-size: 16px;\n  font-weight: bold;\n}\n.infor[data-v-2757ee0e] {\n  min-height: 75px;\n  background: #ecf8ff;\n  border-left: 5px solid #50bfff;\n  padding: 8px 16px;\n  border-radius: 4px;\n}\n.infor p[data-v-2757ee0e] {\n  margin: 0;\n  font-size: 16px;\n  font-weight: bold;\n}\n.avatar[data-v-2757ee0e] {\n  width: 300px;\n  height: 300px;\n  display: block;\n}", ""]);
 
 // exports
 
@@ -101828,6 +102475,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/EditUserComponent.vue?vue&type=style&index=0&id=ede47280&lang=scss&scoped=true&":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/EditUserComponent.vue?vue&type=style&index=0&id=ede47280&lang=scss&scoped=true& ***!
@@ -104541,6 +105218,1779 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          staticClass: "bg-white p-3",
+          staticStyle: { "border-bottom": "1px solid rgba(128,128,128, 0.3)" }
+        },
+        [
+          _c(
+            "el-breadcrumb",
+            { attrs: { "separator-class": "el-icon-arrow-right" } },
+            [
+              _c("el-breadcrumb-item", { attrs: { to: { path: "/" } } }, [
+                _vm._v("homepage")
+              ]),
+              _vm._v(" "),
+              _c("el-breadcrumb-item", [_vm._v("Quản lý tổ chức")]),
+              _vm._v(" "),
+              _c("el-breadcrumb-item", [_vm._v("Nhân sự")]),
+              _vm._v(" "),
+              _c("el-breadcrumb-item", [_vm._v("Thành viên")]),
+              _vm._v(" "),
+              _c("el-breadcrumb-item", [_vm._v("Thêm mới")])
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _vm.error.message
+        ? _c("el-alert", { attrs: { title: _vm.error.message, type: "error" } })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "container" }, [
+        _c(
+          "div",
+          {
+            staticClass: "bg-white p-3",
+            staticStyle: {
+              "box-shadow":
+                "0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+            }
+          },
+          [
+            _c(
+              "el-steps",
+              { attrs: { active: _vm.step } },
+              [
+                _c("el-step", {
+                  attrs: { title: "Tài khoản", icon: "el-icon-edit" }
+                }),
+                _vm._v(" "),
+                _c("el-step", {
+                  attrs: { title: "Cá nhân", icon: "el-icon-user-solid" }
+                }),
+                _vm._v(" "),
+                _c("el-step", {
+                  attrs: { title: "Ảnh", icon: "el-icon-picture" }
+                }),
+                _vm._v(" "),
+                _c("el-step", {
+                  attrs: { title: "Công việc", icon: "el-icon-s-cooperation" }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm.step == 1
+              ? _c(
+                  "div",
+                  { staticClass: "mt-5" },
+                  [
+                    _c(
+                      "el-row",
+                      { attrs: { gutter: 50 } },
+                      [
+                        _c(
+                          "el-col",
+                          { attrs: { span: 10 } },
+                          [
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 24 } },
+                                  [
+                                    _vm._v(
+                                      "\n                Email\n                "
+                                    ),
+                                    _c(
+                                      "span",
+                                      { staticStyle: { color: "red" } },
+                                      [_vm._v("(*)")]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 24 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        type: "email",
+                                        "auto-complete": "off",
+                                        "suffix-icon": "el-icon-message"
+                                      },
+                                      model: {
+                                        value: _vm.form.email,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "email", $$v)
+                                        },
+                                        expression: "form.email"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 24 } },
+                                  [
+                                    _vm._v(
+                                      "\n                Mật khẩu\n                "
+                                    ),
+                                    _c(
+                                      "span",
+                                      { staticStyle: { color: "red" } },
+                                      [_vm._v("(*)")]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 24 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: { "suffix-icon": "el-icon-key" },
+                                      model: {
+                                        value: _vm.form.password,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "password", $$v)
+                                        },
+                                        expression: "form.password"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 14 } },
+                          [
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 24 } },
+                                  [
+                                    _vm._v(
+                                      "\n                Vai trò trong hệ thống\n                "
+                                    ),
+                                    _c(
+                                      "span",
+                                      { staticStyle: { color: "red" } },
+                                      [_vm._v("(*)")]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 24 } },
+                                  [
+                                    _c(
+                                      "el-select",
+                                      {
+                                        staticStyle: { width: "100%" },
+                                        attrs: {
+                                          multiple: "",
+                                          placeholder: "Chọn vai trò"
+                                        },
+                                        model: {
+                                          value: _vm.form.roles,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.form, "roles", $$v)
+                                          },
+                                          expression: "form.roles"
+                                        }
+                                      },
+                                      _vm._l(_vm.infoCompany.roles, function(
+                                        role
+                                      ) {
+                                        return _c("el-option", {
+                                          key: role.id,
+                                          attrs: {
+                                            label: role.name,
+                                            value: role.id
+                                          }
+                                        })
+                                      }),
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 24 } },
+                                  [_vm._v("Quyền trong hệ thống")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 24 } },
+                                  [
+                                    _c(
+                                      "el-checkbox-group",
+                                      {
+                                        model: {
+                                          value: _vm.form.permissions,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.form,
+                                              "permissions",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "form.permissions"
+                                        }
+                                      },
+                                      _vm._l(
+                                        _vm.infoCompany.permissions,
+                                        function(permission) {
+                                          return _c(
+                                            "el-checkbox",
+                                            {
+                                              key: permission.id,
+                                              staticClass: "m-2",
+                                              attrs: {
+                                                label: permission.id,
+                                                border: "",
+                                                size: "medium"
+                                              }
+                                            },
+                                            [_vm._v(_vm._s(permission.name))]
+                                          )
+                                        }
+                                      ),
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.step == 2
+              ? _c(
+                  "div",
+                  { staticClass: "mt-5" },
+                  [
+                    _c(
+                      "el-row",
+                      { attrs: { gutter: 20 } },
+                      [
+                        _c(
+                          "el-col",
+                          { attrs: { span: 12 } },
+                          [
+                            _c(
+                              "el-col",
+                              {
+                                staticClass: "label text-left p-0",
+                                staticStyle: { color: "blue" },
+                                attrs: { span: 24 }
+                              },
+                              [_vm._v("Thông tin cơ bản")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [
+                                    _vm._v(
+                                      "\n                Tên\n                "
+                                    ),
+                                    _c(
+                                      "span",
+                                      { staticStyle: { color: "red" } },
+                                      [_vm._v("(*)")]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-user-solid"
+                                      },
+                                      model: {
+                                        value: _vm.form.name,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "name", $$v)
+                                        },
+                                        expression: "form.name"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Giới tính")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  {
+                                    staticStyle: { "line-height": "2.5" },
+                                    attrs: { span: 12 }
+                                  },
+                                  [
+                                    _c(
+                                      "el-radio-group",
+                                      {
+                                        model: {
+                                          value: _vm.form.gender,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.form, "gender", $$v)
+                                          },
+                                          expression: "form.gender"
+                                        }
+                                      },
+                                      [
+                                        _c("el-radio", {
+                                          attrs: { label: "Nam" }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-radio", {
+                                          attrs: { label: "Nữ" }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Ngày sinh")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-date-picker", {
+                                      staticStyle: { width: "100%" },
+                                      attrs: {
+                                        type: "date",
+                                        placeholder: "Chọn ngày sinh",
+                                        format: "dd-MM-yyyy",
+                                        "value-format": "dd-MM-yyyy"
+                                      },
+                                      model: {
+                                        value: _vm.form.birthday,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "birthday", $$v)
+                                        },
+                                        expression: "form.birthday"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Quốc tịch")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-s-flag"
+                                      },
+                                      model: {
+                                        value: _vm.form.nationality,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "nationality", $$v)
+                                        },
+                                        expression: "form.nationality"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Email cá nhân")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-message"
+                                      },
+                                      model: {
+                                        value: _vm.form.personal_email,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form,
+                                            "personal_email",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.personal_email"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Số điện thoại")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-phone-outline"
+                                      },
+                                      model: {
+                                        value: _vm.form.phone_number,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form,
+                                            "phone_number",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.phone_number"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Nơi sinh")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-add-location"
+                                      },
+                                      model: {
+                                        value: _vm.form.placebirth,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "placebirth", $$v)
+                                        },
+                                        expression: "form.placebirth"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Địa chỉ thường chú")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-map-location"
+                                      },
+                                      model: {
+                                        value: _vm.form.permanent_address,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form,
+                                            "permanent_address",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.permanent_address"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Địa chỉ hiện tại")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: { "suffix-icon": "el-icon-place" },
+                                      model: {
+                                        value: _vm.form.current_address,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form,
+                                            "current_address",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.current_address"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  {
+                                    staticClass: "label text-left",
+                                    staticStyle: { color: "blue" },
+                                    attrs: { span: 24 }
+                                  },
+                                  [_vm._v("Trình độ học vấn")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Trường")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-school"
+                                      },
+                                      model: {
+                                        value: _vm.form.education.school,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.education,
+                                            "school",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.education.school"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Chuyên ngành")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-reading"
+                                      },
+                                      model: {
+                                        value: _vm.form.education.specialized,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.education,
+                                            "specialized",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.education.specialized"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Năm tốt nghiệp")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: { "suffix-icon": "el-icon-date" },
+                                      model: {
+                                        value:
+                                          _vm.form.education.graduation_years,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.education,
+                                            "graduation_years",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "form.education.graduation_years"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 12 } },
+                          [
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 15 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  {
+                                    staticClass: "label text-left",
+                                    staticStyle: { color: "blue" },
+                                    attrs: { span: 24 }
+                                  },
+                                  [_vm._v("Phương tiện đi lại")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Loại xe")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c(
+                                      "el-select",
+                                      {
+                                        staticClass: "w-100",
+                                        model: {
+                                          value: _vm.form.vehicle.type,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.form.vehicle,
+                                              "type",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "form.vehicle.type"
+                                        }
+                                      },
+                                      [
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Xe máy",
+                                            value: "Xe máy"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Ô tô",
+                                            value: "Ô tô"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Xe buýt",
+                                            value: "Xe buýt"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Đi bộ",
+                                            value: "Đi bộ"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Dòng xe")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-tickets"
+                                      },
+                                      model: {
+                                        value: _vm.form.vehicle.brand,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.vehicle,
+                                            "brand",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.vehicle.brand"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Biển số xe")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-s-unfold"
+                                      },
+                                      model: {
+                                        value: _vm.form.vehicle.license_plates,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.vehicle,
+                                            "license_plates",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "form.vehicle.license_plates"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 15 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  {
+                                    staticClass: "label text-left",
+                                    staticStyle: { color: "blue" },
+                                    attrs: { span: 24 }
+                                  },
+                                  [_vm._v("Tài khoản ngân hàng")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Loại thẻ")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c(
+                                      "el-select",
+                                      {
+                                        staticClass: "w-100",
+                                        model: {
+                                          value: _vm.form.bank.type,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.form.bank, "type", $$v)
+                                          },
+                                          expression: "form.bank.type"
+                                        }
+                                      },
+                                      [
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Thanh toán",
+                                            value: "Thanh toán"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Doanh nghiệp",
+                                            value: "Doanh nghiệp"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Tiết kiệm",
+                                            value: "Tiết kiệm"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Tín dụng",
+                                            value: "Tín dụng"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Ký gửi",
+                                            value: "Ký gửi"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Ngân hàng")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-s-finance"
+                                      },
+                                      model: {
+                                        value: _vm.form.bank.name,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form.bank, "name", $$v)
+                                        },
+                                        expression: "form.bank.name"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 15 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Số tài khoản")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-tickets"
+                                      },
+                                      model: {
+                                        value: _vm.form.bank.account_number,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.bank,
+                                            "account_number",
+                                            $$v
+                                          )
+                                        },
+                                        expression: "form.bank.account_number"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Mã số thuế")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: { "suffix-icon": "el-icon-date" },
+                                      model: {
+                                        value: _vm.form.tax_code,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.form, "tax_code", $$v)
+                                        },
+                                        expression: "form.tax_code"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 15 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  {
+                                    staticClass: "label text-left",
+                                    staticStyle: { color: "blue" },
+                                    attrs: { span: 24 }
+                                  },
+                                  [_vm._v("CMND/Hộ chiếu")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Loại")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c(
+                                      "el-select",
+                                      {
+                                        staticClass: "w-100",
+                                        model: {
+                                          value:
+                                            _vm.form.identity_card_passport
+                                              .type,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.form.identity_card_passport,
+                                              "type",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "form.identity_card_passport.type"
+                                        }
+                                      },
+                                      [
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "CMND",
+                                            value: "CMND"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("el-option", {
+                                          attrs: {
+                                            label: "Hộ chiếu",
+                                            value: "Hộ chiếu"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Mã số")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon": "el-icon-postcard"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.form.identity_card_passport.code,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.identity_card_passport,
+                                            "code",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "form.identity_card_passport.code"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              { staticClass: "mb-3", attrs: { gutter: 20 } },
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Nơi cấp")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-input", {
+                                      staticClass: "input",
+                                      attrs: {
+                                        "suffix-icon":
+                                          "eel-icon-location-outline"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.form.identity_card_passport
+                                            .issued_by,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.identity_card_passport,
+                                            "issued_by",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "form.identity_card_passport.issued_by"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "el-row",
+                              [
+                                _c(
+                                  "el-col",
+                                  { staticClass: "label", attrs: { span: 8 } },
+                                  [_vm._v("Ngày cấp")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "el-col",
+                                  { attrs: { span: 12 } },
+                                  [
+                                    _c("el-date-picker", {
+                                      staticStyle: { width: "100%" },
+                                      attrs: {
+                                        type: "date",
+                                        placeholder: "Ngày cấp",
+                                        format: "dd-MM-yyyy",
+                                        "value-format": "dd-MM-yyyy"
+                                      },
+                                      model: {
+                                        value:
+                                          _vm.form.identity_card_passport
+                                            .efective_date,
+                                        callback: function($$v) {
+                                          _vm.$set(
+                                            _vm.form.identity_card_passport,
+                                            "efective_date",
+                                            $$v
+                                          )
+                                        },
+                                        expression:
+                                          "form.identity_card_passport.efective_date"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.step == 3
+              ? _c("div", { staticClass: "mt-5" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    [
+                      _c(
+                        "el-row",
+                        { attrs: { gutter: 20 } },
+                        [
+                          _c(
+                            "el-col",
+                            { staticClass: "text-center", attrs: { span: 12 } },
+                            [
+                              _c(
+                                "el-upload",
+                                {
+                                  staticClass: "upload-demo",
+                                  attrs: {
+                                    drag: "",
+                                    action: "",
+                                    "on-change": _vm.handlePreviewAvatar,
+                                    "on-remove": _vm.handleRemove,
+                                    "auto-upload": false
+                                  }
+                                },
+                                [
+                                  _c("i", { staticClass: "el-icon-upload" }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "el-upload__text" },
+                                    [
+                                      _vm._v(
+                                        "\n                  Thả ảnh vào đây hoặc\n                  "
+                                      ),
+                                      _c("em", [
+                                        _vm._v("nhấn vào đây để upload")
+                                      ])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "el-upload__tip",
+                                      attrs: { slot: "tip" },
+                                      slot: "tip"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "jpg/png files with a size less than 1Mb"
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "el-col",
+                            { staticClass: "text-center", attrs: { span: 12 } },
+                            [
+                              _vm.imageUrl
+                                ? _c("img", {
+                                    ref: "image",
+                                    staticClass: "avatar",
+                                    attrs: { id: "image", src: _vm.imageUrl }
+                                  })
+                                : _vm._e()
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.step == 4
+              ? _c(
+                  "div",
+                  { staticClass: "mt-5" },
+                  [
+                    _c(
+                      "el-row",
+                      { staticClass: "mb-3", attrs: { gutter: 20 } },
+                      [
+                        _c(
+                          "el-col",
+                          {
+                            staticClass: "label",
+                            attrs: { span: 6, offset: 4 }
+                          },
+                          [
+                            _vm._v(
+                              "\n            Loại nhân viên\n            "
+                            ),
+                            _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("(*)")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 10 } },
+                          [
+                            _c(
+                              "el-select",
+                              {
+                                staticClass: "w-100",
+                                model: {
+                                  value: _vm.form.employee_type_id,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "employee_type_id", $$v)
+                                  },
+                                  expression: "form.employee_type_id"
+                                }
+                              },
+                              _vm._l(_vm.infoCompany.employee_types, function(
+                                type,
+                                index
+                              ) {
+                                return _c("el-option", {
+                                  key: index,
+                                  attrs: { label: type.name, value: type.id }
+                                })
+                              }),
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "el-row",
+                      { staticClass: "mb-3", attrs: { gutter: 20 } },
+                      [
+                        _c(
+                          "el-col",
+                          {
+                            staticClass: "label",
+                            attrs: { span: 6, offset: 4 }
+                          },
+                          [
+                            _vm._v("\n            Vị trí\n            "),
+                            _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("(*)")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 10 } },
+                          [
+                            _c(
+                              "el-select",
+                              {
+                                staticClass: "w-100",
+                                model: {
+                                  value: _vm.form.position_id,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "position_id", $$v)
+                                  },
+                                  expression: "form.position_id"
+                                }
+                              },
+                              _vm._l(_vm.infoCompany.positions, function(
+                                type,
+                                index
+                              ) {
+                                return _c("el-option", {
+                                  key: index,
+                                  attrs: { label: type.name, value: type.id }
+                                })
+                              }),
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "el-row",
+                      { staticClass: "mb-3", attrs: { gutter: 20 } },
+                      [
+                        _c(
+                          "el-col",
+                          {
+                            staticClass: "label",
+                            attrs: { span: 6, offset: 4 }
+                          },
+                          [
+                            _vm._v("\n            Phòng ban\n            "),
+                            _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("(*)")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 10 } },
+                          [
+                            _c("el-cascader", {
+                              staticClass: "w-100",
+                              attrs: {
+                                options: _vm.infoCompany.groups,
+                                props: {
+                                  checkStrictly: true,
+                                  label: "name",
+                                  value: "id"
+                                },
+                                change: _vm.handleGroupChange(),
+                                clearable: ""
+                              },
+                              model: {
+                                value: _vm.form.group_id,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "group_id", $$v)
+                                },
+                                expression: "form.group_id"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "el-row",
+                      { staticClass: "mb-3", attrs: { gutter: 20 } },
+                      [
+                        _c(
+                          "el-col",
+                          {
+                            staticClass: "label",
+                            attrs: { span: 6, offset: 4 }
+                          },
+                          [
+                            _vm._v("\n            Chi nhánh\n            "),
+                            _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("(*)")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 10 } },
+                          [
+                            _c(
+                              "el-select",
+                              {
+                                staticClass: "w-100",
+                                model: {
+                                  value: _vm.form.branch_id,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "branch_id", $$v)
+                                  },
+                                  expression: "form.branch_id"
+                                }
+                              },
+                              _vm._l(_vm.infoCompany.branches, function(
+                                type,
+                                index
+                              ) {
+                                return _c("el-option", {
+                                  key: index,
+                                  attrs: { label: type.name, value: type.id }
+                                })
+                              }),
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "el-row",
+                      { staticClass: "mb-3", attrs: { gutter: 20 } },
+                      [
+                        _c(
+                          "el-col",
+                          {
+                            staticClass: "label",
+                            attrs: { span: 6, offset: 4 }
+                          },
+                          [
+                            _vm._v(
+                              "\n            Ngày bắt đầu làm việc\n            "
+                            ),
+                            _c("span", { staticStyle: { color: "red" } }, [
+                              _vm._v("(*)")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-col",
+                          { attrs: { span: 10 } },
+                          [
+                            _c("el-date-picker", {
+                              staticStyle: { width: "100%" },
+                              attrs: {
+                                type: "date",
+                                placeholder: "Chọn ngày bắt đầu làm việc",
+                                format: "dd-MM-yyyy",
+                                "value-format": "dd-MM-yyyy"
+                              },
+                              model: {
+                                value: _vm.form.official_start_day,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "official_start_day", $$v)
+                                },
+                                expression: "form.official_start_day"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "my-4 text-center" },
+        [
+          _c(
+            "el-button-group",
+            [
+              _c(
+                "el-button",
+                {
+                  attrs: {
+                    type: "primary",
+                    icon: "el-icon-arrow-left",
+                    disabled: _vm.step == 1
+                  },
+                  on: { click: _vm.handleBack }
+                },
+                [_vm._v("Quay lại")]
+              ),
+              _vm._v(" "),
+              _c(
+                "el-button",
+                { attrs: { type: "primary" }, on: { click: _vm.handleNext } },
+                [
+                  _vm._v("\n        Tiếp tục\n        "),
+                  _c("i", { staticClass: "el-icon-arrow-right el-icon-right" })
+                ]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "my-3 text-center" }, [
+      _c("h3", [_vm._v("Thành viên mới")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "infor mb-4" }, [
+      _c("p", [
+        _vm._v(
+          "Lưu ý ảnh này sẽ được sử dụng để nhận diện khuôn mặt nhân viên trong việc chấm công hằng ngày."
+        )
+      ]),
+      _vm._v(" "),
+      _c("p", [_vm._v("Hãy sử dụng ảnh to và rõ khuôn mặt.")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/EditUserComponent.vue?vue&type=template&id=ede47280&scoped=true&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/user/EditUserComponent.vue?vue&type=template&id=ede47280&scoped=true& ***!
@@ -105019,19 +107469,18 @@ var render = function() {
                                                         model: {
                                                           value:
                                                             _vm.user
-                                                              .employee_type.id,
+                                                              .employee_type_id,
                                                           callback: function(
                                                             $$v
                                                           ) {
                                                             _vm.$set(
-                                                              _vm.user
-                                                                .employee_type,
-                                                              "id",
+                                                              _vm.user,
+                                                              "employee_type_id",
                                                               $$v
                                                             )
                                                           },
                                                           expression:
-                                                            "user.employee_type.id"
+                                                            "user.employee_type_id"
                                                         }
                                                       },
                                                       _vm._l(
@@ -105085,19 +107534,19 @@ var render = function() {
                                                         staticClass: "w-100",
                                                         model: {
                                                           value:
-                                                            _vm.user.position
-                                                              .id,
+                                                            _vm.user
+                                                              .position_id,
                                                           callback: function(
                                                             $$v
                                                           ) {
                                                             _vm.$set(
-                                                              _vm.user.position,
-                                                              "id",
+                                                              _vm.user,
+                                                              "position_id",
                                                               $$v
                                                             )
                                                           },
                                                           expression:
-                                                            "user.position.id"
+                                                            "user.position_id"
                                                         }
                                                       },
                                                       _vm._l(
@@ -105155,22 +107604,23 @@ var render = function() {
                                                           label: "name",
                                                           value: "id"
                                                         },
+                                                        change: _vm.handleGroupChange(),
                                                         clearable: ""
                                                       },
                                                       model: {
                                                         value:
-                                                          _vm.user.group.id,
+                                                          _vm.user.group_id,
                                                         callback: function(
                                                           $$v
                                                         ) {
                                                           _vm.$set(
-                                                            _vm.user.group,
-                                                            "id",
+                                                            _vm.user,
+                                                            "group_id",
                                                             $$v
                                                           )
                                                         },
                                                         expression:
-                                                          "user.group.id"
+                                                          "user.group_id"
                                                       }
                                                     })
                                                   ],
@@ -105266,18 +107716,18 @@ var render = function() {
                                                         staticClass: "w-100",
                                                         model: {
                                                           value:
-                                                            _vm.user.branch.id,
+                                                            _vm.user.branch_id,
                                                           callback: function(
                                                             $$v
                                                           ) {
                                                             _vm.$set(
-                                                              _vm.user.branch,
-                                                              "id",
+                                                              _vm.user,
+                                                              "branch_id",
                                                               $$v
                                                             )
                                                           },
                                                           expression:
-                                                            "user.branch.id"
+                                                            "user.branch_id"
                                                         }
                                                       },
                                                       _vm._l(
@@ -106058,7 +108508,7 @@ var render = function() {
                                               "el-row",
                                               {
                                                 staticClass: "mb-3",
-                                                attrs: { gutter: 20 }
+                                                attrs: { gutter: 15 }
                                               },
                                               [
                                                 _c(
@@ -106503,28 +108953,11 @@ var render = function() {
                             [
                               _c("img", {
                                 staticClass: "image",
-                                attrs: {
-                                  src:
-                                    "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                                }
+                                attrs: { src: _vm.user.avatar }
                               }),
                               _vm._v(" "),
                               _c("div", { staticClass: "px-3" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "bottom clearfix" },
-                                  [
-                                    _c(
-                                      "el-button",
-                                      {
-                                        staticClass: "button",
-                                        attrs: { type: "text" }
-                                      },
-                                      [_vm._v("Operating")]
-                                    )
-                                  ],
-                                  1
-                                )
+                                _c("div", { staticClass: "bottom clearfix" })
                               ])
                             ]
                           )
@@ -123986,6 +126419,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/view/user/CreateUserComponent.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/view/user/CreateUserComponent.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CreateUserComponent_vue_vue_type_template_id_2757ee0e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true& */ "./resources/js/view/user/CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true&");
+/* harmony import */ var _CreateUserComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateUserComponent.vue?vue&type=script&lang=js& */ "./resources/js/view/user/CreateUserComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true& */ "./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _CreateUserComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateUserComponent_vue_vue_type_template_id_2757ee0e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateUserComponent_vue_vue_type_template_id_2757ee0e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "2757ee0e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/view/user/CreateUserComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/view/user/CreateUserComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/view/user/CreateUserComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateUserComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true& ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=style&index=0&id=2757ee0e&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_style_index_0_id_2757ee0e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/view/user/CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/view/user/CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_template_id_2757ee0e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/user/CreateUserComponent.vue?vue&type=template&id=2757ee0e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_template_id_2757ee0e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateUserComponent_vue_vue_type_template_id_2757ee0e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/view/user/EditUserComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/view/user/EditUserComponent.vue ***!
@@ -124241,6 +126761,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UserComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserComponent */ "./resources/js/view/user/UserComponent.vue");
 /* harmony import */ var _ShowUserComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowUserComponent */ "./resources/js/view/user/ShowUserComponent.vue");
 /* harmony import */ var _EditUserComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EditUserComponent */ "./resources/js/view/user/EditUserComponent.vue");
+/* harmony import */ var _CreateUserComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CreateUserComponent */ "./resources/js/view/user/CreateUserComponent.vue");
+
 
 
 
@@ -124250,6 +126772,13 @@ __webpack_require__.r(__webpack_exports__);
   name: 'user.index',
   meta: {
     requiredRoles: ['manager', 'group-manager', 'direct-manager']
+  }
+}, {
+  path: '/users/create',
+  component: _CreateUserComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+  name: 'user.create',
+  meta: {
+    requiredRoles: ['manager', 'group-manager']
   }
 }, {
   path: '/users/:id',

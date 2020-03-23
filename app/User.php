@@ -59,7 +59,7 @@ class User extends Authenticatable implements HasMedia
 
   public function bindAttrsToUser($request) {
     $this->name = $request->name;
-    $this->employee_code = $request->employee_code;
+    // $this->employee_code = $request->employee_code;
     $this->email = $request->email;
     $this->phone_number = $request->phone_number;
     $this->birthday = date('Y-m-d',strtotime($request->birthday));
