@@ -32,7 +32,15 @@ trait HasPermissionsTrait
   // kiem tra user co permission do khong
   public function hasPermission($permission)
   {
-    return (bool) $this->permissions->where('slug', $permission->slug)->count();
+    $condition1 = (bool) $this->permissions->where('slug', $permission->slug)->count();
+    $roles = $this->roles;
+    $condition2 = false;
+    foreach($roles as $role) {
+      if($role->permissions->where('slug', $permission->slug)->count()) {
+        $condition2 = true;
+      }
+    }
+    return $condition1 || $condition2;
   }
 
   protected function getAllPermissions($permissions)

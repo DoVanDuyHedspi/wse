@@ -20,7 +20,7 @@ class PermissionController extends Controller
    */
   public function index(Request $request)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('view-permissions')) {
       return response()->json(Permission::paginate(20));
     }
 
@@ -32,7 +32,7 @@ class PermissionController extends Controller
 
   public function store(Request $request)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('create-permissions')) {
       $validator = Validator::make($request->all(), [
         'slug' => 'required',
         'name' => 'required',
@@ -58,7 +58,7 @@ class PermissionController extends Controller
 
   public function update(Request $request, $id)
   {
-    if($request->user()->hasRole('manager')) {
+    if($request->user()->can('update-permissions')) {
       $validator = Validator::make($request->all(), [
         'slug' => 'required',
         'name' => 'required',
@@ -82,7 +82,7 @@ class PermissionController extends Controller
 
   public function destroy(Request $request, $id)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('delete-permissions')) {
       $permission = Permission::find($id);
       if ($permission->delete()) {
         return response([

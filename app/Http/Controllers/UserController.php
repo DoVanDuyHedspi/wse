@@ -12,6 +12,7 @@ use App\Position;
 use App\Role;
 use App\Helpers\UserHelper;
 use App\IdentityCardPassport;
+use App\Lib\UserLib;
 use Illuminate\Http\Request;
 use App\User;
 use App\Vehicle;
@@ -30,8 +31,14 @@ class UserController extends Controller
 
   public function index(Request $request)
   {
-    if ($request->user()->hasRole('direct-manager', 'group-manager', 'manager')) {
-      $users = User::getRelationships()->get();
+    if ($request->user()->can('view-users')) {
+      $filter = $request->query();
+      if (count($filter)) {
+        $users = User::getRelationships()->filter($filter)->get();
+      } else {
+        $users = User::getRelationships()->get();
+      };
+      // dd(count($users));
       return response()->json($users);
     }
 
@@ -44,7 +51,7 @@ class UserController extends Controller
 
   public function create(Request $request)
   {
-    if ($request->user()->hasRole('group-manager', 'manager')) {
+    if ($request->user()->can('create-users')) {
       $positions = Position::all();
       $branches = Branch::all();
       $groups = Group::whereNull('parent_id')
@@ -52,7 +59,7 @@ class UserController extends Controller
         ->get();
       $employee_types = EmployeeType::all();
       $permissions = Permission::all();
-      $roles = Role::all();
+      $roles = Role::with('permissions')->get();
       $data['branches'] = $branches;
       $data['positions'] = $positions;
       $data['groups'] = $groups;
@@ -70,7 +77,7 @@ class UserController extends Controller
 
   public function store(Request $request)
   {
-    if ($request->user()->hasRole('manager', 'group-manager')) {
+    if ($request->user()->can('create-users')) {
       $new_user = json_decode($request->new_user);
 
       $validator = Validator::make((array) $new_user, [
@@ -98,48 +105,17 @@ class UserController extends Controller
       $user->password = Hash::make($new_user->password);
       $user->salary_rank_id = 1;
       if ($user->save()) {
-        if ($checkImage) {
-          $user->addMediaFromRequest('image')->toMediaCollection('avatar');
+        $result = UserHelper::createInfoExtend($new_user, $user, $checkImage);
+        if ($result) {
+          return response(['status' => true, 'user' => $user], 200);
+        } else {
+          $user->delete();
+          return response([
+            'status' => false,
+            'message' => 'Tạo nhân viên mới thất bại!'
+          ], 200);
         }
-        if($new_user->roles) {
-          foreach($new_user->roles as $roleId) {
-            $role = Role::find($roleId);
-            $user->roles()->attach($role);
-          }
-        }
-        if($new_user->permissions) {
-          foreach($new_user->permissions as $permissionId) {
-            $permission = Role::find($permissionId);
-            $user->permissions()->attach($permission);
-          }
-        }
-        Bank::create([
-          'user_id' => $user->id,
-          'type' => $new_user->bank->type,
-          'account_number' => $new_user->bank->account_number,
-          'name' => $new_user->bank->name,
-        ]);
-        Vehicle::create([
-          'type' => $new_user->vehicle->type,
-          'brand' => $new_user->vehicle->brand,
-          'license_plates' => $new_user->vehicle->license_plates,
-          'user_id' => $user->id
-        ]);
-        IdentityCardPassport::create([
-          'user_id' => $user->id,
-          'type' => $new_user->identity_card_passport->type,
-          'code' => $new_user->identity_card_passport->code,
-          'efective_date' => date('Y-m-d', strtotime($new_user->identity_card_passport->efective_date)),
-          'issued_by' => $new_user->identity_card_passport->issued_by,
-        ]);
-        Education::create([
-          'user_id' => $user->id,
-          'school' => $new_user->education->school,
-          'specialized' => $new_user->education->specialized,
-          'graduation_years' => $new_user->education->graduation_years,
-        ]);
       }
-      return response(['status' => true], 200);
     }
 
     return response([
@@ -148,45 +124,20 @@ class UserController extends Controller
     ], 200);
   }
 
-  public function show($id)
-  {
-    if ((Auth::user()->id == $id) || Auth::user()->hasRole('manager', 'group-manager')) {
-      $user = User::where('id', $id)->getRelationships()->first();
-      try {
-        $avatar = $user->getFirstMediaUrl('avatar');
-        $user['avatar'] = $avatar;
-      } catch (Exception $e) {
-        $user['avatar'] = '';
-      }
-      return response()->json($user);
-    }
-    return response([
-      'status' => false,
-      'message' => 'You don\'t have permission to view this user!'
-    ], 200);
-  }
-
   public function edit($id)
   {
-    if (Auth::user()->id == $id) {
+    if (Auth::user()->id == $id || Auth::user()->can('update-users')) {
       $user = User::where('id', $id)->getRelationships()->first();
-      $positions = Position::all();
-      $branches = Branch::all();
-      $groups = Group::whereNull('parent_id')
-        ->with('children')
-        ->get();
-      $employee_types = EmployeeType::all();
-      $user['branches'] = $branches;
-      $user['positions'] = $positions;
-      $user['groups'] = $groups;
-      $user['employee_types'] = $employee_types;
       try {
         $avatar = $user->getFirstMediaUrl('avatar');
         $user['avatar'] = $avatar;
       } catch (Exception $e) {
         $user['avatar'] = '';
       }
-
+      $user['can_update_adv'] = false;
+      if (Auth::user()->can('update-users')) {
+        $user['can_update_adv'] = true;
+      }
 
       return response()->json($user);
     }
@@ -198,61 +149,70 @@ class UserController extends Controller
 
   public function update(Request $request, $id)
   {
-    $user = User::where('id', $id)->getRelationships()->first();
-    if ($request->hasFile('image') && $request->file('image')->isValid()) {
+    try {
+      $user = User::where('id', $id)->getRelationships()->first();
+      if ($request->hasFile('image') && $request->file('image')->isValid()) {
+        $validator = Validator::make($request->all(), [
+          'image' => 'image',
+        ]);
+        if ($validator->fails()) {
+          return response([
+            'status' => 'false',
+            'message' => 'Hãy chọn đúng file ảnh!'
+          ], 200);
+        };
+        $user->clearMediaCollection('avatar');
+        $user->addMediaFromRequest('image')->toMediaCollection('avatar');
+        // $lib = new UserLib();
+        // $lib->editPerson($user);
+
+        return response()->json(['avatar' => $user->getFirstMediaUrl('avatar')]);
+      }
       $validator = Validator::make($request->all(), [
-        'image' => 'image',
+        'email' => 'required',
+        'name' => 'required',
       ]);
       if ($validator->fails()) {
         return response([
-          'status' => 'false',
-          'message' => 'Hãy chọn đúng file ảnh!'
+          'status' => false,
+          'message' => 'Cập nhật thông tin nhân viên thất bại!'
         ], 200);
-      };
-      $user->clearMediaCollection('avatar');
-      $user->addMediaFromRequest('image')->toMediaCollection('avatar');
+      }
 
-      return response()->json(['avatar' => $user->getFirstMediaUrl('avatar')]);
-    }
-    $validator = Validator::make($request->all(), [
-      'email' => 'required',
-      'name' => 'required',
-    ]);
-    if ($validator->fails()) {
+      $user->bindAttrsToUser($request);
+      $user->save();
+      UserHelper::updateInfoExtend($request, $user);
+      return response(['status' => true], 200);
+    } catch (Exception $e) {
       return response([
         'status' => false,
-        'message' => 'Cập nhật thông tin nhân viên thất bại!'
+        'message' => $e->getMessage(),
       ], 200);
     }
-    $user->bindAttrsToUser($request);
-    $user->save();
-    $user->bank->update([
-      'type' => $request->bank['type'],
-      'account_number' => $request->bank['account_number'],
-      'name' => $request->bank['name'],
-    ]);
-    $user->identity_card_passport->update([
-      'type' => $request->identity_card_passport['type'],
-      'issued_by' => $request->identity_card_passport['issued_by'],
-      'code' => $request->identity_card_passport['code'],
-      'efective_date' => date('Y-m-d', strtotime($request->identity_card_passport['efective_date'])),
-    ]);
-    $user->education->update([
-      'school' => $request->education['school'],
-      'specialized' => $request->education['specialized'],
-      'graduation_years' => $request->baeducationnk['graduation_years'],
-    ]);
-    $user->vehicle->update([
-      'type' => $request->vehicle['type'],
-      'brand' => $request->vehicle['brand'],
-      'license_plates' => $request->vehicle['license_plates'],
-    ]);
-
-    return response()->json();
   }
 
   public function destroy($id)
   {
-    //
+    try {
+      if (Auth::user()->can('delete-users')) {
+        $user = User::find($id);
+        $user->clearMediaCollection('avatar');
+        $lib = new UserLib();
+        $lib->deletePerson($user);
+        $user->delete();
+        return response([
+          'status' => true
+        ], 200);
+      }
+      return response([
+        'status' => false,
+        'message' => 'Bạn không có quyền xóa thành viên!'
+      ], 200);
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
   }
 }

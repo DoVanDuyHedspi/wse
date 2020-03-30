@@ -173,6 +173,7 @@ export default {
             })
             .then(response => {
               this.dialogCreateVisible = false;
+              this.$refs[formName].resetFields();
               if (response.data.status === false) {
                 this.error.message = response.data.message;
                 setTimeout(() => {
@@ -207,6 +208,7 @@ export default {
             })
             .then(response => {
               this.dialogEditVisible = false;
+              this.$refs[formName].resetFields();
               if (response.data.status === false) {
                 this.error.message = response.data.message;
                 setTimeout(() => {

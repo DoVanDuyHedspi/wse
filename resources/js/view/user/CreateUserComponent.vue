@@ -70,6 +70,11 @@
                 <el-col :span="24" class="label">
                   Vai trò trong hệ thống
                   <span style="color: red">(*)</span>
+                  <el-alert
+                    class="mb-2"
+                    title="Khi bạn chọn một vai trò, những quyền thuộc vài vai trò ý sẽ không được tắt"
+                    type="info"
+                  ></el-alert>
                 </el-col>
                 <el-col :span="24">
                   <el-select
@@ -77,6 +82,8 @@
                     multiple
                     placeholder="Chọn vai trò"
                     style="width: 100%"
+                    :change="handleChangeRole"
+                    name="test"
                   >
                     <el-option
                       v-for="role in infoCompany.roles"
@@ -90,11 +97,12 @@
               <el-row :gutter="20" class="mb-3">
                 <el-col :span="24" class="label">Quyền trong hệ thống</el-col>
                 <el-col :span="24">
-                  <el-checkbox-group v-model="form.permissions">
+                  <el-checkbox-group v-model="form.permissions" name="khac">
                     <el-checkbox
                       v-for="permission in infoCompany.permissions"
                       :label="permission.id"
                       :key="permission.id"
+                      :disabled="role_has_permissions.includes(permission.id)"
                       border
                       size="medium"
                       class="m-2"
@@ -474,6 +482,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -483,6 +492,7 @@ export default {
       },
       imageUrl: "",
       imageFile: "",
+      role_has_permissions: [],
       form: {
         name: "",
         roles: [],
@@ -525,28 +535,50 @@ export default {
           type: "",
           code: "",
           efective_date: "",
-          expiry_date: ""
+          expiry_date: "",
+          issued_by: ""
         }
-      },
-      infoCompany: {
-        branches: [],
-        positions: [],
-        groups: [],
-        employee_types: [],
-        roles: [],
-        permissions: []
       }
     };
   },
   created() {
-    this.getInfoOfCompany();
+    // this.getInfoOfCompany();
   },
+  computed: mapState({
+    infoCompany: state => state.infoCompany,
+    handleChangeRole (state) {
+      let list_roles = this.form.roles;
+      let list_pers = [];
+      let before_role_has_permissions = this.role_has_permissions;
+      state.infoCompany.roles.map(function(role) {
+        let n = list_roles.includes(role.id);
+        if (n) {
+          let permissions = role.permissions;
+          permissions.map(function(per) {
+            if (list_pers.indexOf(per.id) === -1) {
+              list_pers.push(per.id);
+            }
+          });
+        }
+      });
+      this.role_has_permissions = list_pers;
+      this.form.permissions = $(this.form.permissions)
+        .not(before_role_has_permissions)
+        .get();
+      $.merge(this.form.permissions, this.role_has_permissions);
+      let unique_per = [];
+      this.form.permissions.map(function(perId) {
+        if (!unique_per.includes(perId)) {
+          unique_per.push(perId);
+        }
+      });
+      this.form.permissions = unique_per;
+    }
+  }),
   methods: {
     handleGroupChange() {
       if (Array.isArray(this.form.group_id)) {
-        console.log(this.form.group_id)
         this.form.group_id = this.form.group_id[this.form.group_id.length - 1];
-        console.log(this.form.group_id)
       }
     },
     handleNext() {
@@ -567,21 +599,6 @@ export default {
     },
     handleRemove(file) {
       this.imageFile = "";
-    },
-    getInfoOfCompany() {
-      axios
-        .get("/users/create")
-        .then(response => {
-          if (response.data.status === false) {
-            this.error.message = response.data.message;
-          } else {
-            console.log(response.data);
-            this.infoCompany = response.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
     createUser() {
       let rawData = this.form;
@@ -604,12 +621,15 @@ export default {
               position: "bottom-right"
             });
           } else {
+            this.$store.dispatch('fetch');
+            
             this.$notify({
               title: "Hoàn thành",
               message: "Thêm nhân viên mới thành công",
               type: "success",
               position: "bottom-right"
             });
+            this.$router.push("/users/" + response.data.user.id);
           }
         });
     }

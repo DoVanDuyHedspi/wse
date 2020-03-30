@@ -10,8 +10,8 @@
     </div>
     <div class="container mt-3">
       <div class="mb-2">
-        <el-row>
-          <el-col :span="24">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <div class="grid-content">
               <h3>
                 Danh sách thành viên
@@ -21,27 +21,69 @@
               </h3>
             </div>
           </el-col>
+          <el-col :span="12" class="text-right">
+            <router-link to="/users/create">
+              <el-button round icon="el-icon-plus" type="success">Thêm mới</el-button>
+            </router-link>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="6"></el-col>
-          <el-col :span="12" :offset="12">
-            <div class="grid-content float-right">
-              <el-dropdown split-button type="default">
-                Chi nhánh
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>Chi nhánh 1</el-dropdown-item>
-                  <el-dropdown-item>Chi nhánh 2</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <router-link to="/users/create">
-                <el-button icon="el-icon-plus" type="success">Thêm mới</el-button>
-              </router-link>
+          <el-col :span="24">
+            <div class="text-right">
+              <el-select v-model="filter.branch_id" class="filter" placeholder="Chi nhánh">
+                <el-option
+                  v-for="(type,index) in infoCompany.branches"
+                  :label="type.name"
+                  :value="type.id"
+                  :key="index"
+                ></el-option>
+              </el-select>
+              <el-cascader
+                v-model="filter.group_id"
+                :options="infoCompany.groups"
+                :props="{ checkStrictly: true, label: 'name', value: 'id' }"
+                :change="handleGroupChange()"
+                placeholder="Bộ phận"
+                class="filter"
+              ></el-cascader>
+              <el-select v-model="filter.position_id" class="filter" placeholder="Vị trí">
+                <el-option
+                  v-for="(type,index) in infoCompany.positions"
+                  :label="type.name"
+                  :value="type.id"
+                  :key="index"
+                ></el-option>
+              </el-select>
+              <el-select
+                v-model="filter.employee_type_id"
+                class="filter"
+                placeholder="Loại nhân viên"
+              >
+                <el-option
+                  v-for="(type,index) in infoCompany.employee_types"
+                  :label="type.name"
+                  :value="type.id"
+                  :key="index"
+                ></el-option>
+              </el-select>
+              <el-input
+                placeholder="Tìm kiếm"
+                prefix-icon="el-icon-search"
+                v-model="filter.search"
+                class="filter"
+              ></el-input>
+              <el-button type="primary" icon="el-icon-search" @click="filterUsers()">Lọc</el-button>
             </div>
           </el-col>
         </el-row>
+
         <el-row>
+          <h5>
+            Số lượng:
+            <span style="color: blue">{{users.length}}</span> thành viên
+          </h5>
           <el-table
-            :data="users"
+            :data="dataTable.length ? dataTable : getUsersDataTable"
             style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
             stripe
           >
@@ -58,58 +100,161 @@
             <el-table-column prop="current_address" label="Địa chỉ hiện tại" width="250"></el-table-column>
             <el-table-column prop="pernentment_address" label="Địa chỉ thường chú" width="250"></el-table-column>
             <el-table-column prop="identity_card_passport.code" label="CMND/Hộ chiếu" width="150"></el-table-column>
-            <el-table-column fixed="right" label="Thao tác" width="200">
-              <template slot-scope="scope">
+            <el-table-column fixed="right" label="Thao tác" width="200" align="center">
+              <template slot-scope="scope" class="text-center">
                 <router-link :to="'/users/edit/' + scope.row.id">
-                  <el-button size="mini"><i class="el-icon-edit"></i></el-button>
+                  <el-button size="mini">
+                    <i class="el-icon-edit"></i>
+                  </el-button>
                 </router-link>
                 <router-link :to="'/users/' + scope.row.id">
-                  <el-button
-                    size="mini"
-                    type="primary"
-                  ><i class="el-icon-view"></i></el-button>
+                  <el-button size="mini" type="primary">
+                    <i class="el-icon-view"></i>
+                  </el-button>
                 </router-link>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click.native.prevent="deleteUser(scope.$index, scope.row)"
+                >
+                  <i class="el-icon-delete"></i>
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-row>
       </div>
 
-      <!-- <div class="mt-3">
-        <pagination :data="users" :align="'center'" @pagination-change-page="getPermissions"></pagination>
-      </div>-->
+      <div class="block my-5 text-center">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage"
+          :page-sizes="[5, 10, 20, 30]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next"
+          :total="users.length"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      users: [],
       error: {
         message: ""
       },
+      filter: {
+        branch_id: "",
+        group_id: "",
+        position_id: "",
+        employee_type_id: "",
+        search: ""
+      },
+      currentPage: 1,
+      pageSize: 5,
+      dataTable: [],
       info:
         "Danh sách thành viên có thể xem thông tin trong quyền của người dùng này"
     };
   },
   created() {
-    this.getUsers();
+    // this.dataTable = {getUsersDataTable};
   },
+  computed: mapState({
+    users: state => state.users,
+    infoCompany: state => state.infoCompany,
+    getUsersDataTable(state) {
+      return state.users.slice(0, 5);
+    }
+  }),
   methods: {
-    getUsers() {
+    handleGroupChange() {
+      if (Array.isArray(this.filter.group_id)) {
+        this.filter.group_id = this.filter.group_id[
+          this.filter.group_id.length - 1
+        ];
+      }
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.dataTable = this.getDataTable();
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.dataTable = this.getDataTable();
+    },
+    filterUsers() {
       axios
-        .get("/users")
-        .then(response => {
-          if (response.data.status === false) {
-            this.error.message = response.data.message;
-          } else {
-            this.users = response.data;
+        .get("/users", {
+          params: {
+            branch_id: this.filter.branch_id,
+            group_id: this.filter.group_id,
+            position_id: this.filter.position_id,
+            employee_type_id: this.filter.employee_type_id,
+            search: this.filter.search
           }
         })
-        .catch(error => {
-          console.log(error);
+        .then(response => {
+          this.$store.dispatch("updateUsers", response.data);
+          this.currentPage = 1;
+          this.dataTable = this.getDataTable();
+        });
+    },
+    getDataTable() {
+      let begin = (this.currentPage - 1) * this.pageSize;
+      let end = begin + this.pageSize;
+      return this.users.slice(begin, end);
+    },
+    deleteUser(index, user) {
+      this.$confirm(
+        "Bạn có chắc chắn muốn xóa thành viên " +
+          user.name +
+          "(" +
+          user.employee_code +
+          ")" +
+          " ?",
+        "Cảnh báo",
+        {
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          this.$store.dispatch("deleteUser", user.id).then(
+            response => {
+              if (response.data.status === false) {
+                this.error.message = response.data.message;
+                this.$notify.error({
+                  title: "Thất bại",
+                  message: response.data.message,
+                  position: "bottom-right"
+                });
+              }
+              this.dataTable.splice(index, 1);
+              this.$store.dispatch('fetch');
+              this.$notify({
+                title: "Hoàn thành",
+                message: "Xóa thành viên thành công",
+                type: "success",
+                position: "bottom-right"
+              });
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        })
+        .catch(() => {
+          this.error.message = "Xóa thất bại!";
+          setTimeout(() => {
+            this.error.message = "";
+          }, 3000);
         });
     }
   }
@@ -117,4 +262,7 @@ export default {
 </script>
 
 <style>
+.filter {
+  max-width: 15%;
+}
 </style>
