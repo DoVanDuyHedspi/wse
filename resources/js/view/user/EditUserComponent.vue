@@ -22,13 +22,10 @@
             <el-col :span="6">
               <div class="grid-content">
                 <el-card :body-style="{ padding: '0px' }">
-                  <img
-                    :src="user.avatar"
-                    class="image"
-                  />
+                  <img :src="user.avatar" class="image" />
                   <div class="px-3">
                     <div class="bottom clearfix text-center">
-                      <div class="upload-btn-wrapper">
+                      <div class="upload-btn-wrapper" v-if="user.can_update_adv">
                         <button class="btn">Chọn ảnh</button>
                         <input type="file" name="myfile" ref="file" @change="handleImageUpload()" />
                       </div>
@@ -52,6 +49,7 @@
                         <el-col :span="12">
                           <el-input
                             v-model="user.name"
+                            :disabled="!user.can_update_adv"
                             class="input"
                             suffix-icon="el-icon-user-solid"
                           ></el-input>
@@ -62,6 +60,7 @@
                         <el-col :span="12">
                           <el-input
                             v-model="user.email"
+                            :disabled="!user.can_update_adv"
                             class="input"
                             suffix-icon="el-icon-message"
                           ></el-input>
@@ -70,7 +69,7 @@
                       <el-row :gutter="20" class="mb-3">
                         <el-col :span="6" class="label">Giới tính</el-col>
                         <el-col :span="12" style="line-height: 2.5">
-                          <el-radio-group v-model="user.gender">
+                          <el-radio-group v-model="user.gender" :disabled="!user.can_update_adv">
                             <el-radio label="Nam"></el-radio>
                             <el-radio label="Nữ"></el-radio>
                           </el-radio-group>
@@ -107,6 +106,7 @@
                               <el-input
                                 v-model="user.employee_code"
                                 class="input"
+                                :disabled="!user.can_update_adv"
                                 suffix-icon="el-icon-postcard"
                               ></el-input>
                             </el-col>
@@ -114,9 +114,13 @@
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Loại nhân viên</el-col>
                             <el-col :span="12">
-                              <el-select v-model="user.employee_type_id" class="w-100">
+                              <el-select
+                                v-model="user.employee_type_id"
+                                class="w-100"
+                                :disabled="!user.can_update_adv"
+                              >
                                 <el-option
-                                  v-for="(type,index) in user.employee_types"
+                                  v-for="(type,index) in infoCompany.employee_types"
                                   :label="type.name"
                                   :value="type.id"
                                   :key="index"
@@ -127,9 +131,13 @@
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Vị trí</el-col>
                             <el-col :span="12">
-                              <el-select v-model="user.position_id" class="w-100">
+                              <el-select
+                                v-model="user.position_id"
+                                class="w-100"
+                                :disabled="!user.can_update_adv"
+                              >
                                 <el-option
-                                  v-for="(type,index) in user.positions"
+                                  v-for="(type,index) in infoCompany.positions"
                                   :label="type.name"
                                   :value="type.id"
                                   :key="index"
@@ -142,11 +150,12 @@
                             <el-col :span="12">
                               <el-cascader
                                 v-model="user.group_id"
-                                :options="user.groups"
+                                :options="infoCompany.groups"
                                 :props="{ checkStrictly: true, label: 'name', value: 'id' }"
                                 :change="handleGroupChange()"
                                 clearable
                                 class="w-100"
+                                :disabled="!user.can_update_adv"
                               ></el-cascader>
                             </el-col>
                           </el-row>
@@ -160,20 +169,70 @@
                                 style="width: 100%;"
                                 format="dd-MM-yyyy"
                                 value-format="dd-MM-yyyy"
+                                :disabled="!user.can_update_adv"
                               ></el-date-picker>
                             </el-col>
                           </el-row>
                           <el-row :gutter="20" class="mb-3">
                             <el-col :span="6" class="label">Chi nhánh</el-col>
                             <el-col :span="12">
-                              <el-select v-model="user.branch_id" class="w-100">
+                              <el-select
+                                v-model="user.branch_id"
+                                class="w-100"
+                                :disabled="!user.can_update_adv"
+                              >
                                 <el-option
-                                  v-for="(type,index) in user.branches"
+                                  v-for="(type,index) in infoCompany.branches"
                                   :label="type.name"
                                   :value="type.id"
                                   :key="index"
                                 ></el-option>
                               </el-select>
+                            </el-col>
+                          </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane label="Vai trò và quyền" >
+                          <el-row :gutter="20" class="mb-3 mx-0">
+                            <el-col :span="24" class="label text-left">
+                              Vai trò trong hệ thống
+                              <span style="color: red">(*)</span>
+                              <el-alert
+                                class="mb-2"
+                                title="Khi bạn chọn một vai trò, những quyền thuộc vài vai trò ý sẽ không được tắt"
+                                type="info"
+                              ></el-alert>
+                            </el-col>
+                            <el-col :span="24">
+                              <el-select
+                                v-model="roles"
+                                multiple
+                                placeholder="Chọn vai trò"
+                                style="width: 100%"
+                                :change="handleChangeRole"
+                              >
+                                <el-option
+                                  v-for="role in infoCompany.roles"
+                                  :key="role.id"
+                                  :label="role.name"
+                                  :value="role.id"
+                                ></el-option>
+                              </el-select>
+                            </el-col>
+                          </el-row>
+                          <el-row :gutter="20" class="mb-3 mx-0">
+                            <el-col :span="24" class="label text-left">Quyền trong hệ thống</el-col>
+                            <el-col :span="24">
+                              <el-checkbox-group v-model="permissions">
+                                <el-checkbox
+                                  v-for="permission in infoCompany.permissions"
+                                  :label="permission.id"
+                                  :key="permission.id"
+                                  :disabled="role_has_permissions.includes(permission.id)"
+                                  border
+                                  size="medium"
+                                  class="m-2"
+                                >{{permission.name}}</el-checkbox>
+                              </el-checkbox-group>
                             </el-col>
                           </el-row>
                         </el-tab-pane>
@@ -389,10 +448,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      user: '',
+      role_has_permissions: [],
+      roles: [],
+      permissions: [],
       error: {
         message: ""
       },
@@ -401,12 +463,72 @@ export default {
       rules: {
         name: [{ required: true, message: "Hãy nhập tên", trigger: "blur" }],
         email: [{ required: true, message: "Hãy nhập email", trigger: "blur" }]
-      }
+      },
+      flag: false,
     };
   },
   created() {
-    this.getUser();
+    this.$store.dispatch("fetchOne", this.$route.params.id).then(
+      response => {
+        console.log(response);
+        if (response.data.status === false) {
+          this.error.message = response.data.message;
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   },
+  computed: mapState({
+    user: state => state.user,
+    infoCompany: state => state.infoCompany,
+    handleChangeRole(state) {
+      let user_roles = [];
+      state.user.roles.map(function(role) {
+        user_roles.push(role.id);
+      });
+      let user_pers = [];
+      state.user.permissions.map(function(per) {
+        user_pers.push(per.id);
+      });
+      if(this.permissions.length != 0) {
+        this.flag = true;
+      }
+      if(!this.flag) {
+        this.permissions = user_pers;
+      }
+      let list_roles = this.roles.length == 0 ? user_roles : this.roles;
+      let new_roles = [];
+      let role_has_permissions = [];
+      let before_role_has_permissions = this.role_has_permissions;
+      state.infoCompany.roles.map(function(role) {
+        let n = list_roles.includes(role.id);
+        if (n) {
+          let permissions = role.permissions;
+          new_roles.push(role.id);
+          permissions.map(function(per) {
+            if (role_has_permissions.indexOf(per.id) === -1) {
+              role_has_permissions.push(per.id);
+            }
+          });
+        }
+      });
+      this.roles = new_roles;
+      this.role_has_permissions = role_has_permissions;
+      this.permissions = $(this.permissions)
+        .not(before_role_has_permissions)
+        .get();
+      $.merge(this.permissions, this.role_has_permissions);
+      let unique_per = [];
+      this.permissions.map(function(perId) {
+        if (!unique_per.includes(perId)) {
+          unique_per.push(perId);
+        }
+      });
+      this.permissions = unique_per;
+    }
+  }),
   methods: {
     handleGroupChange() {
       if (Array.isArray(this.user.group_id)) {
@@ -432,7 +554,7 @@ export default {
       this.imageFile = this.$refs.file.files[0];
       let formData = new FormData();
       formData.append("image", this.imageFile);
-      formData.append("_method", "PATCH")
+      formData.append("_method", "PATCH");
       axios
         .post("/users/" + this.user.id, formData, {
           headers: {
@@ -459,6 +581,9 @@ export default {
         });
     },
     updateUser(formName) {
+      this.user.permissions = this.permissions.sort();
+      this.user.roles = this.roles.sort();
+      this.user.roles_has_pers = this.role_has_permissions.sort();
       axios.put("/users/" + this.user.id, this.user).then(response => {
         if (response.data.status === false) {
           this.error.message = response.data.message;

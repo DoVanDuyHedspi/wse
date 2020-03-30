@@ -1,11 +1,7 @@
 <template>
   <div class>
     <el-container>
-      <el-aside width="200px">
-        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-          <el-radio-button :label="false">expand</el-radio-button>
-          <el-radio-button :label="true">collapse</el-radio-button>
-        </el-radio-group>-->
+      <el-aside v-bind:style="{ width: aside_width}">
         <el-menu
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
@@ -48,12 +44,8 @@
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">Navigator Two</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <i class="el-icon-document"></i>
-            <span slot="title">Navigator Three</span>
+            <i class="el-icon-date"></i>
+            <span slot="title">Lịch làm việc</span>
           </el-menu-item>
           <router-link to="/branches">
             <el-menu-item index="4">
@@ -65,12 +57,23 @@
       </el-aside>
       <el-container>
         <el-header style="background-color:#fff; border-bottom: 1px solid rgba(128,128,128, 0.3)">
-          <div class="user-login">
-            <div class="username">User: {{ $root.user.name }}</div>
-            <div class="logout">
-              <a href="#" @click.prevent="logout">Logout</a>
-            </div>
-          </div>
+          <el-row :gutter="20">
+            <el-col :span="6" style="line-height: 60px">
+              <i
+                v-bind:class="{'el-icon-s-fold': !isCollapse, 'el-icon-s-unfold': isCollapse}"
+                style="font-size: 25px; cursor: pointer;"
+                @click="handleAsideMenu"
+              ></i>
+            </el-col>
+            <el-col :span="18">
+              <div class="user-login">
+                <div class="username">User: {{ $root.user.name }}</div>
+                <div class="logout">
+                  <a href="#" @click.prevent="logout">Logout</a>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
         </el-header>
         <el-main class="p-0">
           <div class="main-content">
@@ -89,15 +92,24 @@
 export default {
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
+      aside_width: ''
     };
   },
   created() {
-    this.goToUserInfo();
+    // this.goToUserInfo();
+    this.$store.dispatch("fetch");
+    this.$store.dispatch("fetchCompanyInfo");
   },
   methods: {
     goToUserInfo() {
       // this.$router.push("/users/" + this.$root.user.id);
+    },
+    handleAsideMenu() {
+      this.isCollapse = !this.isCollapse;
+      if(this.isCollapse == true) {
+        this.aside_width = 'auto'
+      }
     },
     logout: function() {
       axios
@@ -119,10 +131,18 @@ export default {
 .user-login {
   text-align: right;
 }
+.el-aside {
+  max-width: 200px;
+  ul {
+    height: 100%;
+    min-height: 100vh;
+  }
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   a {
     color: white;
     text-decoration: blink;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Permission;
 use App\Role;
 // use Dotenv\Validator;
 use Illuminate\Http\Request;
@@ -20,8 +21,12 @@ class RoleController extends Controller
    */
   public function index(Request $request)
   {
-    if ($request->user()->hasRole('manager')) {
-      return response()->json(Role::paginate(20));
+    if ($request->user()->can('view-roles')) {
+      $permissions = Permission::all();
+      $roles = Role::with('permissions')->paginate(10);
+      $response['permissions'] = $permissions;
+      $response['roles'] = $roles;
+      return response()->json($response);
     }
 
     return response([
@@ -32,7 +37,7 @@ class RoleController extends Controller
 
   public function store(Request $request)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('create-roles')) {
       $validator = Validator::make($request->all(), [
         'slug' => 'required',
         'name' => 'required',
@@ -44,9 +49,15 @@ class RoleController extends Controller
         ], 200);
       }
       $role = new Role();
-      $role->slug = $request->input('slug');
-      $role->name = $request->input('name');
+      $role->slug = $request->slug;
+      $role->name = $request->name;
       if ($role->save()) {
+        if ($request->permissions) {
+          foreach ($request->permissions as $perId) {
+            $permission = Permission::find($perId);
+            $role->permissions()->save($permission);
+          }
+        }
         return response()->json($role);
       }
     }
@@ -58,7 +69,7 @@ class RoleController extends Controller
 
   public function update(Request $request, $id)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('update-roles')) {
       $validator = Validator::make($request->all(), [
         'slug' => 'required',
         'name' => 'required',
@@ -72,17 +83,36 @@ class RoleController extends Controller
 
       $role = Role::find($id);
       if ($role) {
-        $role->slug = $request->input('slug');
-        $role->name = $request->input('name');
+        $role->slug = $request->slug;
+        $role->name = $request->name;
         $role->save();
-        return response()->json($role);
+        $list_pers = [];
+        $permissions = $role->permissions()->get();
+        if ((bool) $role->permissions()->count()) {
+          foreach ($permissions as $permission) {
+            array_push($list_pers, $permission->id);
+          }
+        }
+        $add_pers = array_diff($request->permissions, $list_pers);
+        $dell_pers = array_diff($list_pers, $request->permissions);
+        foreach ($add_pers  as $perId) {
+          $permission = Permission::find($perId);
+          $role->permissions()->save($permission);
+        }
+        foreach ($dell_pers  as $perId) {
+          $permission = Permission::find($perId);
+          $role->permissions()->detach($permission);
+        }
+        $response['permissions'] = $role->permissions()->get();
+        $response['role'] = $role;
+        return response()->json($response);
       }
     }
   }
 
   public function destroy(Request $request, $id)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('delete-roles')) {
       $role = Role::find($id);
       if ($role->delete()) {
         return response([

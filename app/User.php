@@ -20,7 +20,7 @@ class User extends Authenticatable implements HasMedia
   protected $fillable = [
     'name', 'email', 'password', 'phone_number', 'nationality', 'gender',
     'birthday', 'official_start_day', 'position_id', 'tax_code', 'employee_type_id',
-    'branch_id', 'group_id', 'personal_email', 'birthplace', 'current_address', 
+    'branch_id', 'group_id', 'personal_email', 'birthplace', 'current_address',
     'permanent_address', 'salary_rank_id'
   ];
 
@@ -47,25 +47,44 @@ class User extends Authenticatable implements HasMedia
   public function scopeGetRelationships($query)
   {
     return $query->with('position')
-    ->with('branch')
-    ->with('group')
-    ->with('slary_rank')
-    ->with('bank')
-    ->with('education')
-    ->with('vehicle')
-    ->with('identity_card_passport')
-    ->with('employee_type');
+      ->with('branch')
+      ->with('group')
+      ->with('slary_rank')
+      ->with('bank')
+      ->with('education')
+      ->with('vehicle')
+      ->with('identity_card_passport')
+      ->with('employee_type')
+      ->with('permissions')
+      ->with('roles');
   }
 
-  public function bindAttrsToUser($request) {
+  public function scopeFilter($query, $filter)
+  {
+    return $query->when($filter["group_id"], function ($query, $group_id) {
+      return $query->where("group_id", $group_id);
+    })->when($filter["branch_id"], function ($query, $branch_id) {
+      return $query->where("branch_id", $branch_id);
+    })->when($filter["position_id"], function ($query, $position_id) {
+      return $query->where("position_id", $position_id);
+    })->when($filter["employee_type_id"], function ($query, $employee_type_id) {
+      return $query->where("employee_type_id", $employee_type_id);
+    })->when($filter["search"], function ($query, $search) {
+      return $query->where(function ($query) use($search) {
+        $query->where("name", "like", '%' . $search . '%')->orWhere("email", "like", '%' . $search . '%')->orWhere("employee_code", "like", '%' . $search . '%');
+      });
+    });
+  }
+
+  public function bindAttrsToUser($request)
+  {
     $this->name = $request->name;
-    // $this->employee_code = $request->employee_code;
     $this->email = $request->email;
     $this->phone_number = $request->phone_number;
-    $this->birthday = date('Y-m-d',strtotime($request->birthday));
+    $this->birthday = $request->birthday ? date('Y-m-d', strtotime($request->birthday)) : null;
     $this->nationality = $request->nationality;
-    $this->gender = $request->gender;
-    $this->official_start_day = date('Y-m-d',strtotime($request->official_start_day));
+    $this->gender = $request->gender ? $request->gender : config('wse.gender')[0];
+    $this->official_start_day = date('Y-m-d', strtotime($request->official_start_day));
     $this->position_id = $request->position_id;
     $this->group_id = $request->group_id;
     $this->branch_id = $request->branch_id;

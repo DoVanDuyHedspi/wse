@@ -1,7 +1,7 @@
 <?php
 
 Route::get('/', function () {
-  $user = request()->user()->roles[0]; //lấy kèm với role của user (dùng cho vue router sau này)
+  $user = request()->user(); //lấy kèm với role của user (dùng cho vue router sau này)
   return view('welcome', ['user' => $user]);
 })->middleware('auth');
 
@@ -18,3 +18,5 @@ Route::resource('/roles', 'RoleController');
 Route::resource('/branches', 'BranchController');
 
 Route::resource('/groups', 'GroupController');
+
+Route::get('/company/getInfo', 'CompanyController@getInfo');

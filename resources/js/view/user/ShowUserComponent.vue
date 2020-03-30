@@ -10,10 +10,10 @@
       <div class="alert alert-danger" role="alert">{{ error.message }}</div>
     </div>
     <div class="noti" v-if="noti.length">
-        <div class="alert alert-success" role="alert">{{ noti }}</div>
-      </div>
+      <div class="alert alert-success" role="alert">{{ noti }}</div>
+    </div>
     <div class="container">
-      <div class="content" v-if="user">
+      <div class="content" v-if="!error.message.length">
         <div class="content-header">
           <b>Thông tin cá nhân</b>
         </div>
@@ -22,10 +22,7 @@
             <el-col :span="6">
               <div class="grid-content">
                 <el-card :body-style="{ padding: '0px' }">
-                  <img
-                    :src="user.avatar"
-                    class="image"
-                  />
+                  <img :src="user.avatar" class="image" />
                   <div class="px-3">
                     <div class="bottom clearfix">
                       <!-- <el-button type="text" class="button">Operating</el-button> -->
@@ -352,10 +349,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      user: "",
       error: {
         message: ""
       },
@@ -363,25 +360,22 @@ export default {
     };
   },
   created() {
-    this.getUsers();
+    this.$store.dispatch("fetchOne", this.$route.params.id).then(
+      response => {
+        console.log(response);
+        if (response.data.status === false) {
+          this.error.message = response.data.message;
+        } 
+      },
+      error => {
+        console.log(error);
+      }
+    );
   },
-  methods: {
-    getUsers() {
-      axios
-        .get("/users/" + this.$route.params.id)
-        .then(response => {
-          if (response.data.status === false) {
-            this.error.message = response.data.message;
-          } else {
-            console.log(response.data);
-            this.user = response.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }
+  computed: {
+    ...mapState(["user"])
+  },
+  methods: {}
 };
 </script>
 

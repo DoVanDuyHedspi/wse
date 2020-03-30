@@ -34,7 +34,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>Xóa</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>prop="slug"
+              </el-dropdown>
               <el-button
                 icon="el-icon-plus"
                 type="success"
@@ -44,14 +44,37 @@
           </el-col>
         </el-row>
       </div>
-      <el-dialog title="Tạo quyền mới" width="40%" center :visible.sync="dialogCreateVisible">
-        <el-form :model="form" :rules="rules" ref="roleForm" label-width="120px">
-          <el-form-item label="Tên" prop="slug">
-            <el-input v-model="form.slug"></el-input>
-          </el-form-item>
-          <el-form-item label="Nội dung" prop="name">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
+      <el-dialog title="Tạo vai trò mới" width="80%" center :visible.sync="dialogCreateVisible">
+        <el-form
+          :model="form"
+          label-position="top"
+          :rules="rules"
+          ref="roleForm"
+          label-width="120px"
+        >
+          <el-row :gutter="30">
+            <el-col :span="10">
+              <el-form-item label="Tên vai trò" prop="slug">
+                <el-input v-model="form.slug"></el-input>
+              </el-form-item>
+              <el-form-item label="Nội dung vai trò" prop="name">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="14">
+              <p>Vai trò này có các quyền</p>
+              <el-checkbox-group v-model="form.permissions">
+                <el-checkbox
+                  v-for="permission in permissions"
+                  :label="permission.id"
+                  :key="permission.id"
+                  border
+                  size="medium"
+                  class="m-2"
+                >{{permission.name}}</el-checkbox>
+              </el-checkbox-group>
+            </el-col>
+          </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogCreateVisible = false">Hủy</el-button>
@@ -87,14 +110,31 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="Chỉnh sửa vai trò" width="40%" center :visible.sync="dialogEditVisible">
+      <el-dialog title="Chỉnh sửa vai trò" width="80%" center :visible.sync="dialogEditVisible">
         <el-form :model="editForm" :rules="rules" ref="editForm" label-width="120px">
-          <el-form-item label="Tên" prop="slug">
-            <el-input v-model="editForm.slug"></el-input>
-          </el-form-item>
-          <el-form-item label="Nội dung" prop="name">
-            <el-input v-model="editForm.name"></el-input>
-          </el-form-item>
+          <el-row :gutter="30">
+            <el-col :span="10">
+              <el-form-item label="Tên" prop="slug">
+                <el-input v-model="editForm.slug"></el-input>
+              </el-form-item>
+              <el-form-item label="Nội dung" prop="name">
+                <el-input v-model="editForm.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="14">
+              <p>Vai trò này có các quyền</p>
+              <el-checkbox-group v-model="editForm.permissions">
+                <el-checkbox
+                  v-for="permission in permissions"
+                  :label="permission.id"
+                  :key="permission.id"
+                  border
+                  size="medium"
+                  class="m-2"
+                >{{permission.name}}</el-checkbox>
+              </el-checkbox-group>
+            </el-col>
+          </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogEditVisible = false">Hủy</el-button>
@@ -118,19 +158,22 @@ export default {
       error: {
         message: ""
       },
+      permissions: {},
       noti: "",
       search: "",
       dialogCreateVisible: false,
       dialogEditVisible: false,
       form: {
         slug: "",
-        name: ""
+        name: "",
+        permissions: []
       },
       editForm: {
         slug: "",
         name: "",
         index: "",
-        id: ""
+        id: "",
+        permissions: [],
       },
       rules: {
         name: [{ required: true, message: "Hãy nhập tên", trigger: "blur" }],
@@ -151,7 +194,8 @@ export default {
           if (response.data.status === false) {
             this.error.message = response.data.message;
           } else {
-            this.roles = response.data;
+            this.roles = response.data.roles;
+            this.permissions = response.data.permissions;
             this.dataTable = this.roles.data;
           }
         })
@@ -163,26 +207,22 @@ export default {
       this.$refs[formName].validate(valid => {
         console.log(valid);
         if (valid) {
-          axios
-            .post("/roles", {
-              slug: this.form.slug,
-              name: this.form.name
-            })
-            .then(response => {
-              this.dialogCreateVisible = false;
-              if (response.data.status === false) {
-                this.error.message = response.data.message;
-                setTimeout(() => {
-                  this.error.message = "";
-                }, 3000);
-              } else {
-                this.noti = "Tạo mới thành công!";
-                this.dataTable.push(response.data);
-                setTimeout(() => {
-                  this.noti = "";
-                }, 3000);
-              }
-            });
+          axios.post("/roles", this.form).then(response => {
+            this.dialogCreateVisible = false;
+            this.$refs[formName].resetFields();
+            if (response.data.status === false) {
+              this.error.message = response.data.message;
+              setTimeout(() => {
+                this.error.message = "";
+              }, 3000);
+            } else {
+              this.noti = "Tạo mới thành công!";
+              this.dataTable.push(response.data);
+              setTimeout(() => {
+                this.noti = "";
+              }, 3000);
+            }
+          });
         }
       });
     },
@@ -190,20 +230,23 @@ export default {
       this.editForm.slug = role.slug;
       this.editForm.name = role.name;
       this.editForm.index = index;
-      this.editForm.id = role.id;
+      this.editForm.id = role.id; 
+      let permissions = this.roles.data[index].permissions;
+      let list = [];
+      permissions.map(function(per) {
+        list.push(per.id);
+      })
+      this.editForm.permissions = list;
       this.dialogEditVisible = true;
     },
     editRole(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
-            .put("/roles/" + this.editForm.id, {
-              slug: this.editForm.slug,
-              name: this.editForm.name,
-              id: this.editForm.id
-            })
+            .put("/roles/" + this.editForm.id, this.editForm)
             .then(response => {
               this.dialogEditVisible = false;
+              this.$refs[formName].resetFields();
               if (response.data.status === false) {
                 this.error.message = response.data.message;
                 setTimeout(() => {
@@ -211,8 +254,9 @@ export default {
                 }, 3000);
               } else {
                 this.noti = "Sửa quyền thành công!";
-                this.dataTable[this.editForm.index].slug = response.data.slug;
-                this.dataTable[this.editForm.index].name = response.data.name;
+                this.dataTable[this.editForm.index].slug = response.data.role.slug;
+                this.dataTable[this.editForm.index].name = response.data.role.name;
+                this.roles.data[this.editForm.index].permissions = response.data.permissions;
                 setTimeout(() => {
                   this.noti = "";
                 }, 3000);

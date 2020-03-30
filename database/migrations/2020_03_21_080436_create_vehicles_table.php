@@ -17,7 +17,7 @@ class CreateVehiclesTable extends Migration
       $table->increments('id');
       $table->integer('user_id')->unsigned();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-      $table->enum('type', ['Xe máy', 'Ô tô', 'Xe buýt', 'Đi bộ']);
+      $table->enum('type', config('wse.vehicle_type'));
       $table->string('brand')->nullable();
       $table->string('license_plates')->nullable();
       $table->timestamps();

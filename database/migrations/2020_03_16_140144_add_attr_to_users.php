@@ -18,7 +18,7 @@ class AddAttrToUsers extends Migration
       $table->string('phone_number')->nullable();
       $table->string('employee_code')->unique();
       $table->string('nationality')->nullable();
-      $table->enum('gender', ['Nam', 'Nữ', 'Khác']);
+      $table->enum('gender', config('wse.gender'));
       $table->date('birthday')->nullable();
       $table->date('official_start_day')->nullable();
       $table->unsignedBigInteger('position_id');

@@ -5,24 +5,16 @@ import CreateUser from './CreateUserComponent';
 
 export default [
   {
-    path: '/users', component: User, name: 'user.index', meta: {
-      requiredRoles: ['manager', 'group-manager', 'direct-manager']
-    }
+    path: '/users', component: User, name: 'user.index'
   },
   {
-    path: '/users/create', component: CreateUser, name: 'user.create', meta: {
-      requiredRoles: ['manager', 'group-manager']
-    }
+    path: '/users/create', component: CreateUser, name: 'user.create'
   },
   {
-    path: '/users/:id', component: ShowUser, name: 'user.show', meta: {
-      requiredRoles: ['manager', 'group-manager', 'direct-manager', 'employee']
-    }
+    path: '/users/:id', component: ShowUser, name: 'user.show'
   },
   {
-    path: '/users/edit/:id', component: EditUser, name: 'user.edit', meta: {
-      requiredRoles: ['manager', 'group-manager', 'direct-manager', 'employee']
-    }
+    path: '/users/edit/:id', component: EditUser, name: 'user.edit'
   },
-  
+
 ]
