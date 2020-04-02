@@ -191,7 +191,7 @@
                             </el-col>
                           </el-row>
                         </el-tab-pane>
-                        <el-tab-pane label="Vai trò và quyền" >
+                        <el-tab-pane label="Vai trò và quyền">
                           <el-row :gutter="20" class="mb-3 mx-0">
                             <el-col :span="24" class="label text-left">
                               Vai trò trong hệ thống
@@ -209,6 +209,7 @@
                                 placeholder="Chọn vai trò"
                                 style="width: 100%"
                                 :change="handleChangeRole"
+                                v-if="componentLoaded"
                               >
                                 <el-option
                                   v-for="role in infoCompany.roles"
@@ -455,6 +456,7 @@ export default {
       role_has_permissions: [],
       roles: [],
       permissions: [],
+      componentLoaded: false,
       error: {
         message: ""
       },
@@ -464,21 +466,11 @@ export default {
         name: [{ required: true, message: "Hãy nhập tên", trigger: "blur" }],
         email: [{ required: true, message: "Hãy nhập email", trigger: "blur" }]
       },
-      flag: false,
+      flag: false
     };
   },
   created() {
-    this.$store.dispatch("fetchOne", this.$route.params.id).then(
-      response => {
-        console.log(response);
-        if (response.data.status === false) {
-          this.error.message = response.data.message;
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    this.getUser();
   },
   computed: mapState({
     user: state => state.user,
@@ -492,10 +484,10 @@ export default {
       state.user.permissions.map(function(per) {
         user_pers.push(per.id);
       });
-      if(this.permissions.length != 0) {
+      if (this.permissions.length != 0) {
         this.flag = true;
       }
-      if(!this.flag) {
+      if (!this.flag) {
         this.permissions = user_pers;
       }
       let list_roles = this.roles.length == 0 ? user_roles : this.roles;
@@ -536,19 +528,17 @@ export default {
       }
     },
     getUser() {
-      axios
-        .get("/users/" + this.$route.params.id + "/edit")
-        .then(response => {
+      this.$store.dispatch("fetchOne", this.$route.params.id).then(
+        response => {
+          this.componentLoaded = true;
           if (response.data.status === false) {
             this.error.message = response.data.message;
-          } else {
-            console.log(response.data);
-            this.user = response.data;
           }
-        })
-        .catch(error => {
+        },
+        error => {
           console.log(error);
-        });
+        }
+      );
     },
     handleImageUpload() {
       this.imageFile = this.$refs.file.files[0];
