@@ -78,7 +78,7 @@
           </el-dialog>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row :gutter="50">
         <el-col
           :span="6"
           v-for="(branch, index) in branches"
@@ -103,10 +103,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
-      branches: "",
       error: {
         message: ""
       },
@@ -127,20 +127,23 @@ export default {
       }
     };
   },
-  created() {
-    this.getBranches();
-  },
+  // created() {
+  //   this.getBranches();
+  // },
+  computed: mapState({
+    branches: state => state.infoCompany.branches
+  }),
   methods: {
-    getBranches() {
-      axios.get("/branches").then(response => {
-        if (response.data.status === false) {
-          this.error.message = response.data.message;
-        } else {
-          console.log(response.data);
-          this.branches = response.data;
-        }
-      });
-    },
+    // getBranches() {
+    //   axios.get("/branches").then(response => {
+    //     if (response.data.status === false) {
+    //       this.error.message = response.data.message;
+    //     } else {
+    //       console.log(response.data);
+    //       this.branches = response.data;
+    //     }
+    //   });
+    // },
     handleChange(file) {
       this.imageFile = file.raw;
     },
@@ -168,15 +171,20 @@ export default {
               this.dialogCreateVisible = false;
               if (response.data.status === false) {
                 this.error.message = response.data.message;
-                setTimeout(() => {
-                  this.error.message = "";
-                }, 3000);
+                this.$notify.error({
+                  title: "Thất bại",
+                  message: response.data.message,
+                  position: "bottom-right"
+                });
               } else {
-                this.noti = "Tạo mới thành công!";
                 this.branches.push(response.data);
-                setTimeout(() => {
-                  this.noti = "";
-                }, 3000);
+                this.$notify({
+                  title: "Hoàn thành",
+                  message: "Tạo mới thành công!",
+                  type: "success",
+                  position: "bottom-right"
+                });
+                this.$store.dispatch("fetchCompanyInfo");
               }
             });
         }

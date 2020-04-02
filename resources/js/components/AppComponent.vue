@@ -43,10 +43,12 @@
               </router-link>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-date"></i>
-            <span slot="title">Lịch làm việc</span>
-          </el-menu-item>
+          <router-link to="/user_timesheets">
+            <el-menu-item index="2">
+              <i class="el-icon-date"></i>
+              <span slot="title">Lịch làm việc</span>
+            </el-menu-item>
+          </router-link>
           <router-link to="/branches">
             <el-menu-item index="4">
               <i class="el-icon-map-location"></i>
@@ -93,7 +95,7 @@ export default {
   data() {
     return {
       isCollapse: false,
-      aside_width: ''
+      aside_width: ""
     };
   },
   created() {
@@ -107,8 +109,8 @@ export default {
     },
     handleAsideMenu() {
       this.isCollapse = !this.isCollapse;
-      if(this.isCollapse == true) {
-        this.aside_width = 'auto'
+      if (this.isCollapse == true) {
+        this.aside_width = "auto";
       }
     },
     logout: function() {

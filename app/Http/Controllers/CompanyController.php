@@ -21,6 +21,9 @@ class CompanyController extends Controller
   {
     $positions = Position::all();
     $branches = Branch::all();
+    foreach ($branches as $branch) {
+      $branch->imageUrl = $branch->getFirstMediaUrl('images');
+    }
     $groups = Group::whereNull('parent_id')
       ->with('children')
       ->get();
