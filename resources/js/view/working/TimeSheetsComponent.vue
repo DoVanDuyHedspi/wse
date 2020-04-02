@@ -2,8 +2,33 @@
   <div id="timesheets">
     <div class="p-3 bg-white">
       <el-row :gutter="20">
-        <el-col :span="24" class="text-center">
-          <h3>Bảng thời gian</h3>
+        <el-col :span="8" :offset="8" class="text-center">
+          <h2>Bảng thời gian</h2>
+        </el-col>
+        <el-col :span="8" class="text-right">
+          <span style="cursor: pointer;" @click="handleNote" id="note">
+            <i class="el-icon-info"></i> Chú thích
+          </span>
+        </el-col>
+      </el-row>
+      <el-row v-if="note" :gutter="20" class="container mx-auto my-4 note">
+        <el-col :span="8">
+          <span class="block penalty mr-2"></span> Đi muộn, về sớm (sáng/chiều) ngoài quota
+        </el-col>
+        <el-col :span="8">
+          <span class="block solved mr-2"></span> Đi muộn, về sớm (sáng/chiều) đã làm bù
+        </el-col>
+        <el-col :span="8">
+          <span class="block leave mr-2"></span> Không có dữ liệu/Không đủ thời gian làm việc
+        </el-col>
+        <el-col :span="8">
+          <span class="block today mr-2"></span> Hôm nay
+        </el-col>
+        <el-col :span="8">
+          <span class="block past mr-2"></span> Quá khứ
+        </el-col>
+        <el-col :span="8">
+          <span class="block future mr-2"></span> Tương lai
         </el-col>
       </el-row>
       <el-row :gutter="20">
@@ -12,8 +37,14 @@
         <el-col :span="8" class="text-left">Tổng thời gian làm thêm: 0 (giờ)</el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12" class="text-right">Tổng thời gian phạt theo block: {{penalty.block_penalty_time}} (phút)</el-col>
-        <el-col :span="12" class="text-left">Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
+        <el-col
+          :span="12"
+          class="text-right"
+        >Tổng thời gian phạt theo block: {{penalty.block_penalty_time}} (phút)</el-col>
+        <el-col
+          :span="12"
+          class="text-left"
+        >Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
       </el-row>
     </div>
     <div class="bh-white mt-3 p-1">
@@ -43,6 +74,7 @@ export default {
         number_of_fines: 0
       },
       number_working_days: 0,
+      note: true
     };
   },
   components: {
@@ -60,8 +92,8 @@ export default {
     setShowDate(d) {
       this.showDate = d;
       let fullDate = new Date(d);
-      let month = fullDate.getMonth()+1;
-      if(month < 10) {
+      let month = fullDate.getMonth() + 1;
+      if (month < 10) {
         month = "0" + month;
       }
       var currentDate = fullDate.getFullYear() + "-" + month;
@@ -74,10 +106,10 @@ export default {
       this.$store.dispatch("fetchEvents", params).then(
         response => {
           let penalty = this.$store.getters.getInfoPenalty;
-          this.penalty.actual_penalty_time = penalty['actual_penalty_time'];
-          this.penalty.block_penalty_time = penalty['block_penalty_time'];
-          this.penalty.number_of_fines = penalty['number_of_fines'];
-          this.number_working_days = penalty['number_working_days']
+          this.penalty.actual_penalty_time = penalty["actual_penalty_time"];
+          this.penalty.block_penalty_time = penalty["block_penalty_time"];
+          this.penalty.number_of_fines = penalty["number_of_fines"];
+          this.number_working_days = penalty["number_working_days"];
           if (response.data.status === false) {
             this.error.message = response.data.message;
           }
@@ -86,13 +118,16 @@ export default {
           console.log(error);
         }
       );
+    },
+    handleNote() {
+      console.log("tets");
+      this.note = !this.note;
     }
   }
 };
 </script>
 
 <style lang="scss">
-
 // .theme-default .cv-day.past {
 //   background-color: white;
 // }
@@ -135,15 +170,15 @@ export default {
   background: yellow;
 }
 
-.cv-day,
-.cv-event,
-.cv-header-day,
-.cv-header-days,
-.cv-week,
-.cv-weeks {
-  border-color: skyblue !important;
-  border-style: solid;
-}
+// .cv-day,
+// .cv-event,
+// .cv-header-day,
+// .cv-header-days,
+// .cv-week,
+// .cv-weeks {
+//   border-color: skyblue !important;
+//   border-style: solid;
+// }
 
 .theme-default .cv-header button {
   color: black;
@@ -154,5 +189,47 @@ export default {
   color: #2c3e50;
   margin-left: auto;
   margin-right: auto;
+}
+
+.block {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+}
+
+.note {
+  .penalty {
+    background-color: #fa0404b9;
+    border: 1px solid skyblue;
+  }
+
+  .solved {
+    background-color: #ffcccc;
+    border: 1px solid skyblue;
+  }
+
+  .leave {
+    background-color: #7fff0075;
+    border: 1px solid skyblue;
+  }
+
+  .today {
+    background-color: yellow;
+    border: 1px solid skyblue;
+  }
+
+  .past {
+    background-color: white;
+    border: 1px solid skyblue;
+  }
+
+  .future {
+    background-color: lightyellow;
+    border: 1px solid skyblue;
+  }
+}
+
+#note:hover {
+  color: skyblue;
 }
 </style>

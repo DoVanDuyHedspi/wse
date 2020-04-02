@@ -8,7 +8,7 @@
         <el-breadcrumb-item>Thành viên</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="container mt-3">
+    <div class="p-4 mt-3">
       <div class="mb-2">
         <el-row :gutter="20">
           <el-col :span="12">
