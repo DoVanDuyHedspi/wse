@@ -94,9 +94,9 @@
         border
       >
         <!-- <el-table-column type="selection" width="55"></el-table-column> -->
-        <el-table-column property="slug" label="Tên"></el-table-column>
-        <el-table-column property="name" label="Nội dung"></el-table-column>
-        <el-table-column align="right">
+        <el-table-column property="slug" label="Tên" class-name="text-center"></el-table-column>
+        <el-table-column property="name" label="Nội dung" class-name="text-center"></el-table-column>
+        <el-table-column align="right" class-name="text-center">
           <template slot="header" slot-scope="scope">
             <el-input v-model="search" size="mini" placeholder="Tìm kiếm" />
           </template>

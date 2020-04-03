@@ -3,7 +3,7 @@
     <div class="p-3 bg-white">
       <el-row :gutter="20">
         <el-col :span="8" :offset="8" class="text-center">
-          <h2>Bảng thời gian</h2>
+          <h2>BẢNG THỜI GIAN</h2>
         </el-col>
         <el-col :span="8" class="text-right">
           <span style="cursor: pointer;" @click="handleNote" id="note">
@@ -47,7 +47,7 @@
         >Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
       </el-row>
     </div>
-    <div class="bh-white mt-3 p-1">
+    <div class="bh-white mt-3 p-2">
       <calendar-view :show-date="showDate" :events="events" class="theme-default">
         <calendar-view-header
           slot="header"
@@ -74,7 +74,7 @@ export default {
         number_of_fines: 0
       },
       number_working_days: 0,
-      note: true
+      note: false
     };
   },
   components: {

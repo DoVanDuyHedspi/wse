@@ -125,7 +125,7 @@
         </el-row>
       </div>
 
-      <div class="block my-5 text-center">
+      <div class="my-5 text-center">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"

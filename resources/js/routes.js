@@ -20,12 +20,14 @@ import userRoutes from './view/user';
 import permissionRoutes from './view/permissions';
 import branchRoutes from './view/branches';
 import groupRoutes from './view/groups';
-import workingRoutes from './view/working'
+import workingRoutes from './view/working';
+import requestRoutes from './view/request';
 
 export default [
   ...userRoutes,
   ...permissionRoutes, 
   ...branchRoutes,
   ...groupRoutes,
-  ...workingRoutes
+  ...workingRoutes,
+  ...requestRoutes,
 ]

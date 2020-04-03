@@ -25,10 +25,16 @@
                   <span slot="title">Thành viên</span>
                 </el-menu-item>
               </router-link>
+              <router-link to="/manage_timesheets">
+                <el-menu-item index="1-2">
+                  <!-- <i class="el-icon-user"></i> -->
+                  <span slot="title">Quản lý bảng thời gian</span>
+                </el-menu-item>
+              </router-link>
             </el-menu-item-group>
             <el-menu-item-group title="Tổ chức">
               <router-link to="/organization">
-                <el-menu-item index="1-2">
+                <el-menu-item index="1-3">
                   <!-- <i class="el-icon-connection"></i> -->
                   <span slot="title">Sơ đồ tổ chức</span>
                 </el-menu-item>
@@ -36,7 +42,7 @@
             </el-menu-item-group>
             <el-menu-item-group title="Phân quyền hệ thống">
               <router-link to="/permission">
-                <el-menu-item index="1-3">
+                <el-menu-item index="1-4">
                   <!-- <i class="el-icon-s-claim"></i> -->
                   <span slot="title">Danh sách quyền</span>
                 </el-menu-item>
@@ -49,8 +55,24 @@
               <span slot="title">Lịch làm việc</span>
             </el-menu-item>
           </router-link>
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="el-icon-s-order"></i>
+              <span slot="title">Yêu cầu cá nhân</span>
+            </template>
+            <router-link to="/request_ot">
+              <el-menu-item index="4-1">
+                <span slot="title">Làm thêm giờ</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/request_leaves">
+              <el-menu-item index="4-2">
+                <span slot="title">Sửa bảng thời gian</span>
+              </el-menu-item>
+            </router-link>
+          </el-submenu>
           <router-link to="/branches">
-            <el-menu-item index="4">
+            <el-menu-item index="5">
               <i class="el-icon-map-location"></i>
               <span slot="title">Dữ liệu workspace</span>
             </el-menu-item>
