@@ -58,7 +58,7 @@ class WorkingTimesheets extends Command
           $new_event->user_code = $event['CustomizeID'];
           $new_event->status = 1;
           $new_event->save();
-        } else {
+        } else if(date('H:i', strtotime($ev->time_out))<=$time)  {         
           $ev->time_out = $time;
           $ev_update = EventHelper::updateEventInfo($ev);
           $ev_update->save();

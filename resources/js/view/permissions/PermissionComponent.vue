@@ -9,9 +9,9 @@
       </el-breadcrumb>
     </div>
     <div class="container mt-3">
-      <div class="mb-2">
-        <el-row>
-          <el-col :span="24">
+      <div class="my-5">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <div class="grid-content">
               <h3>
                 Danh sách quyền
@@ -21,19 +21,8 @@
               </h3>
             </div>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <!-- <div class="grid-content">Có x mục đã được chọn</div> -->
-          </el-col>
-          <el-col :span="12" :offset="12">
+          <el-col :span="12">
             <div class="grid-content float-right">
-              <el-dropdown split-button type="danger">
-                Thao tác
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>Xóa</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
               <el-button
                 icon="el-icon-plus"
                 type="success"
@@ -73,9 +62,9 @@
         border
       >
         <!-- <el-table-column type="selection" width="55"></el-table-column> -->
-        <el-table-column property="slug" label="Tên"></el-table-column>
-        <el-table-column property="name" label="Nội dung"></el-table-column>
-        <el-table-column align="right">
+        <el-table-column property="slug" label="Tên" class-name="text-center"></el-table-column>
+        <el-table-column property="name" label="Nội dung" class-name="text-center"></el-table-column>
+        <el-table-column align="right" class-name="text-center">
           <template slot="header" slot-scope="scope">
             <el-input v-model="search" size="mini" placeholder="Tìm kiếm" />
           </template>

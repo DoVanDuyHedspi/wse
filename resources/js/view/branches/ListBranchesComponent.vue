@@ -8,7 +8,7 @@
     </div>
     <div class="container">
       <div class="text-center mt-3 mb-5">
-        <h3>Danh sách văn phòng</h3>
+        <h3>DANH SÁCH VĂN PHÒNG</h3>
       </div>
       <div class="error" v-if="error.message.length">
         <div class="alert alert-danger" role="alert">{{ error.message }}</div>

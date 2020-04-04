@@ -140,4 +140,9 @@ class User extends Authenticatable implements HasMedia
   {
     return $this->hasOne(Vehicle::class);
   }
+
+  public function events() 
+  {
+    return $this->hasMany(Event::class, 'user_code', 'employee_code');
+  }
 }

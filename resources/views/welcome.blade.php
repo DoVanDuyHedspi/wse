@@ -20,6 +20,9 @@
   </div>
   <script>
     window.__user__ = @json($user);
+    window.Laravel = {!! json_encode([
+        "apiToken" => auth()->user()->api_token ?? null
+      ]) !!};
   </script>
   <script src="/js/app.js"></script>
 </body>

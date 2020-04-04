@@ -9,7 +9,7 @@
     </div>
     <div class="container">
       <div class="text-center mt-3 mb-5">
-        <h3>Danh sách tổ chức trong công ty</h3>
+        <h3>TỔ CHỨC CÔNG TY</h3>
       </div>
       <div class="error" v-if="error.message.length">
         <div class="alert alert-danger" role="alert">{{ error.message }}</div>

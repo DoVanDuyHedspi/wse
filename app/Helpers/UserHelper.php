@@ -128,4 +128,15 @@ class UserHelper
       }
     }
   }
+
+  public static function getAllDayOfMonth($year, $month) {
+    $list = array();
+
+    for ($d = 1; $d <= 31; $d++) {
+      $time = mktime(12, 0, 0, $month, $d, $year);
+      if (date('m', $time) == $month)
+        $list[] = date('Y-m-d', $time);
+    }
+    return $list;
+  }
 }

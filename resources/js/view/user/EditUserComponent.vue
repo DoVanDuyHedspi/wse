@@ -22,7 +22,7 @@
             <el-col :span="6">
               <div class="grid-content">
                 <el-card :body-style="{ padding: '0px' }">
-                  <img :src="user.avatar" class="image" />
+                  <img :src="user.avatar" class="image" style="max-width: 250px; margin: auto; max-height: 250px;" />
                   <div class="px-3">
                     <div class="bottom clearfix text-center">
                       <div class="upload-btn-wrapper" v-if="user.can_update_adv">

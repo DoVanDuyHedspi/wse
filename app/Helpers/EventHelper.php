@@ -17,6 +17,7 @@ class EventHelper
     $time_in = date('H:i', strtotime($event->time_in));
     $time_out = date('H:i', strtotime($event->time_out));
     if ($time_in <= $morning_begin) {
+      $event->ILM = 0;
       if (($morning_late < $time_out) && ($time_out < $morning_end)) {
         $event->LEM = 1;
         $event->type = 1;
@@ -70,6 +71,7 @@ class EventHelper
         $event->fined_time = self::diffTime($time_in, $morning_begin) ;
       }
     } else if (($morning_late < $time_in) && ($time_in <= $afternoon_begin)) {
+      $event->ILA = 0;
       if (($afternoon_late <= $time_out) && ($time_out < $afternoon_end)) {
         $event->status = 1;
         $event->type = 2;

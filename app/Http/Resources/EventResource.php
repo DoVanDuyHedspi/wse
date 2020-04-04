@@ -31,11 +31,13 @@ class EventResource extends JsonResource
     } else if ($this->type == 3) {
       $working_day = 1;
     }
+    $time_in = date('H:i', strtotime($this->time_in));
+    $time_out = $this->time_out ? date('H:i', strtotime($this->time_out)) : '--:--';
     return [
       'id' => $this->id,
       'startDate' => date('Y-m-d', strtotime($this->date)),
       'endDate' => date('Y-m-d', strtotime($this->date)),
-      'title' => date('H:i', strtotime($this->time_in)) . ' | ' . date('H:i', strtotime($this->time_out)),
+      'title' => $time_in . ' | ' . $time_out,
       'classes' => $classe,
       // 'url' => $url
       'fined_time' => $this->fined_time,

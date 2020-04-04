@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('events', 'Api\EventController')->only(['store', 'index', 'show']);
+Route::post('/events', 'Api\EventController@update');

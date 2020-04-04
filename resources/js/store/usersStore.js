@@ -60,6 +60,7 @@ const usersStore = new Vuex.Store({
       positions: [],
     },
     events: [],
+    users_timesheets: [],
   },
   mutations: {
     FETCH(state, users) {
@@ -76,6 +77,9 @@ const usersStore = new Vuex.Store({
     },
     FETCH_EVENTS(state, events) {
       state.events = events;
+    },
+    FETCH_USERS_TIMESHEETS(state, users_timesheets) {
+      state.users_timesheets = users_timesheets;
     }
   },
   getters: {
@@ -86,16 +90,18 @@ const usersStore = new Vuex.Store({
       let actual_penalty_time = 0;
       let number_of_fines = 0;
       let number_working_days = 0;
-      state.events.map(function(event){
+      state.events.map(function (event) {
         actual_penalty_time = actual_penalty_time + event.fined_time;
-        number_of_fines = number_of_fines + event.number_of_fines;
+        if (event.number_of_fines == 1) {
+          number_of_fines++;
+        }
         number_working_days = number_working_days + event.working_day;
       });
       let block_penalty_time = 0;
-      if(actual_penalty_time%30 == 0) {
+      if (actual_penalty_time % 30 == 0) {
         block_penalty_time = actual_penalty_time;
       } else {
-        block_penalty_time = actual_penalty_time + 30 - actual_penalty_time%30;
+        block_penalty_time = actual_penalty_time + 30 - actual_penalty_time % 30;
       }
       let data = [];
       data['actual_penalty_time'] = actual_penalty_time;
@@ -119,7 +125,7 @@ const usersStore = new Vuex.Store({
     },
     async fetchOne({ commit }, id) {
       let response = await axios.get(`/users/${id}/edit`);
-      if(response.data.status !== false) {
+      if (response.data.status !== false) {
         commit('FETCH_ONE', response.data);
       }
       return response;
@@ -129,19 +135,29 @@ const usersStore = new Vuex.Store({
         commit('FETCH_COMPANY_INFO', response.data)
       }).catch();
     },
-    async fetchEvents({commit}, params) {
+    async fetchEvents({ commit }, params) {
       let response = await axios.get(`api/events/${params['id']}`, {
         params: {
           date: params['date']
         }
       });
-      if(response.data.status !== false) {
+      if (response.data.status !== false) {
         commit('FETCH_EVENTS', response.data.data);
+      }
+      return response;
+    },
+    async fetchUsersTimesheets({ commit }) {
+      let response = await axios.get(`api/events`);
+      if (response.data.status !== false) {
+        commit('FETCH_USERS_TIMESHEETS', response.data.data);
       }
       return response;
     },
     updateUsers({ commit }, users) {
       commit('UPDATE_USERS', users);
+    },
+    updateUsersTimesheets({ commit }, users_timesheets) {
+      commit('FETCH_USERS_TIMESHEETS', users_timesheets);
     },
     deleteUser({ }, id) {
       return new Promise((resolve, reject) => {
