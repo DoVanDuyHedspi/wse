@@ -109,6 +109,16 @@ const usersStore = new Vuex.Store({
       data['number_of_fines'] = number_of_fines;
       data['number_working_days'] = number_working_days;
       return data;
+    },
+    getDateOfMonth: (state) => {
+      let dates = [];
+      if (state.users_timesheets.length != 0) {
+        state.users_timesheets[0].events.map(function (event) {
+          dates.push(event.date);
+        })
+      }
+
+      return dates;
     }
   },
   actions: {

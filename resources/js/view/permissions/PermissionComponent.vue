@@ -9,19 +9,19 @@
       </el-breadcrumb>
     </div>
     <div class="container mt-3">
-      <div class="my-5">
+      <div class="my-4">
         <el-row :gutter="20">
-          <el-col :span="12">
-            <div class="grid-content">
+          <el-col :span="24">
+            <div class="text-center">
               <h3>
-                Danh sách quyền
-                <el-tooltip effect="dark" :content="info" placement="right-start">
+                DANH SÁCH QUYỀN
+                <!-- <el-tooltip effect="dark" :content="info" placement="right-start">
                   <i class="el-icon-question" style="font-size: 20px"></i>
-                </el-tooltip>
+                </el-tooltip> -->
               </h3>
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <div class="grid-content float-right">
               <el-button
                 icon="el-icon-plus"

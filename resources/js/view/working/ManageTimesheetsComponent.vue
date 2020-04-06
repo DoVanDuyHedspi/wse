@@ -99,10 +99,10 @@
               class-name="text-center text-red"
               width="100"
             ></el-table-column>
-            <el-table-column fixed prop="ILM" label="ILM" class-name="text-center" width="50"></el-table-column>
-            <el-table-column fixed prop="LEM" label="LEM" class-name="text-center" width="50"></el-table-column>
-            <el-table-column fixed prop="ILA" label="ILA" class-name="text-center" width="50"></el-table-column>
-            <el-table-column fixed prop="LEA" label="LEA" class-name="text-center" width="50"></el-table-column>
+            <el-table-column fixed prop="ILM" label="ILM" class-name="text-center" width="60"></el-table-column>
+            <el-table-column fixed prop="LEM" label="LEM" class-name="text-center" width="60"></el-table-column>
+            <el-table-column fixed prop="ILA" label="ILA" class-name="text-center" width="60"></el-table-column>
+            <el-table-column fixed prop="LEA" label="LEA" class-name="text-center" width="60"></el-table-column>
             <el-table-column
               v-for="(date, index) in month"
               :key="index"
@@ -231,7 +231,7 @@ export default {
     users: state => state.users_timesheets,
     infoCompany: state => state.infoCompany,
     getUsersDataTable(state) {
-      this.month = ["01-04-2020", "02-04-2020", "03-04-2020"];
+      this.month = this.$store.getters.getDateOfMonth;
       return state.users_timesheets.slice(0, this.pageSize);
     }
   }),

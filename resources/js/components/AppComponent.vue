@@ -65,9 +65,14 @@
                 <span slot="title">Làm thêm giờ</span>
               </el-menu-item>
             </router-link>
+            <router-link to="/request_rm">
+              <el-menu-item index="4-1">
+                <span slot="title">Làm remote</span>
+              </el-menu-item>
+            </router-link>
             <router-link to="/request_leaves">
               <el-menu-item index="4-2">
-                <span slot="title">Sửa bảng thời gian</span>
+                <span slot="title">Làm bù</span>
               </el-menu-item>
             </router-link>
           </el-submenu>

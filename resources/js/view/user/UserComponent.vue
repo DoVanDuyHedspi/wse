@@ -88,7 +88,7 @@
             stripe
           >
             <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="150"></el-table-column>
-            <el-table-column prop="name" label="Tên" width="200"></el-table-column>
+            <el-table-column fixed prop="name" label="Tên" width="200"></el-table-column>
             <el-table-column prop="email" label="Email" width="250"></el-table-column>
             <el-table-column prop="position.name" label="Vị trí" width="200"></el-table-column>
             <el-table-column prop="gender" label="Giới tính" width="100"></el-table-column>

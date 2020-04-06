@@ -11,4 +11,6 @@ return [
   'afternoon_begin' => '12:45:00',
   'afternoon_late' => '14:45:00',
   'afternoon_end' => '16:45:00',
+  'form_request_type' => ['OT', 'ILM', 'LEM', 'ILA', 'LEA', 'LO', 'RM', 'QQD', 'QQV', 'QQF'],
+  'form_request_status' => ['waiting', 'cancel', 'forward', 'accept', 'refuse'],
 ];
