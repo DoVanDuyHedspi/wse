@@ -294,7 +294,6 @@ export default {
     };
   },
   created() {
-    this.getUser();
     this.getWorkingTimeInfo();
     this.getFormRequest();
   },
@@ -307,19 +306,6 @@ export default {
       axios.get("/api/form_requests/" + this.$route.params.id).then(response => {
         this.form = response.data;
       })
-    },
-    getUser() {
-      this.$store.dispatch("fetchOne", this.$root.user.id).then(
-        response => {
-          this.componentLoaded = true;
-          if (response.data.status === false) {
-            this.error.message = response.data.message;
-          }
-        },
-        error => {
-          console.log(error);
-        }
-      );
     },
     getWorkingTimeInfo() {
       axios.get("/api/specifiedWorkingTime").then(response => {

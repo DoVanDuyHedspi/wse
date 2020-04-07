@@ -404,7 +404,6 @@ export default {
     },
     validateWorkBegin() {
       let work_time_begin = moment(this.form.work_time_begin).format("HH:mm");
-      this.validate = true;
       if (
         this.compareTime(
           this.specified_working_time.afternoon_end,
@@ -622,7 +621,7 @@ export default {
     },
     createRequest(formName) {
       this.$refs[formName].validate(valid => {
-        if (valid) {
+        if (valid && this.validate) {
           this.form.user_code = this.user.employee_code;
           axios.post("/api/form_requests", this.form).then(response => {
             if (response.data.status === false) {

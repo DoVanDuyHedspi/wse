@@ -1,8 +1,9 @@
 import IndexRequestLeaves from './IndexRequestLeavesComponent';
 import NewRequestLeaves from './NewRequestLeavesComponent';
-import EditRequestLeaves from './EditRequestLeavesComponent'
+import EditRequestLeaves from './EditRequestLeavesComponent';
 import IndexRequestOT from './IndexRequestOTComponent';
 import NewRequestOT from './NewRequestOTComponent';
+import EditRequestOT from './EditRequestOTComponent';
 
 export default [
   {
@@ -19,5 +20,8 @@ export default [
   },
   {
     path: '/request_ot/new', component: NewRequestOT, name: 'request_ot.new'
+  },
+  {
+    path: '/request_ot/edit/:id', component: EditRequestOT, name: 'request_ot.edit'
   },
 ]

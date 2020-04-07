@@ -126,7 +126,7 @@ class EventController extends Controller
     }
     return response([
       'status' => false,
-      'message' => 'Người dùng này không có quyền xem timesheets của nhân viên!'
+      'message' => 'Người dùng này không có quyền chỉnh sửa timesheets của nhân viên!'
     ], 200);
   }
 }

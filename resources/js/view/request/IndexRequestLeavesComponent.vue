@@ -161,9 +161,19 @@ export default {
   },
   methods: {
     getFormRequest() {
+      let that = this;
       axios.get("/api/form_requests").then(response => {
-        this.form_requests = response.data;
+        response.data.map(function(request) {
+          if (
+            ["ILM", "ILA", "LEM", "LEA", "QQD", "QQV", "QQF", "LO"].includes(
+              request.type
+            )
+          ) {
+            that.form_requests.push(request);
+          }
+        });
       });
+      this.form_requests = that.form_requests;
     },
     handleSizeChange(val) {
       this.pageSize = val;
@@ -179,6 +189,7 @@ export default {
       return this.form_requests.slice(begin, end);
     },
     filterFormRequests() {
+      let form_requests = [];
       axios
         .get("/api/form_requests", {
           params: {
@@ -187,9 +198,18 @@ export default {
           }
         })
         .then(response => {
-          this.form_requests = response.data;
-          this.dataTable = this.getDataTable();
+          response.data.map(function(request) {
+            if (
+              ["ILM", "ILA", "LEM", "LEA", "QQD", "QQV", "QQF", "LO"].includes(
+                request.type
+              )
+            ) {
+              form_requests.push(request);
+            }
+          });
         });
+      this.form_requests = form_requests;
+      this.dataTable = this.getDataTable();
     },
     deleteFormRequest(index, form_request) {
       this.$confirm(

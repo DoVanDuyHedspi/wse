@@ -62,12 +62,7 @@
             </template>
             <router-link to="/request_ot">
               <el-menu-item index="4-1">
-                <span slot="title">Làm thêm giờ</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/request_rm">
-              <el-menu-item index="4-1">
-                <span slot="title">Làm remote</span>
+                <span slot="title">Làm ngoài giờ, remote</span>
               </el-menu-item>
             </router-link>
             <router-link to="/request_leaves">

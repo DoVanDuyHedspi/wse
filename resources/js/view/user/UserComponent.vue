@@ -89,14 +89,14 @@
           >
             <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="150"></el-table-column>
             <el-table-column fixed prop="name" label="Tên" width="200"></el-table-column>
-            <el-table-column prop="email" label="Email" width="250"></el-table-column>
-            <el-table-column prop="position.name" label="Vị trí" width="200"></el-table-column>
+            <el-table-column prop="email" label="Email" width="200"></el-table-column>
+            <el-table-column prop="position.name" label="Vị trí" width="150"></el-table-column>
             <el-table-column prop="gender" label="Giới tính" width="100"></el-table-column>
             <el-table-column prop="birthday" label="Ngày sinh" width="150"></el-table-column>
             <el-table-column prop="employee_type.name" label="Loại nhân viên" width="200"></el-table-column>
             <el-table-column prop="group.name" label="Phòng ban" width="200"></el-table-column>
-            <el-table-column prop="branch.name" label="Chi nhánh" width="200"></el-table-column>
-            <el-table-column prop="phone_number" label="SĐT" width="200"></el-table-column>
+            <el-table-column prop="branch.name" label="Chi nhánh" width="150"></el-table-column>
+            <el-table-column prop="phone_number" label="SĐT" width="150"></el-table-column>
             <el-table-column prop="current_address" label="Địa chỉ hiện tại" width="250"></el-table-column>
             <el-table-column prop="pernentment_address" label="Địa chỉ thường chú" width="250"></el-table-column>
             <el-table-column prop="identity_card_passport.code" label="CMND/Hộ chiếu" width="150"></el-table-column>

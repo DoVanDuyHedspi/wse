@@ -180,49 +180,49 @@ class FormRequestController extends Controller
       $form->leave_time_end = date('H:i', strtotime($request->leave_time_end));
       $form->leave_date = date('Y-m-d', strtotime($request->leave_time_end));
       if ($form->leave_time_end < $form->leave_time_begin) {
-        $message = $message . "Đây là form xin đi muộn, thời gian đến của bạn không chính xác\n";
+        $message = $message . "Đây là form xin đi muộn, thời gian đến của bạn không chính xác. \n";
       } else if ($form->leave_time_end > $morning_late) {
-        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa\n";
+        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa. \n";
       }
     } else if ($request->type == 'ILA') {
       $form->leave_time_begin = $afternoon_begin;
       $form->leave_time_end = date('H:i', strtotime($request->leave_time_end));
       $form->leave_date = date('Y-m-d', strtotime($request->leave_time_end));
       if ($form->leave_time_end < $form->leave_time_begin) {
-        $message = $message . "Đây là form xin đi muộn, thời gian đến của bạn không chính xác\n";
+        $message = $message . "Đây là form xin đi muộn, thời gian đến của bạn không chính xác. \n";
       } else if ($form->leave_time_end > $afternoon_late) {
-        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa\n";
+        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa. \n";
       }
     } else if ($request->type == 'LEM') {
       $form->leave_time_begin = date('H:i', strtotime($request->leave_time_begin));
       $form->leave_time_end = $morning_end;
       $form->leave_date = date('Y-m-d', strtotime($request->leave_time_begin));
       if ($form->leave_time_begin > $form->leave_time_end) {
-        $message = $message . "Đây là form xin về sơm, thời gian đến của bạn không chính xác\n";
+        $message = $message . "Đây là form xin về sơm, thời gian đến của bạn không chính xác. \n";
       } else if ($morning_late > $form->leave_time_begin) {
-        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa\n";
+        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa. \n";
       }
     } else if ($request->type == 'LEA') {
       $form->leave_time_begin = date('H:i', strtotime($request->leave_time_begin));
       $form->leave_time_end = $afternoon_end;
       $form->leave_date = date('Y-m-d', strtotime($request->leave_time_begin));
       if ($form->leave_time_begin > $form->leave_time_end) {
-        $message = $message . "Đây là form xin về sơm, thời gian đến của bạn không chính xác\n";
+        $message = $message . "Đây là form xin về sơm, thời gian đến của bạn không chính xác. \n";
       } else if ($afternoon_late > $form->leave_time_begin) {
-        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa\n";
+        $message = $message . "Lượng thời gian của bạn không thể lớn hơn thời gian cho phép tối đa. \n";
       }
     } else if ($request->type == 'LO') {
       $form->leave_time_begin = date('H:i', strtotime($request->leave_time_begin));
       $form->leave_time_end = date('H:i', strtotime($request->leave_time_end));
       $form->leave_date = date('Y-m-d', strtotime($request->leave_time_begin));
       if ($form->leave_time_begin > $morning_begin) {
-        $message = $message . "Thời gian đăng ký của bạn không thể sớm hơn thời gian bắt đầu làm việc của công ty\n";
+        $message = $message . "Thời gian đăng ký của bạn không thể sớm hơn thời gian bắt đầu làm việc của công ty. \n";
       }
       if ($form->leave_time_end > $afternoon_end) {
-        $message = $message . "Thời gian đăng ký của bạn không thể muộn hơn thời gian kết thúc làm việc của công ty\n";
+        $message = $message . "Thời gian đăng ký của bạn không thể muộn hơn thời gian kết thúc làm việc của công ty. \n";
       }
       if ($form->leave_date != date('Y-m-d', strtotime($request->leave_time_end))) {
-        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày\n";
+        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày. \n";
       }
     } else if ($request->type == 'QQD') {
       $form->work_time_begin = date('H:i', strtotime($request->work_time_begin));
@@ -236,11 +236,28 @@ class FormRequestController extends Controller
       $form->work_time_end = date('H:i', strtotime($request->work_time_end));
       $form->work_date = date('Y-m-d', strtotime($request->work_time_begin));
       if ($form->work_time_begin > $form->work_time_end) {
-        $message = $message . "Yêu cầu thời gian về phải lớn hơn thời gian đến\n";
+        $message = $message . "Yêu cầu thời gian về phải lớn hơn thời gian đến. \n";
       }
       if (date('Y-m-d', strtotime($request->work_time_begin)) != date('Y-m-d', strtotime($request->work_time_end))) {
-        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày\n";
+        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày. \n";
       }
+    } else if ($request->type == 'RM' || $request->type == 'OT') {
+      $form->work_time_begin = date('H:i', strtotime($request->work_time_begin));
+      $form->work_time_end = date('H:i', strtotime($request->work_time_end));
+      $form->work_date = date('Y-m-d', strtotime($request->work_time_begin));
+      if (date('Y-m-d', strtotime($request->work_time_begin)) != date('Y-m-d', strtotime($request->work_time_end))) {
+        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày. \n";
+      }
+      if ($form->work_time_begin > $form->work_time_end) {
+        $message = $message . "Yêu cầu thời gian kết thúc phải lớn hơn thời gian bắt đầu. \n";
+      }
+      if (($request->type == 'OT') && ($form->work_time_begin < $afternoon_end)) {
+        $message = $message . "Thời gian làm bù không được bắt đầu trong thời gian làm việc chính thức. \n";
+      }
+      if (($request->type == 'RM') && ($form->work_time_begin < $morning_begin)) {
+        $message = $message . "Thời gian làm sớm hơn thời gian bắt đầu làm việc chính thức. \n";
+      }
+      $form->range_time = $request->range_time;
     }
 
     if (in_array($form->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO'])) {
@@ -248,36 +265,48 @@ class FormRequestController extends Controller
       $form->work_time_end = date('H:i', strtotime($request->work_time_end));
       $form->work_date = date('Y-m-d', strtotime($request->work_time_begin));
       if (date('Y-m-d', strtotime($request->work_time_begin)) != date('Y-m-d', strtotime($request->work_time_end))) {
-        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày\n";
+        $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày. \n";
+      }
+      if ($form->work_time_begin > $form->work_time_end) {
+        $message = $message . "Yêu cầu thời gian về phải lớn hơn thời gian đến. \n";
       }
       if ($form->work_time_begin < $afternoon_end) {
-        $message = $message . "Thời gian làm bù không được bắt đầu trong thời gian làm việc chính thức\n";
+        $message = $message . "Thời gian làm bù không được bắt đầu trong thời gian làm việc chính thức. \n";
       }
       $range_time = (strtotime($request->work_time_end) - strtotime($request->work_time_begin)) / 60;
 
       if ($range_time < $request->range_time) {
-        $message = $message . "Thời gian làm bù không đủ\n";
+        $message = $message . "Thời gian làm bù không đủ. \n";
       }
       if ($form->work_date < $form->leave_date) {
-        $message = $message . "Thời gian làm bù không được trong quá khứ\n";
+        $message = $message . "Thời gian làm bù không được trong quá khứ. \n";
       }
+    }
+    if (in_array($form->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO', 'OT'])) {
       $forms_created = FormRequest::where('work_date', $form->work_date)->get();
-      foreach($forms_created as $created_form) {
-        
-        if(((isset($request->id) && $request->id != $created_form->id)) || !isset($request->id) ) {
-          
+      foreach ($forms_created as $created_form) {
+
+        if (((isset($request->id) && $request->id != $created_form->id)) || !isset($request->id)) {
+
           $created_begin = date('H:i', strtotime($created_form->work_time_begin));
           $created_end = date('H:i', strtotime($created_form->work_time_end));
           $validate = false;
-          if($form->work_time_begin >= $created_end || $form->work_time_end <= $created_begin) {
+          if ($form->work_time_begin >= $created_end || $form->work_time_end <= $created_begin) {
             $validate = true;
           }
-          if($validate == false) {
-            $message = $message . "Thời gian làm bù đã bị trùng thời gian của yêu khác\n";
+          if ($validate == false) {
+            $message = $message . "Thời gian đăng ký đã bị trùng thời gian của yêu cầu khác. \n";
           }
         }
       }
     }
     return ['form' => $form, 'message' => $message];
+  }
+
+  public function usersRequests()
+  {
+    if(Auth::user()->can('check-request') || Auth::user()->can('approve-request')) {
+      return true;
+    }
   }
 }

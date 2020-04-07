@@ -2,7 +2,7 @@
   <div class="new_request bg-white">
     <div>
       <div class="header text-center">
-        <h4 class="m-0">Yêu cầu OT, REMOTE</h4>
+        <h4 class="m-0">Yêu cầu IL, LE, LO, QQ</h4>
       </div>
       <div class="body">
         <div class="content p-3">
@@ -15,15 +15,15 @@
             label-position="top"
           >
             <el-form-item label="Tên nhân viên">
-              <el-input :disabled="true" v-model="user.name"></el-input>
+              <el-input :disabled="true" v-model="form.user_name"></el-input>
             </el-form-item>
             <el-form-item label="Mã số nhân viên">
-              <el-input :disabled="true" v-model="user.employee_code"></el-input>
+              <el-input :disabled="true" v-model="form.user_code"></el-input>
             </el-form-item>
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="Chi nhánh">
-                  <el-select v-model="user.branch_id" class="w-100" :disabled="true">
+                  <el-select v-model="form.user_branch" class="w-100" :disabled="true">
                     <el-option
                       v-for="(type,index) in infoCompany.branches"
                       :label="type.name"
@@ -36,7 +36,7 @@
               <el-col :span="12">
                 <el-form-item label="Phòng ban">
                   <el-cascader
-                    v-model="user.group_id"
+                    v-model="form.user_group"
                     :options="infoCompany.groups"
                     :props="{ checkStrictly: true, label: 'name', value: 'id' }"
                     clearable
@@ -95,7 +95,7 @@
           <div class="text-center">
             <el-button
               type="primary"
-              @click="createRequest('form-request')"
+              @click="updateRequest('form-request')"
               style="padding: 15px 100px 15px 100px;"
             >Lưu</el-button>
           </div>
@@ -121,7 +121,11 @@ export default {
         work_time_begin: "",
         work_time_end: "",
         reason: "",
-        range_time: ""
+        range_time: "",
+        id: "",
+        user_name: "",
+        user_branch: "",
+        user_group: ""
       },
       rules: {
         reason: { required: true, message: "Hãy nhập lý do", trigger: "blur" },
@@ -145,25 +149,20 @@ export default {
     };
   },
   created() {
-    this.getUser();
     this.getWorkingTimeInfo();
+    this.getFormRequest();
   },
   computed: {
-    ...mapState(["user", "infoCompany"])
+    ...mapState(["infoCompany"])
   },
   methods: {
-    getUser() {
-      this.$store.dispatch("fetchOne", this.$root.user.id).then(
-        response => {
-          this.componentLoaded = true;
-          if (response.data.status === false) {
-            this.error.message = response.data.message;
-          }
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    getFormRequest() {
+      console.log(this.$route.params.id);
+      axios
+        .get("/api/form_requests/" + this.$route.params.id)
+        .then(response => {
+          this.form = response.data;
+        });
     },
     getWorkingTimeInfo() {
       axios.get("/api/specifiedWorkingTime").then(response => {
@@ -303,32 +302,32 @@ export default {
       }
       return false;
     },
-    createRequest(formName) {
+    updateRequest(formName) {
       this.$refs[formName].validate(valid => {
-        if (valid && this.validate) {
-          this.form.user_code = this.user.employee_code;
-          axios.post("/api/form_requests", this.form).then(response => {
-            if (response.data.status === false) {
-              this.error.message = response.data.message;
-              setTimeout(() => {
-                this.error.message = "";
-              }, 3000);
-              this.$notify.error({
-                title: "Thất bại",
-                message: response.data.message,
-                position: "bottom-right"
-              });
-            } else {
-              this.$refs[formName].resetFields();
-              this.$notify({
-                title: "Hoàn thành",
-                message: "Gửi yêu cầu thành công",
-                type: "success",
-                position: "bottom-right"
-              });
-              this.$router.push("/request_ot");
-            }
-          });
+        if (valid) {
+          axios
+            .put("/api/form_requests/" + this.form.id, this.form)
+            .then(response => {
+              if (response.data.status === false) {
+                this.error.message = response.data.message;
+                setTimeout(() => {
+                  this.error.message = "";
+                }, 3000);
+                this.$notify.error({
+                  title: "Thất bại",
+                  message: response.data.message,
+                  position: "bottom-right"
+                });
+              } else {
+                this.$notify({
+                  title: "Hoàn thành",
+                  message: "Sửa yêu cầu thành công",
+                  type: "success",
+                  position: "bottom-right"
+                });
+                this.$router.push("/request_ot");
+              }
+            });
         }
       });
     }
