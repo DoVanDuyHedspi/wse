@@ -110,7 +110,6 @@ class EventController extends Controller
         $new_event->time_out = date('H:i', strtotime($request->time_out));
         $new_event->user_code = $request->user_code;
         $new_event->status = 1;
-        $new_event->save();
         $ev_update = EventHelper::updateEventInfo($new_event);
         $ev_update->save();
       } else {

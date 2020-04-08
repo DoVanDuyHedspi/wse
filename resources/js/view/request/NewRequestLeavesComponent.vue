@@ -285,7 +285,7 @@ export default {
           trigger: "blur"
         }
       },
-      validate: false
+      validate: true
     };
   },
   created() {
@@ -320,7 +320,7 @@ export default {
       this.form.work_time_begin = "";
       this.form.work_time_end = "";
       this.form.range_time = "";
-      this.validate = false;
+      this.validate = true;
     },
     validateIL(type, specified_late_time, specified_begin_time) {
       let leave_time_end = moment(this.form.leave_time_end).format("HH:mm:ss");
@@ -620,6 +620,7 @@ export default {
       return false;
     },
     createRequest(formName) {
+      console.log('???');
       this.$refs[formName].validate(valid => {
         if (valid && this.validate) {
           this.form.user_code = this.user.employee_code;

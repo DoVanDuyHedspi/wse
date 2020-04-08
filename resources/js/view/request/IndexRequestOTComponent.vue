@@ -17,7 +17,7 @@
       <el-select v-model="filter.status" placeholder="Chọn trạng thái">
         <el-option value="waiting" label="Đang chờ"></el-option>
         <el-option value="cancel" label="Hủy bỏ"></el-option>
-        <el-option value="forward" label="Đang chuyển tiếp"></el-option>
+        <el-option value="forward" label="Chuyển tiếp"></el-option>
         <el-option value="accept" label="Chấp nhận"></el-option>
         <el-option value="refuse" label="Từ chối"></el-option>
       </el-select>
@@ -49,7 +49,7 @@
               <el-tag type="danger">Hủy bỏ</el-tag>
             </span>
             <span v-if="scope.row.status == 'forward'">
-              <el-tag>Đang chuyển tiếp</el-tag>
+              <el-tag>Chuyển tiếp</el-tag>
             </span>
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>

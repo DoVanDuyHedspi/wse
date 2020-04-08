@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Event;
 use App\FormRequest;
+use App\Helpers\EventHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -20,16 +22,16 @@ class FormRequestController extends Controller
   {
     $filter = $request->query();
     if (count($filter)) {
-      $form = Auth::user()->form_requests()->when($filter["status"], function ($query, $status) {
+      $forms = Auth::user()->form_requests()->when($filter["status"], function ($query, $status) {
         return $query->where("status", $status);
       })->when($filter["month"], function ($query, $month) {
         return $query->where("created_at", "like", '%' . date('Y-m', strtotime($month)) . '%');
       })->with('user')->orderBy('created_at', 'desc')->get();
     } else {
-      $form = Auth::user()->form_requests()->with('user')->orderBy('created_at', 'desc')->get();
+      $forms = Auth::user()->form_requests()->with('user')->orderBy('created_at', 'desc')->get();
     }
 
-    return $form;
+    return $forms;
   }
 
   public function store(Request $request)
@@ -274,7 +276,7 @@ class FormRequestController extends Controller
         $message = $message . "Thời gian làm bù không được bắt đầu trong thời gian làm việc chính thức. \n";
       }
       $range_time = (strtotime($request->work_time_end) - strtotime($request->work_time_begin)) / 60;
-
+      $form->range_time = $range_time;
       if ($range_time < $request->range_time) {
         $message = $message . "Thời gian làm bù không đủ. \n";
       }
@@ -283,7 +285,7 @@ class FormRequestController extends Controller
       }
     }
     if (in_array($form->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO', 'OT'])) {
-      $forms_created = FormRequest::where('work_date', $form->work_date)->get();
+      $forms_created = FormRequest::where('work_date', $form->work_date)->whereIn('type',['ILM', 'ILA', 'LEM', 'LEA', 'LO', 'OT'])->get();
       foreach ($forms_created as $created_form) {
 
         if (((isset($request->id) && $request->id != $created_form->id)) || !isset($request->id)) {
@@ -303,10 +305,148 @@ class FormRequestController extends Controller
     return ['form' => $form, 'message' => $message];
   }
 
-  public function usersRequests()
+  public function usersRequests(Request $request)
   {
-    if(Auth::user()->can('check-request') || Auth::user()->can('approve-request')) {
-      return true;
+    if (Auth::user()->can('check-requests') || Auth::user()->can('approve-requests')) {
+      $filter = $request->query();
+      if (count($filter)) {
+        $forms = FormRequest::with('user')->when($filter["status"], function ($query, $status) {
+          return $query->where("status", $status);
+        })->when($filter["date_begin"], function ($query, $date_begin) {
+          return $query->whereDate("created_at", '>=', date('Y-m-d H:i:s', strtotime($date_begin)));
+        })->when($filter["date_end"], function ($query, $date_end) {
+          return $query->whereDate("created_at", '<=', date('Y-m-d H:i:s', strtotime($date_end)));
+        })->whereHas('user', function ($query) use ($filter) {
+          return $query->when($filter["group_id"], function ($q, $group_id) {
+            return $q->where("group_id", $group_id);
+          })->when($filter["branch_id"], function ($q, $branch_id) {
+            return $q->where("branch_id", $branch_id);
+          })->when($filter["search"], function ($q, $search) {
+            return $q->where(function ($qr) use ($search) {
+              $qr->where("name", "like", '%' . $search . '%')->orWhere("employee_code", "like", '%' . $search . '%');
+            });
+          });
+        })->orderBy('created_at', 'desc')->get();
+      } else {
+        $forms = FormRequest::with('user')->orderBy('created_at', 'desc')->get();
+      }
+      // dd($filter["date_begin"]);
+      return $forms;
     }
+    return response(['status' => false, 'message' => 'Bạn không có quyền kiểm tra hoặc duyệt yêu cầu của nhân viên'], 200);
+  }
+
+  public function approveRequest(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'action' => 'required',
+      'request_id' => 'required'
+    ]);
+    if ($validator->fails()) {
+      return response([
+        'status' => false,
+        'message' => 'Hãy nhập đủ thông tin!'
+      ], 200);
+    }
+    $form = FormRequest::find($request->request_id);
+    if ($form == null) {
+      return response([
+        'status' => false,
+        'message' => 'Yêu cầu này không tồn tại'
+      ], 200);
+    }
+    if (in_array($request->action, ['forward', 'cancel']) && Auth::user()->can('check-requests')) {
+      $form->status = $request->action;
+      $form->save();
+      return response([
+        'status' => true
+      ], 200);
+    }
+    if (in_array($request->action, ['accept', 'refuse']) && Auth::user()->can('approve-requests')) {
+      $form->status = $request->action;
+      
+      if ($request->action == 'accept') {
+        
+        $message = self::acceptRequest($form);
+        if (strlen($message) != 0) {
+          return response([
+            'status' => false,
+            'message' => $message
+          ], 200);
+        }
+      }
+      $form->save();
+      return response([
+        'status' => true
+      ], 200);
+    }
+    return response([
+      'status' => false,
+      'message' => 'Bạn không có quyền kiểm tra, duyệt yêu cầu'
+    ], 200);
+  }
+
+  static function acceptRequest($request)
+  {
+    $message = '';
+    if (in_array($request->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO'])) {
+      $event_work = Event::whereDate('date', '=', date('Y-m-d', strtotime($request->work_date)))->first();
+      $event_leave = Event::whereDate('date', '=', date('Y-m-d', strtotime($request->leave_date)))->first();
+      if ($event_work) {
+        $time_in = date('H:i', strtotime($event_work->time_in));
+        $time_out = date('H:i', strtotime($event_work->time_out));
+        $work_begin = date('H:i', strtotime($request->work_time_begin));
+        $work_end = date('H:i', strtotime($request->work_time_end));
+        if ($time_in <= $work_begin && $time_out >= $work_end) {
+          if ($request->type == 'ILM') {
+            $event_leave->ILM = 0;
+          } else if ($request->type == 'LEM') {
+            $event_leave->LEM = 0;
+          } else if ($request->type == 'ILA') {
+            $event_leave->ILA = 0;
+          } else if ($request->type == 'LEA') {
+            $event_leave->LEA = 0;
+          }
+
+          $has_error = $event_leave->ILM + $event_leave->LEM + $event_leave->ILA + $event_leave->LEA;
+          if ($has_error == 0) {
+            $event_leave->status = 2;
+          }
+          $event_leave->fined_time -= $request->range_time;
+          $event_leave->save();
+        } else {
+          $message = $message  . "Nhân viên chưa làm bù đủ giờ\n";
+        }
+      } else {
+        $message = $message . "Nhân viên chưa làm bù\n";
+      }
+    } else if (in_array($request->type, ['QQD', 'QQV', 'QQF'])) {
+      $event_work = Event::whereDate('date', '=', date('Y-m-d', strtotime($request->work_date)))->first();
+      if ($request->type == 'QQF') {
+        $event_work->time_in = date('H:i', strtotime($request->work_time_begin));
+        $event_work->time_out = date('H:i', strtotime($request->work_time_end));
+      } else if ($request->type == 'QQV') {
+        $event_work->time_out = date('H:i', strtotime($request->work_time_end));
+      } else {
+        if ($event_work->time_out) {
+          $event_work->time_in = date('H:i', strtotime($request->work_time_begin));
+        } else {
+          $event_work->time_out =  $event_work->time_in;
+          $event_work->time_in = date('H:i', strtotime($request->work_time_begin));
+        }
+      }
+      $ev_update = EventHelper::updateEventInfo($event_work);
+      $ev_update->save();
+    } else if ($request->type == 'OT') {
+      $new_event = new Event();
+      $new_event->date = date('Y-m-d', strtotime($request->work_date));
+      $new_event->time_in = date('H:i', strtotime($request->work_time_begin));
+      $new_event->time_out = date('H:i', strtotime($request->work_time_end));
+      $new_event->user_code = $request->user_code;
+      $new_event->status = 1;
+      $ev_update = EventHelper::updateEventInfo($new_event);
+      $ev_update->save();
+    }
+    return $message;
   }
 }
