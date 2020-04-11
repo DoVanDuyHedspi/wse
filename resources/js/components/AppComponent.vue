@@ -31,6 +31,21 @@
                   <span slot="title">Quản lý bảng thời gian</span>
                 </el-menu-item>
               </router-link>
+              <el-submenu index="1-3">
+                <template slot="title">
+                  <span slot="title">Yêu cầu của nhân viên</span>
+                </template>
+                <router-link to="/users_requests/ot_remote">
+                  <el-menu-item index="1-3-1">
+                    <span slot="title">Làm ngoài giờ, remote</span>
+                  </el-menu-item>
+                </router-link>
+                <router-link to="/users_requests/leaves">
+                  <el-menu-item index="1-3-2">
+                    <span slot="title">Làm bù</span>
+                  </el-menu-item>
+                </router-link>
+              </el-submenu>
             </el-menu-item-group>
             <el-menu-item-group title="Tổ chức">
               <router-link to="/organization">
@@ -62,12 +77,12 @@
             </template>
             <router-link to="/request_ot">
               <el-menu-item index="4-1">
-                <span slot="title">Làm thêm giờ</span>
+                <span slot="title">Làm ngoài giờ, remote</span>
               </el-menu-item>
             </router-link>
             <router-link to="/request_leaves">
               <el-menu-item index="4-2">
-                <span slot="title">Sửa bảng thời gian</span>
+                <span slot="title">Làm bù</span>
               </el-menu-item>
             </router-link>
           </el-submenu>
@@ -156,14 +171,14 @@ export default {
   text-align: right;
 }
 .el-aside {
-  max-width: 200px;
+  max-width: 215px;
   ul {
     height: 100%;
     min-height: 100vh;
   }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 215px;
   min-height: 400px;
   height: 100%;
   min-height: 100vh;

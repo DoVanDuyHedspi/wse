@@ -10,15 +10,15 @@
       </el-breadcrumb>
     </div>
     <div class="container mt-3">
-      <div class="mb-2">
+      <div class="my-4">
         <el-row>
           <el-col :span="24">
-            <div class="grid-content">
+            <div class="text-center">
               <h3>
-                Danh sách vai trò
-                <el-tooltip effect="dark" :content="info" placement="right-start">
+                DANH SÁCH VAI TRÒ
+                <!-- <el-tooltip effect="dark" :content="info" placement="right-start">
                   <i class="el-icon-question" style="font-size: 20px"></i>
-                </el-tooltip>
+                </el-tooltip> -->
               </h3>
             </div>
           </el-col>
@@ -29,12 +29,12 @@
           </el-col>
           <el-col :span="12" :offset="12">
             <div class="grid-content float-right">
-              <el-dropdown split-button type="danger">
+              <!-- <el-dropdown split-button type="danger">
                 Thao tác
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>Xóa</el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
               <el-button
                 icon="el-icon-plus"
                 type="success"

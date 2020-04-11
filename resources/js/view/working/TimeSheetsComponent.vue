@@ -136,11 +136,16 @@ export default {
   text-align: center;
 }
 
-.cv-day {
-  background: lightyellow;
-}
+// .cv-day {
+//   background: lightyellow;
+// }
 
 .theme-default .cv-day.past {
+  // background: lightyellow;
+  background: white;
+}
+
+.theme-default .cv-day.future {
   // background: lightyellow;
   background: white;
 }
@@ -161,9 +166,17 @@ export default {
   background-color: #fa0404b9;
 }
 
+.theme-default .cv-event.pink {
+  background-color:pink;
+}
+
 .theme-default .cv-header {
-  background: skyblue;
+  // background: skyblue;
   border-radius: 10px 10px 0 0;
+}
+
+.theme-default .cv-header-day {
+    background-color: white;
 }
 
 .theme-default .cv-day.today {
@@ -182,7 +195,7 @@ export default {
 
 .theme-default .cv-header button {
   color: black;
-  background: floralwhite;
+  background: white;
 }
 #timesheets {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

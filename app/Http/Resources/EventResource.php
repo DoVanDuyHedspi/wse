@@ -22,6 +22,8 @@ class EventResource extends JsonResource
         $classe = 'green';
       } else if ($this->status == 1) {
         $classe = 'red';
+      } else if ($this->status == 2) {
+        $classe = 'pink';
       }
     }
 

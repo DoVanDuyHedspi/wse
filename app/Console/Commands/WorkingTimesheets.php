@@ -43,14 +43,13 @@ class WorkingTimesheets extends Command
   {
     $data = new WorkLib();
     $res = $data->getTimeKeepingData();
-    // dd(Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d\\T H:i:s'));
     if (isset($res['info']['SearchInfo'])) {
       $events = $res['info']['SearchInfo'];
       $events = array_reverse($events);
       foreach ($events as $event) {
         $date = date("Y-m-d", strtotime($event["Time"]));
         $time = date("H:i", strtotime($event["Time"]));
-        $ev = Event::where('date', $date)->first();
+        $ev = Event::where('date', $date)->where('user_code', $event['CustomizeID'])->first();
         if (!$ev) {
           $new_event = new Event();
           $new_event->date = $date;
@@ -58,7 +57,11 @@ class WorkingTimesheets extends Command
           $new_event->user_code = $event['CustomizeID'];
           $new_event->status = 1;
           $new_event->save();
-        } else if(date('H:i', strtotime($ev->time_out))<=$time)  {         
+        } else if ( $ev->time_out == null) {
+          $ev->time_out = $time;
+          $ev_update = EventHelper::updateEventInfo($ev);
+          $ev_update->save();
+        } else if (date('H:i', strtotime($ev->time_out)) <= $time ) {
           $ev->time_out = $time;
           $ev_update = EventHelper::updateEventInfo($ev);
           $ev_update->save();
