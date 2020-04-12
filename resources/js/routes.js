@@ -22,6 +22,7 @@ import branchRoutes from './view/branches';
 import groupRoutes from './view/groups';
 import workingRoutes from './view/working';
 import requestRoutes from './view/request';
+import reportRoutes from './view/report';
 
 export default [
   ...userRoutes,
@@ -30,4 +31,5 @@ export default [
   ...groupRoutes,
   ...workingRoutes,
   ...requestRoutes,
+  ...reportRoutes,
 ]

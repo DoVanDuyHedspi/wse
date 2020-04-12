@@ -13,3 +13,8 @@ Route::get('/form_requests/users/requests', 'Api\FormRequestController@usersRequ
 Route::post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
 Route::get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 
+// Route::post('/fake_face_report', 'Api\FakeFaceReportController@store');
+// Route::get('/fake_face_report', 'Api\FakeFaceReportController@index');
+// Route::delete('/fake_face_report/{id}/', 'Api\FakeFaceReportController@destroy');
+
+Route::apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
