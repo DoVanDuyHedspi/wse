@@ -164,8 +164,8 @@ class UserController extends Controller
         };
         $user->clearMediaCollection('avatar');
         $user->addMediaFromRequest('image')->toMediaCollection('avatar');
-        // $lib = new UserLib();
-        // $lib->editPerson($user);
+        $lib = new UserLib();
+        $lib->editPerson($user);
 
         return response()->json(['avatar' => $user->getFirstMediaUrl('avatar')]);
       }

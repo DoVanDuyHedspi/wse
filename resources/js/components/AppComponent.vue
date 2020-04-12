@@ -92,6 +92,17 @@
               <span slot="title">Dữ liệu workspace</span>
             </el-menu-item>
           </router-link>
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-s-flag"></i>
+              <span slot="title">Báo cáo</span>
+            </template>
+            <router-link to="/report/fake_face_report">
+              <el-menu-item index="6-1">
+                <span slot="title">Mặt giả</span>
+              </el-menu-item>
+            </router-link>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <el-container>
