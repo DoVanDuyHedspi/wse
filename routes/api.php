@@ -1,20 +1,25 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+$router->apiResource('events', 'Api\EventController')->only(['index', 'show']);
+$router->post('/events', 'Api\EventController@update');
+$router->apiResource('form_requests', 'Api\FormRequestController');
+$router->get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
+$router->post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
+$router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 
-Route::apiResource('events', 'Api\EventController')->only(['index', 'show']);
-Route::post('/events', 'Api\EventController@update');
-Route::apiResource('form_requests', 'Api\FormRequestController');
-Route::get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
-Route::post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
-Route::get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
+$router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
 
-// Route::post('/fake_face_report', 'Api\FakeFaceReportController@store');
-// Route::get('/fake_face_report', 'Api\FakeFaceReportController@index');
-// Route::delete('/fake_face_report/{id}/', 'Api\FakeFaceReportController@destroy');
+$router->resource('/users', 'Api\UserController');
 
-Route::apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
+$router->resource('/permissions', 'Api\PermissionController');
+
+$router->resource('/roles', 'Api\RoleController');
+
+$router->resource('/branches', 'Api\BranchController');
+
+$router->resource('/groups', 'Api\GroupController');
+
+$router->get('/company/getInfo', 'Api\CompanyController@getInfo');

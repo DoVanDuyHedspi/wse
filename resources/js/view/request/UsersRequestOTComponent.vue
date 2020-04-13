@@ -155,6 +155,15 @@
                 @click.native.prevent="handleApprove(scope.row, scope.$index,'accept')"
               ></el-button>
             </el-tooltip>
+            <el-tooltip content="Đã xử lý" placement="top">
+              <el-button
+                class="mx-0 my-1"
+                size="mini"
+                icon="el-icon-s-check"
+                disabled
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+              ></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>

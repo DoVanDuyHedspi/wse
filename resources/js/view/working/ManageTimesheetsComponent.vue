@@ -226,6 +226,12 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchUsersTimesheets");
+    if(Object.keys(this.$route.query).length !== 0){
+      if(this.$route.query.branch_id){
+        this.filter.branch_id = parseInt(this.$route.query.branch_id);
+      }
+    }
+    this.filterEvents();
   },
   computed: mapState({
     users: state => state.users_timesheets,

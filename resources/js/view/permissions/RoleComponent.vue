@@ -4,9 +4,8 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
-        <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
-        <el-breadcrumb-item>Danh sách quyền</el-breadcrumb-item>
-        <el-breadcrumb-item>Danh sách vai trò</el-breadcrumb-item>
+        <el-breadcrumb-item>Phân quyền hệ thống</el-breadcrumb-item>
+        <el-breadcrumb-item>Nhóm quyền</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container mt-3">
@@ -15,31 +14,27 @@
           <el-col :span="24">
             <div class="text-center">
               <h3>
-                DANH SÁCH VAI TRÒ
+                DANH SÁCH NHÓM QUYỀN
                 <!-- <el-tooltip effect="dark" :content="info" placement="right-start">
                   <i class="el-icon-question" style="font-size: 20px"></i>
-                </el-tooltip> -->
+                </el-tooltip>-->
               </h3>
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="6">
-            <!-- <div class="grid-content">Có x mục đã được chọn</div> -->
           </el-col>
           <el-col :span="12" :offset="12">
             <div class="grid-content float-right">
-              <!-- <el-dropdown split-button type="danger">
-                Thao tác
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>Xóa</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown> -->
               <el-button
                 icon="el-icon-plus"
                 type="success"
                 @click="dialogCreateVisible = true"
               >Thêm mới</el-button>
+              <router-link to="/permission">
+                <el-button icon="el-icon-s-custom" type="primary">Quyền hạn</el-button>
+              </router-link>
             </div>
           </el-col>
         </el-row>
@@ -92,21 +87,32 @@
         :data="dataTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
         style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
         border
+        header-cell-class-name="text-center"
       >
-        <!-- <el-table-column type="selection" width="55"></el-table-column> -->
-        <el-table-column property="slug" label="Tên" class-name="text-center"></el-table-column>
-        <el-table-column property="name" label="Nội dung" class-name="text-center"></el-table-column>
-        <el-table-column align="right" class-name="text-center">
+        <el-table-column property="id" label="#Id" width="50" class-name="text-center"></el-table-column>
+        <el-table-column property="slug" label="Tên" width="150"></el-table-column>
+        <el-table-column property="name" label="Nội dung" width="200"></el-table-column>
+        <el-table-column label="Quyền hạn">
+          <template slot-scope="scope">
+            <el-tag
+              class="m-1"
+              type="info"
+              v-for="per in scope.row.permissions"
+              :key="per.id"
+            >{{per.slug}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column align="right" class-name="text-center" width="200">
           <template slot="header" slot-scope="scope">
             <el-input v-model="search" size="mini" placeholder="Tìm kiếm" />
           </template>
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Sửa</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>
             <el-button
               size="mini"
               type="danger"
               @click.native.prevent="deleteRole(scope.$index, scope.row)"
-            >Xóa</el-button>
+            ><i class="el-icon-delete"></i></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -173,7 +179,7 @@ export default {
         name: "",
         index: "",
         id: "",
-        permissions: [],
+        permissions: []
       },
       rules: {
         name: [{ required: true, message: "Hãy nhập tên", trigger: "blur" }],
@@ -189,7 +195,7 @@ export default {
   methods: {
     getRoles(page = 1) {
       axios
-        .get("/roles?page=" + page)
+        .get("/api/roles?page=" + page)
         .then(response => {
           if (response.data.status === false) {
             this.error.message = response.data.message;
@@ -207,7 +213,7 @@ export default {
       this.$refs[formName].validate(valid => {
         console.log(valid);
         if (valid) {
-          axios.post("/roles", this.form).then(response => {
+          axios.post("/api/roles", this.form).then(response => {
             this.dialogCreateVisible = false;
             this.$refs[formName].resetFields();
             if (response.data.status === false) {
@@ -230,12 +236,12 @@ export default {
       this.editForm.slug = role.slug;
       this.editForm.name = role.name;
       this.editForm.index = index;
-      this.editForm.id = role.id; 
+      this.editForm.id = role.id;
       let permissions = this.roles.data[index].permissions;
       let list = [];
       permissions.map(function(per) {
         list.push(per.id);
-      })
+      });
       this.editForm.permissions = list;
       this.dialogEditVisible = true;
     },
@@ -243,7 +249,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
-            .put("/roles/" + this.editForm.id, this.editForm)
+            .put("/api/roles/" + this.editForm.id, this.editForm)
             .then(response => {
               this.dialogEditVisible = false;
               this.$refs[formName].resetFields();
@@ -254,9 +260,12 @@ export default {
                 }, 3000);
               } else {
                 this.noti = "Sửa quyền thành công!";
-                this.dataTable[this.editForm.index].slug = response.data.role.slug;
-                this.dataTable[this.editForm.index].name = response.data.role.name;
-                this.roles.data[this.editForm.index].permissions = response.data.permissions;
+                this.dataTable[this.editForm.index].slug =
+                  response.data.role.slug;
+                this.dataTable[this.editForm.index].name =
+                  response.data.role.name;
+                this.roles.data[this.editForm.index].permissions =
+                  response.data.permissions;
                 setTimeout(() => {
                   this.noti = "";
                 }, 3000);
@@ -272,7 +281,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          axios.delete("/roles/" + role.id).then(response => {
+          axios.delete("/api/roles/" + role.id).then(response => {
             if (response.data.status === false) {
               this.error.message = response.data.message;
               setTimeout(() => {

@@ -124,7 +124,7 @@ const usersStore = new Vuex.Store({
   actions: {
     fetch({ commit }) {
       return new Promise((resolve, reject) => {
-        axios.get('/users')
+        axios.get('api/users')
           .then(response => {
             commit('FETCH', response.data);
             resolve(response);
@@ -134,14 +134,14 @@ const usersStore = new Vuex.Store({
       })
     },
     async fetchOne({ commit }, id) {
-      let response = await axios.get(`/users/${id}/edit`);
+      let response = await axios.get(`api/users/${id}/edit`);
       if (response.data.status !== false) {
         commit('FETCH_ONE', response.data);
       }
       return response;
     },
     fetchCompanyInfo({ commit }) {
-      return axios.get('company/getInfo').then(response => {
+      return axios.get('api/company/getInfo').then(response => {
         commit('FETCH_COMPANY_INFO', response.data)
       }).catch();
     },
@@ -171,7 +171,7 @@ const usersStore = new Vuex.Store({
     },
     deleteUser({ }, id) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/users/${id}`)
+        axios.delete(`api/users/${id}`)
           .then(response => {
             this.dispatch('fetch')
             resolve(response);

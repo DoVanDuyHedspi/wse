@@ -96,6 +96,15 @@
                 v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
               ></el-button>
+              <el-tooltip content="Đã xử lý" placement="top">
+                <el-button
+                  class="mx-0 my-1"
+                  size="mini"
+                  icon="el-icon-s-check"
+                  disabled
+                  v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+                ></el-button>
+              </el-tooltip>
             </el-button-group>
           </template>
         </el-table-column>
@@ -177,10 +186,10 @@ export default {
             if (request.type == "OT" || request.type == "RM") {
               form_requests.push(request);
             }
-          });       
+          });
         });
-        this.form_requests = form_requests;
-        this.dataTable = this.getDataTable();
+      this.form_requests = form_requests;
+      this.dataTable = this.getDataTable();
     },
     deleteFormRequest(index, form_request) {
       this.$confirm(

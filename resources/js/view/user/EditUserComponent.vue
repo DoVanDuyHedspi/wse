@@ -546,7 +546,7 @@ export default {
       formData.append("image", this.imageFile);
       formData.append("_method", "PATCH");
       axios
-        .post("/users/" + this.user.id, formData, {
+        .post("/api/users/" + this.user.id, formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
@@ -574,7 +574,7 @@ export default {
       this.user.permissions = this.permissions.sort();
       this.user.roles = this.roles.sort();
       this.user.roles_has_pers = this.role_has_permissions.sort();
-      axios.put("/users/" + this.user.id, this.user).then(response => {
+      axios.put("/api/users/" + this.user.id, this.user).then(response => {
         if (response.data.status === false) {
           this.error.message = response.data.message;
           this.$notify.error({
