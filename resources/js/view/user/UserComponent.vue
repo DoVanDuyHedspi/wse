@@ -163,7 +163,12 @@ export default {
     };
   },
   created() {
-    // this.dataTable = {getUsersDataTable};
+    if(Object.keys(this.$route.query).length !== 0){
+      if(this.$route.query.branch_id){
+        this.filter.branch_id = parseInt(this.$route.query.branch_id);
+      }
+    }
+    this.filterUsers();
   },
   computed: mapState({
     users: state => state.users,
@@ -190,7 +195,7 @@ export default {
     },
     filterUsers() {
       axios
-        .get("/users", {
+        .get("/api/users", {
           params: {
             branch_id: this.filter.branch_id,
             group_id: this.filter.group_id,

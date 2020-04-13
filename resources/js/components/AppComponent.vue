@@ -51,15 +51,19 @@
               <router-link to="/organization">
                 <el-menu-item index="1-3">
                   <!-- <i class="el-icon-connection"></i> -->
-                  <span slot="title">Sơ đồ tổ chức</span>
+                  <span slot="title">Thiết lập tổ chức</span>
                 </el-menu-item>
               </router-link>
             </el-menu-item-group>
             <el-menu-item-group title="Phân quyền hệ thống">
-              <router-link to="/permission">
+              <router-link to="/role">
                 <el-menu-item index="1-4">
-                  <!-- <i class="el-icon-s-claim"></i> -->
-                  <span slot="title">Danh sách quyền</span>
+                  <span slot="title">Nhóm quyền</span>
+                </el-menu-item>
+              </router-link>
+              <router-link to="/permission">
+                <el-menu-item index="1-5">
+                  <span slot="title">Quyền hạn</span>
                 </el-menu-item>
               </router-link>
             </el-menu-item-group>
@@ -115,12 +119,39 @@
                 @click="handleAsideMenu"
               ></i>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" style="line-height: 60px">
               <div class="user-login">
-                <div class="username">User: {{ $root.user.name }}</div>
-                <div class="logout">
+                <el-popover placement="bottom" width="300" trigger="click">
+                  <el-row :gutter="15" class="m-0">
+                    <el-col :span="6">
+                      <el-avatar shape="square" :size="70" class="avatar" :src="$root.user.avatar"></el-avatar>
+                    </el-col>
+                    <el-col :span="18" class="pl-3">
+                      <p class="m-0">
+                        <b>{{$root.user.name}}</b>
+                      </p>
+                      <p>
+                        <b>{{$root.user.email}}</b>
+                      </p>
+                    </el-col>
+                  </el-row>
+                  <el-divider class="my-2"></el-divider>
+                  <el-row class="m-0">
+                    <el-col :span="12" class="text-left">
+                      <router-link :to="'/users/'+$root.user.id">
+                        <el-button size="small">Tài khoản</el-button>
+                      </router-link>
+                    </el-col>
+                    <el-col :span="12" class="text-right">
+                      <el-button size="small" @click.prevent="logout">Đăng xuất</el-button>
+                    </el-col>
+                  </el-row>
+                  <el-avatar slot="reference" class="avatar" :src="$root.user.avatar"></el-avatar>
+                </el-popover>
+
+                <!-- <div class="logout">
                   <a href="#" @click.prevent="logout">Logout</a>
-                </div>
+                </div>-->
               </div>
             </el-col>
           </el-row>
@@ -147,13 +178,16 @@ export default {
     };
   },
   created() {
-    // this.goToUserInfo();
+    if (this.$route.path == "/") {
+      this.goToUserInfo();
+    }
+
     this.$store.dispatch("fetch");
     this.$store.dispatch("fetchCompanyInfo");
   },
   methods: {
     goToUserInfo() {
-      // this.$router.push("/users/" + this.$root.user.id);
+      this.$router.push("/users/" + this.$root.user.id);
     },
     handleAsideMenu() {
       this.isCollapse = !this.isCollapse;
@@ -197,5 +231,10 @@ export default {
     color: white;
     text-decoration: blink;
   }
+}
+
+.avatar {
+  vertical-align: middle;
+  cursor: pointer;
 }
 </style>

@@ -607,7 +607,7 @@ export default {
       formData.append("new_user", rawData);
       formData.append("image", this.imageFile);
       axios
-        .post("/users", formData, {
+        .post("/api/users", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }

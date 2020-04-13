@@ -183,6 +183,15 @@
                 @click.native.prevent="handleApprove(scope.row, scope.$index,'accept')"
               ></el-button>
             </el-tooltip>
+            <el-tooltip content="Đã xử lý" placement="top">
+              <el-button
+                class="mx-0 my-1"
+                size="mini"
+                icon="el-icon-s-check"
+                disabled
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+              ></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -207,7 +216,7 @@ export default {
   data() {
     return {
       error: {
-        message: '',
+        message: ""
       },
       form_requests: [],
       currentPage: 1,
@@ -296,7 +305,7 @@ export default {
       this.dataTable = this.getDataTable();
     },
     handleApprove(form_request, index, action) {
-      console.log(form_request.id)
+      console.log(form_request.id);
       this.$confirm(
         "Bạn có chắc chắn muốn " + action + " yêu cầu này không?",
         "Cảnh báo",

@@ -4,8 +4,8 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
-        <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
-        <el-breadcrumb-item>Danh sách quyền</el-breadcrumb-item>
+        <el-breadcrumb-item>Phân quyền hệ thống</el-breadcrumb-item>
+        <el-breadcrumb-item>Quyền hạn</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container mt-3">
@@ -14,7 +14,7 @@
           <el-col :span="24">
             <div class="text-center">
               <h3>
-                DANH SÁCH QUYỀN
+                DANH SÁCH QUYỀN HẠN
                 <!-- <el-tooltip effect="dark" :content="info" placement="right-start">
                   <i class="el-icon-question" style="font-size: 20px"></i>
                 </el-tooltip> -->
@@ -29,7 +29,7 @@
                 @click="dialogCreateVisible = true"
               >Thêm mới</el-button>
               <router-link to="/role">
-                <el-button icon="el-icon-s-custom" type="primary">Vai trò</el-button>
+                <el-button icon="el-icon-s-custom" type="primary">Nhóm quyền</el-button>
               </router-link>
             </div>
           </el-col>
@@ -61,7 +61,7 @@
         style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
         border
       >
-        <!-- <el-table-column type="selection" width="55"></el-table-column> -->
+        <el-table-column property="id" label="#Id" width="50" class-name="text-center"></el-table-column>
         <el-table-column property="slug" label="Tên" class-name="text-center"></el-table-column>
         <el-table-column property="name" label="Nội dung" class-name="text-center"></el-table-column>
         <el-table-column align="right" class-name="text-center">
@@ -69,12 +69,12 @@
             <el-input v-model="search" size="mini" placeholder="Tìm kiếm" />
           </template>
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Sửa</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>
             <el-button
               size="mini"
               type="danger"
               @click.native.prevent="deletePermisson(scope.$index, scope.row)"
-            >Xóa</el-button>
+            ><i class="el-icon-delete"></i></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -137,7 +137,7 @@ export default {
   methods: {
     getPermissions(page = 1) {
       axios
-        .get("/permissions?page=" + page)
+        .get("/api/permissions?page=" + page)
         .then(response => {
           if (response.data.status === false) {
             this.error.message = response.data.message;
@@ -156,7 +156,7 @@ export default {
         console.log(valid);
         if (valid) {
           axios
-            .post("/permissions", {
+            .post("/api/permissions", {
               slug: this.form.slug,
               name: this.form.name
             })
@@ -190,7 +190,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
-            .put("/permissions/" + this.editForm.id, {
+            .put("/api/permissions/" + this.editForm.id, {
               slug: this.editForm.slug,
               name: this.editForm.name,
               id: this.editForm.id
@@ -222,7 +222,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          axios.delete("/permissions/" + permisson.id).then(response => {
+          axios.delete("/api/permissions/" + permisson.id).then(response => {
             if (response.data.status === false) {
               this.error.message = response.data.message;
               setTimeout(() => {

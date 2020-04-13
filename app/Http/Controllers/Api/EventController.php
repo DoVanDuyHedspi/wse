@@ -18,6 +18,7 @@ class EventController extends Controller
   {
     $this->middleware('auth:api');
   }
+  
   public function index(Request $request)
   {
     $user = Auth::user();
