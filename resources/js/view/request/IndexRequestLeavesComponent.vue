@@ -114,7 +114,7 @@
                 size="mini"
                 type="danger"
                 icon="el-icon-delete"
-                v-if="scope.row.status == 'waiting'"
+                v-if="scope.row.status == 'waiting' || scope.row.status == 'forward'"
                 @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
               ></el-button>
               <el-tooltip content="Đã xử lý" placement="top">

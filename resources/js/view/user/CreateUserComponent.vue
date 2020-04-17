@@ -510,12 +510,11 @@ export default {
         current_address: "",
         permanent_address: "",
         tax_code: "",
-        roles: [],
         permissions: [],
         position_id: "",
         branch_id: "",
         employee_type_id: "",
-        group_id: [],
+        group_id: "",
         vehicle: {
           type: "",
           brand: "",
@@ -546,7 +545,7 @@ export default {
   },
   computed: mapState({
     infoCompany: state => state.infoCompany,
-    handleChangeRole (state) {
+    handleChangeRole(state) {
       let list_roles = this.form.roles;
       let list_pers = [];
       let before_role_has_permissions = this.role_has_permissions;
@@ -601,37 +600,89 @@ export default {
       this.imageFile = "";
     },
     createUser() {
-      let rawData = this.form;
-      rawData = JSON.stringify(rawData);
-      let formData = new FormData();
-      formData.append("new_user", rawData);
-      formData.append("image", this.imageFile);
-      axios
-        .post("/api/users", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(response => {
-          if (response.data.status === false) {
-            this.error.message = response.data.message;
-            this.$notify.error({
-              title: "Thất bại",
-              message: response.data.message,
-              position: "bottom-right"
-            });
-          } else {
-            this.$store.dispatch('fetch');
-            
-            this.$notify({
-              title: "Hoàn thành",
-              message: "Thêm nhân viên mới thành công",
-              type: "success",
-              position: "bottom-right"
-            });
-            this.$router.push("/users/" + response.data.user.id);
-          }
+      let message = this.validate();
+      if (message.length == 0) {
+        let rawData = this.form;
+        rawData = JSON.stringify(rawData);
+        let formData = new FormData();
+        formData.append("new_user", rawData);
+        formData.append("image", this.imageFile);
+        axios
+          .post("/api/users", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          })
+          .then(response => {
+            if (response.data.status === false) {
+              this.error.message = response.data.message;
+              this.$notify.error({
+                title: "Thất bại",
+                message: response.data.message,
+                position: "bottom-right",
+                duration: 0,
+                dangerouslyUseHTMLString: true,
+              });
+            } else {
+              this.$store.dispatch("fetch");
+
+              this.$notify({
+                title: "Hoàn thành",
+                message: "Thêm nhân viên mới thành công",
+                type: "success",
+                position: "bottom-right"
+              });
+              this.$router.push("/users/" + response.data.user.id);
+            }
+          });
+      } else {
+        this.$notify.error({
+          title: "Thất bại",
+          message: message,
+          position: "bottom-right",
+          duration: 0,
+          dangerouslyUseHTMLString: true,
         });
+      }
+    },
+    validate() {
+      let message = "";
+      if (this.form.email == "") {
+        message = message + "- Hãy điền tài khoản Email.</br>";
+      } else {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (regex.test(this.form.email) == false) {
+          message = message + "Hãy điền đúng dạng tài khoản Email.</br>";
+        }
+      }
+      if (this.form.password == "") {
+        message = message + "- Hãy điền mật khẩu tài khoản.</br>";
+      }
+      if (this.form.name == "") {
+        message = message + "- Hãy điền tên nhân viên.</br>";
+      }
+      if (this.form.roles.length == 0) {
+        message = message + "- Hãy chọn vai trò hệ thống của tài khoản.</br>";
+      }
+      if (this.imageFile == "") {
+        message = message + "- Hãy đăng tải ảnh của nhân viên.</br>";
+      }
+      if (this.form.employee_type_id == "") {
+        message = message + "- Hãy chọn loại nhân viên.</br>";
+      }
+      if (this.form.position_id == "") {
+        message = message + "- Hãy chọn vị trí của nhân viên.</br>";
+      }
+      if (this.form.group_id == "") {
+        message = message + "- Hãy chọn phòng ban của nhân viên.</br>";
+      }
+      if (this.form.branch_id == "") {
+        message = message + "- Hãy chọn chi nhánh làm việc.</br>";
+      }
+      if (this.form.official_start_day == "") {
+        message = message + "- Hãy chọn ngày bắt đầu làm việc.</br>";
+      }
+      return message;
     }
   }
 };

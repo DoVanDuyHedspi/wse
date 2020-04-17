@@ -27,9 +27,13 @@ export default [
     path: '/request_ot/edit/:id', component: EditRequestOT, name: 'request_ot.edit'
   },
   {
-    path: '/users_requests/ot_remote', component: UsersRequestsOT, name: 'users_requests_ot.index'
+    path: '/users_requests/ot_remote', component: UsersRequestsOT, name: 'users_requests_ot.index', meta: {
+      permission: 'check-requests',
+    }
   },
   {
-    path: '/users_requests/leaves', component: UsersRequestsLeaves, name: 'users_requests_leaves.index'
+    path: '/users_requests/leaves', component: UsersRequestsLeaves, name: 'users_requests_leaves.index', meta: {
+      permission: 'check-requests',
+    }
   },
 ]

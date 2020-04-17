@@ -96,7 +96,7 @@
           <template slot-scope="scope">
             <el-tag
               class="m-1"
-              type="info"
+              type="primary"
               v-for="per in scope.row.permissions"
               :key="per.id"
             >{{per.slug}}</el-tag>

@@ -226,12 +226,13 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchUsersTimesheets");
-    if(Object.keys(this.$route.query).length !== 0){
-      if(this.$route.query.branch_id){
+    if (Object.keys(this.$route.query).length !== 0) {
+      console.log("test");
+      if (this.$route.query.branch_id) {
         this.filter.branch_id = parseInt(this.$route.query.branch_id);
       }
+      this.filterEvents();
     }
-    this.filterEvents();
   },
   computed: mapState({
     users: state => state.users_timesheets,
@@ -294,7 +295,7 @@ export default {
       this.form.time_in = event.time_in;
       this.form.time_out = event.time_out;
     },
-    updateEvent() {
+    updateEvent: async function() {
       if (this.form.time_in == "" || this.form.time_out == "") {
         this.$notify.error({
           title: "Thất bại",
@@ -317,11 +318,12 @@ export default {
               type: "success",
               position: "bottom-right"
             });
+            this.drawer = false;
           }
-          this.drawer = false;
-          this.$store.dispatch("fetchUsersTimesheets");
         });
       }
+      await this.$store.dispatch("fetchUsersTimesheets");
+      this.dataTable = this.getDataTable();
     }
   }
 };
