@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 
 $router->apiResource('events', 'Api\EventController')->only(['index', 'show']);

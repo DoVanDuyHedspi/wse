@@ -35,8 +35,8 @@ trait HasPermissionsTrait
     $condition1 = (bool) $this->permissions->where('slug', $permission->slug)->count();
     $roles = $this->roles;
     $condition2 = false;
-    foreach($roles as $role) {
-      if($role->permissions->where('slug', $permission->slug)->count()) {
+    foreach ($roles as $role) {
+      if ($role->permissions->where('slug', $permission->slug)->count()) {
         $condition2 = true;
       }
     }
@@ -63,5 +63,26 @@ trait HasPermissionsTrait
     $permissions = $this->getAllPermissions($permissions);
     $this->permissions()->detach($permissions);
     return $this;
+  }
+
+  public function getAllPermissionsOfUser()
+  {
+    $allPermissions = [];
+    if ($this->permissions->count()) {
+      foreach ($this->permissions as $per) {
+        array_push($allPermissions, $per->slug);
+      };
+    }
+
+    foreach ($this->roles as $role) {
+      if ($role->permissions->count()) {
+        foreach ($role->permissions as $per) {
+          if (!in_array($per->slug, $allPermissions, true)) {
+            array_push($allPermissions, $per->slug);
+          }
+        }
+      }
+    }
+    return $allPermissions;
   }
 }

@@ -45,7 +45,7 @@ class BranchController extends Controller
    */
   public function store(Request $request)
   {
-    if ($request->user()->hasRole('manager')) {
+    if ($request->user()->can('update-organization')) {
       $validator = Validator::make($request->all(), [
         'data' => 'required',
         'image' => 'required'
