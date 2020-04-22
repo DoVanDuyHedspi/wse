@@ -4,26 +4,31 @@
       <el-col :span="24" class="text-center">
         <h2>DANH SÁCH YÊU CẦU OT VÀ REMOTE</h2>
       </el-col>
-      <el-col :span="24" class="text-right">
+      <el-col :span="8" class="text-left">
         <router-link to="/request_ot/new">
           <el-button type="success" round>
             <i class="el-icon-plus"></i>Thêm mới
           </el-button>
         </router-link>
       </el-col>
-      <el-col :span="24"></el-col>
+      <el-col :span="16" class="text-right">
+        <el-select v-model="filter.status" placeholder="Chọn trạng thái">
+          <el-option value="waiting" label="Đang chờ"></el-option>
+          <el-option value="cancel" label="Hủy bỏ"></el-option>
+          <el-option value="forward" label="Chuyển tiếp"></el-option>
+          <el-option value="accept" label="Chấp nhận"></el-option>
+          <el-option value="refuse" label="Từ chối"></el-option>
+        </el-select>
+        <el-date-picker
+          v-model="filter.month"
+          format="MM-yyyy"
+          type="month"
+          placeholder="Chọn tháng"
+        ></el-date-picker>
+        <el-button type="primary" @click="filterFormRequests">Lọc</el-button>
+      </el-col>
     </el-row>
-    <el-row :span="24" class="text-right">
-      <el-select v-model="filter.status" placeholder="Chọn trạng thái">
-        <el-option value="waiting" label="Đang chờ"></el-option>
-        <el-option value="cancel" label="Hủy bỏ"></el-option>
-        <el-option value="forward" label="Chuyển tiếp"></el-option>
-        <el-option value="accept" label="Chấp nhận"></el-option>
-        <el-option value="refuse" label="Từ chối"></el-option>
-      </el-select>
-      <el-date-picker v-model="filter.month" format="MM-yyyy" type="month" placeholder="Chọn tháng"></el-date-picker>
-      <el-button type="primary" @click="filterFormRequests">Lọc</el-button>
-    </el-row>
+
     <el-row>
       <el-table
         ref="multipleTable"

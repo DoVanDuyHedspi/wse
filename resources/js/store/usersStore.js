@@ -61,6 +61,14 @@ const usersStore = new Vuex.Store({
     },
     events: [],
     users_timesheets: [],
+    timekeeping: {
+      morning_begin: "",
+      morning_late: "",
+      morning_end: "",
+      afternoon_begin: "",
+      afternoon_late: "",
+      afternoon_end: ""
+    }
   },
   mutations: {
     FETCH(state, users) {
@@ -80,6 +88,9 @@ const usersStore = new Vuex.Store({
     },
     FETCH_USERS_TIMESHEETS(state, users_timesheets) {
       state.users_timesheets = users_timesheets;
+    },
+    FETCH_TIMEKEEPING(state, timekeeping) {
+      state.timekeeping = timekeeping;
     }
   },
   getters: {
@@ -162,6 +173,12 @@ const usersStore = new Vuex.Store({
         commit('FETCH_USERS_TIMESHEETS', response.data.data);
       }
       return response;
+    },
+    async fetchTimekeeping({ commit }) {
+      let response = await axios.get(`api/company/getTimekeeping`);
+      if (response.data.status !== false) {
+        commit('FETCH_TIMEKEEPING', response.data);
+      }
     },
     updateUsers({ commit }, users) {
       commit('UPDATE_USERS', users);

@@ -247,7 +247,6 @@ export default {
       error: {
         message: ""
       },
-      specified_working_time: {},
       form: {
         user_code: "",
         type: "",
@@ -294,12 +293,13 @@ export default {
     };
   },
   created() {
-    this.getWorkingTimeInfo();
+    // this.getWorkingTimeInfo();
     this.getFormRequest();
   },
-  computed: {
-    ...mapState(["infoCompany"])
-  },
+  computed: mapState({
+    infoCompany: state => state.infoCompany,
+    specified_working_time: state => state.timekeeping
+  }),
   methods: {
     getFormRequest() {
       console.log(this.$route.params.id);
@@ -321,7 +321,7 @@ export default {
       this.validate = false;
     },
     validateIL(type, specified_late_time, specified_begin_time) {
-      let leave_time_end = moment(this.form.leave_time_end).format("HH:mm:ss");
+      let leave_time_end = moment(this.form.leave_time_end, 'DD-MM-YYYY HH:mm').format("HH:mm:ss");
 
       if (this.compareTime(leave_time_end, specified_late_time)) {
         this.$alert(
@@ -360,7 +360,7 @@ export default {
       }
     },
     validateLE(type, specified_late_time, specified_end_time) {
-      let leave_time_begin = moment(this.form.leave_time_begin).format(
+      let leave_time_begin = moment(this.form.leave_time_begin, 'DD-MM-YYYY HH:mm').format(
         "HH:mm:ss"
       );
 
@@ -401,7 +401,7 @@ export default {
       }
     },
     validateWorkBegin() {
-      let work_time_begin = moment(this.form.work_time_begin).format("HH:mm");
+      let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format("HH:mm");
       this.validate = true;
       if (
         this.compareTime(
@@ -433,10 +433,10 @@ export default {
         if (
           this.validateDate(this.form.work_time_begin, this.form.work_time_end)
         ) {
-          let work_time_begin = moment(this.form.work_time_begin).format(
+          let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
             "HH:mm"
           );
-          let work_time_end = moment(this.form.work_time_end).format("HH:mm");
+          let work_time_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format("HH:mm");
           let work_range_time = this.calculateRangeTime(
             work_time_begin,
             work_time_end
@@ -462,10 +462,10 @@ export default {
         if (
           this.validateDate(this.form.work_time_begin, this.form.work_time_end)
         ) {
-          let work_time_begin = moment(this.form.work_time_begin).format(
+          let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
-          let work_time_end = moment(this.form.work_time_end).format(
+          let work_time_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
 
@@ -491,7 +491,7 @@ export default {
     },
     validateLO() {
       if (this.form.leave_time_begin) {
-        let leave_time_begin = moment(this.form.leave_time_begin).format(
+        let leave_time_begin = moment(this.form.leave_time_begin, 'DD-MM-YYYY HH:mm').format(
           "HH:mm:ss"
         );
         if (
@@ -518,7 +518,7 @@ export default {
         }
       }
       if (this.form.leave_time_end) {
-        let leave_time_end = moment(this.form.leave_time_end).format(
+        let leave_time_end = moment(this.form.leave_time_end, 'DD-MM-YYYY HH:mm').format(
           "HH:mm:ss"
         );
         if (
@@ -548,10 +548,10 @@ export default {
         if (
           this.validateDate(this.form.leave_time_begin, this.form.leave_time_end)
         ) {
-          let leave_time_begin = moment(this.form.leave_time_begin).format(
+          let leave_time_begin = moment(this.form.leave_time_begin, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
-          let leave_time_end = moment(this.form.leave_time_end).format(
+          let leave_time_end = moment(this.form.leave_time_end, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
 
@@ -576,8 +576,8 @@ export default {
       }
     },
     validateDate(date1, date2) {
-      let date_1 = moment(date1).format("YYYY:MM:dddd");
-      let date_2 = moment(date2).format("YYYY:MM:dddd");
+      let date_1 = moment(date1, 'DD-MM-YYYY HH:mm').format("YYYY:MM:dddd");
+      let date_2 = moment(date2, 'DD-MM-YYYY HH:mm').format("YYYY:MM:dddd");
       console.log(date_1);
       console.log(date_2);
       console.log(date_1 != date_2);

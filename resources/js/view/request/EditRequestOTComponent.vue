@@ -114,7 +114,6 @@ export default {
       error: {
         message: ""
       },
-      specified_working_time: {},
       form: {
         user_code: "",
         type: "",
@@ -149,12 +148,13 @@ export default {
     };
   },
   created() {
-    this.getWorkingTimeInfo();
+    // this.getWorkingTimeInfo();
     this.getFormRequest();
   },
-  computed: {
-    ...mapState(["infoCompany"])
-  },
+  computed: mapState({
+    infoCompany: state => state.infoCompany,
+    specified_working_time: state => state.timekeeping
+  }),
   methods: {
     getFormRequest() {
       console.log(this.$route.params.id);
@@ -177,7 +177,7 @@ export default {
     },
     validateWorkBegin() {
       if (this.validateDate()) {
-        let work_time_begin = moment(this.form.work_time_begin).format("HH:mm");
+        let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format("HH:mm");
         this.validate = true;
         if (this.form.type == "OT") {
           if (
@@ -231,10 +231,10 @@ export default {
     },
     validateDate() {
       if (this.form.work_time_begin && this.form.work_time_end) {
-        let date_begin = moment(this.form.work_time_begin).format(
+        let date_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
           "YYYY:MM:dddd"
         );
-        let date_end = moment(this.form.work_time_end).format("YYYY:MM:dddd");
+        let date_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format("YYYY:MM:dddd");
         if (date_begin != date_end) {
           this.$alert(
             "Thời gian làm đăng ký phải cùng trong một ngày",
@@ -255,10 +255,10 @@ export default {
           );
           return false;
         } else {
-          let work_time_begin = moment(this.form.work_time_begin).format(
+          let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
-          let work_time_end = moment(this.form.work_time_end).format(
+          let work_time_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
           if (this.compareTime(work_time_begin, work_time_end)) {
