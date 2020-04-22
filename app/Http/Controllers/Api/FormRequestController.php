@@ -7,6 +7,7 @@ use App\FormRequest;
 use App\Helpers\EventHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\SettingCompany;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -171,12 +172,14 @@ class FormRequestController extends Controller
   static function validateFormRequest($form, $request)
   {
     $message = '';
-    $morning_late = date('H:i', strtotime(config('wse.morning_late')));
-    $afternoon_late = date('H:i', strtotime(config('wse.afternoon_late')));
-    $morning_begin = date('H:i', strtotime(config('wse.morning_begin')));
-    $afternoon_begin = date('H:i', strtotime(config('wse.afternoon_begin')));
-    $morning_end = date('H:i', strtotime(config('wse.morning_end')));
-    $afternoon_end = date('H:i', strtotime(config('wse.afternoon_end')));
+    $setting_timekeeping = SettingCompany::where('type', 'timekeeping')->first();
+    $timekeeping = $setting_timekeeping->value;
+    $morning_begin = date('H:i', strtotime($timekeeping['morning_begin']));
+    $morning_late = date('H:i', strtotime($timekeeping['morning_late']));
+    $morning_end = date('H:i', strtotime($timekeeping['morning_end']));
+    $afternoon_begin = date('H:i', strtotime($timekeeping['afternoon_begin']));
+    $afternoon_late = date('H:i', strtotime($timekeeping['afternoon_late']));
+    $afternoon_end = date('H:i', strtotime($timekeeping['afternoon_end']));
     if ($request->type == 'ILM') {
       $form->leave_time_begin = $morning_begin;
       $form->leave_time_end = date('H:i', strtotime($request->leave_time_end));
@@ -247,6 +250,7 @@ class FormRequestController extends Controller
       $form->work_time_begin = date('H:i', strtotime($request->work_time_begin));
       $form->work_time_end = date('H:i', strtotime($request->work_time_end));
       $form->work_date = date('Y-m-d', strtotime($request->work_time_begin));
+      $today = date('Y-m-d');
       if (date('Y-m-d', strtotime($request->work_time_begin)) != date('Y-m-d', strtotime($request->work_time_end))) {
         $message = $message . "Thời gian làm đăng ký phải cùng trong một ngày. \n";
       }
@@ -258,6 +262,9 @@ class FormRequestController extends Controller
       }
       if (($request->type == 'RM') && ($form->work_time_begin < $morning_begin)) {
         $message = $message . "Thời gian làm sớm hơn thời gian bắt đầu làm việc chính thức. \n";
+      }
+      if ($form->work_date < $today) {
+        $message = $message . "Thời gian làm đăng ký không được trong quá khứ. \n";
       }
       $form->range_time = $request->range_time;
     }
@@ -285,7 +292,7 @@ class FormRequestController extends Controller
       }
     }
     if (in_array($form->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO', 'OT'])) {
-      $forms_created = FormRequest::where('work_date', $form->work_date)->whereIn('type',['ILM', 'ILA', 'LEM', 'LEA', 'LO', 'OT'])->get();
+      $forms_created = FormRequest::where('work_date', $form->work_date)->whereIn('type', ['ILM', 'ILA', 'LEM', 'LEA', 'LO', 'OT'])->get();
       foreach ($forms_created as $created_form) {
 
         if (((isset($request->id) && $request->id != $created_form->id)) || !isset($request->id)) {
@@ -364,9 +371,9 @@ class FormRequestController extends Controller
     }
     if (in_array($request->action, ['accept', 'refuse']) && Auth::user()->can('approve-requests')) {
       $form->status = $request->action;
-      
+
       if ($request->action == 'accept') {
-        
+
         $message = self::acceptRequest($form);
         if (strlen($message) != 0) {
           return response([

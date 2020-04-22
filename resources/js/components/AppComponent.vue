@@ -184,6 +184,7 @@ export default {
 
     this.$store.dispatch("fetch");
     this.$store.dispatch("fetchCompanyInfo");
+    this.$store.dispatch("fetchTimekeeping");
   },
   methods: {
     goToUserInfo() {

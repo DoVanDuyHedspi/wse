@@ -114,7 +114,6 @@ export default {
       error: {
         message: ""
       },
-      specified_working_time: {},
       form: {
         user_code: "",
         type: "",
@@ -146,11 +145,13 @@ export default {
   },
   created() {
     this.getUser();
-    this.getWorkingTimeInfo();
+    // this.getWorkingTimeInfo();
   },
-  computed: {
-    ...mapState(["user", "infoCompany"])
-  },
+  computed: mapState({
+    user: state => state.user,
+    infoCompany: state => state.infoCompany,
+    specified_working_time: state => state.timekeeping
+  }),
   methods: {
     getUser() {
       this.$store.dispatch("fetchOne", this.$root.user.id).then(
@@ -178,7 +179,7 @@ export default {
     },
     validateWorkBegin() {
       if (this.validateDate()) {
-        let work_time_begin = moment(this.form.work_time_begin).format("HH:mm");
+        let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format("HH:mm");
         this.validate = true;
         if (this.form.type == "OT") {
           if (
@@ -232,10 +233,10 @@ export default {
     },
     validateDate() {
       if (this.form.work_time_begin && this.form.work_time_end) {
-        let date_begin = moment(this.form.work_time_begin).format(
+        let date_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
           "YYYY:MM:dddd"
         );
-        let date_end = moment(this.form.work_time_end).format("YYYY:MM:dddd");
+        let date_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format("YYYY:MM:dddd");
         if (date_begin != date_end) {
           this.$alert(
             "Thời gian làm đăng ký phải cùng trong một ngày",
@@ -256,10 +257,10 @@ export default {
           );
           return false;
         } else {
-          let work_time_begin = moment(this.form.work_time_begin).format(
+          let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
-          let work_time_end = moment(this.form.work_time_end).format(
+          let work_time_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format(
             "HH:mm:ss"
           );
           if (this.compareTime(work_time_begin, work_time_end)) {
@@ -296,6 +297,9 @@ export default {
       return (end.getTime() - begin.getTime()) / 1000 / 60;
     },
     compareTime(time1, time2) {
+      console.log(time1);
+      console.log(time2);
+
       let datetime1 = new Date("01/01/2000 " + time1);
       let datetime2 = new Date("01/01/2000 " + time2);
       if (datetime1 > datetime2) {

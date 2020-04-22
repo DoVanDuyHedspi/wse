@@ -21,4 +21,8 @@ $router->resource('/branches', 'Api\BranchController');
 
 $router->resource('/groups', 'Api\GroupController');
 
+$router->resource('/positions', 'Api\PositionController')->only(['store', 'update', 'destroy']);
+
 $router->get('/company/getInfo', 'Api\CompanyController@getInfo');
+$router->post('/company/settingTimekeeping', 'Api\CompanyController@settingTimekeeping');
+$router->get('/company/getTimekeeping', 'Api\CompanyController@getTimekeeping');

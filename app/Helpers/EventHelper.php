@@ -2,22 +2,26 @@
 
 namespace App\Helpers;
 
+use App\SettingCompany;
 use DateTime;
 
 class EventHelper
 {
   public static function updateEventInfo($event)
   {
-    $morning_begin = date('H:i', strtotime(config('wse.morning_begin')));
-    $morning_late = date('H:i', strtotime(config('wse.morning_late')));
-    $morning_end = date('H:i', strtotime(config('wse.morning_end')));
-    $afternoon_begin = date('H:i', strtotime(config('wse.afternoon_begin')));
-    $afternoon_late = date('H:i', strtotime(config('wse.afternoon_late')));
-    $afternoon_end = date('H:i', strtotime(config('wse.afternoon_end')));
+    $setting_timekeeping = SettingCompany::where('type', 'timekeeping')->first();
+    $timekeeping = $setting_timekeeping->value;
+    $morning_begin = date('H:i', strtotime($timekeeping['morning_begin']));
+    $morning_late = date('H:i', strtotime($timekeeping['morning_late']));
+    $morning_end = date('H:i', strtotime($timekeeping['morning_end']));
+    $afternoon_begin = date('H:i', strtotime($timekeeping['afternoon_begin']));
+    $afternoon_late = date('H:i', strtotime($timekeeping['afternoon_late']));
+    $afternoon_end = date('H:i', strtotime($timekeeping['afternoon_end']));
     $time_in = date('H:i', strtotime($event->time_in));
     $time_out = date('H:i', strtotime($event->time_out));
     if ($time_in <= $morning_begin) {
       $event->ILM = 0;
+      $event->ILA = 0;
       if (($morning_late < $time_out) && ($time_out < $morning_end)) {
         $event->LEM = 1;
         $event->type = 1;
@@ -26,7 +30,6 @@ class EventHelper
       } else if (($morning_end <= $time_out) && ($time_out < $afternoon_late)) {
         $event->status = 0; // 1: co loi, 0: khong co loi
         $event->type = 1; //lam sang 2: lam chieu 3: lam full
-        $event->ILA = 0;
         $event->LEM = 0;
         $event->fined_time = 0;
       } else if (($afternoon_late <= $time_out) && ($time_out < $afternoon_end)) {
@@ -43,6 +46,7 @@ class EventHelper
         $event->fined_time = 0;
       }
     } else if (($morning_begin < $time_in) && ($time_in <= $morning_late)) {
+      $event->ILA = 0;
       if (($morning_late < $time_out) && ($time_out < $morning_end)) {
         $event->LEM = 1;
         $event->ILM = 1;
@@ -72,6 +76,8 @@ class EventHelper
       }
     } else if (($morning_late < $time_in) && ($time_in <= $afternoon_begin)) {
       $event->ILA = 0;
+      $event->ILM = 0;
+      $event->LEM = 0;
       if (($afternoon_late <= $time_out) && ($time_out < $afternoon_end)) {
         $event->status = 1;
         $event->type = 2;

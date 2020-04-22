@@ -10,6 +10,8 @@ use App\Position;
 use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\SettingCompany;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
@@ -38,5 +40,45 @@ class CompanyController extends Controller
     $data['permissions'] = $permissions;
     $data['roles'] = $roles;
     return response()->json($data);
+  }
+
+  public function settingTimekeeping(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'morning_begin' => 'required | regex:/(\d+\:\d+)/',
+      'morning_late' => 'required | regex:/(\d+\:\d+)/',
+      'morning_end' => 'required | regex:/(\d+\:\d+)/',
+      'afternoon_begin' => 'required | regex:/(\d+\:\d+)/',
+      'afternoon_late' => 'required | regex:/(\d+\:\d+)/',
+      'afternoon_end' => 'required | regex:/(\d+\:\d+)/',
+    ]);
+    if ($validator->fails()) {
+
+      return response([
+        'status' => false,
+        'message' => 'Thiết lập thất bại!'
+      ], 200);
+    }
+    $timekeeping = SettingCompany::where('type', 'timekeeping')->first();
+    if (!$timekeeping) {
+      $timekeeping = new SettingCompany();
+      $timekeeping->type = 'timekeeping';
+    }
+    $value = [];
+    $value['morning_begin'] = date('H:i', strtotime($request->morning_begin));
+    $value['morning_late'] = date('H:i', strtotime($request->morning_late));
+    $value['morning_end'] = date('H:i', strtotime($request->morning_end));
+    $value['afternoon_begin'] = date('H:i', strtotime($request->afternoon_begin));
+    $value['afternoon_late'] = date('H:i', strtotime($request->afternoon_late));
+    $value['afternoon_end'] = date('H:i', strtotime($request->afternoon_end));
+    $timekeeping->value = $value;
+    $timekeeping->save();
+    return response(['status' => true, 'timekeeping' => $timekeeping]);
+  }
+
+  public function getTimekeeping()
+  {
+    $timekeeping = SettingCompany::where('type', 'timekeeping')->first();
+    return $timekeeping->value;
   }
 }

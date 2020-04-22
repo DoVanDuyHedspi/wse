@@ -99,7 +99,7 @@ class UserController extends Controller
       $user->bindAttrsToUser($new_user);
       $user->employee_code = UserHelper::createEmployeeCode();
       $user->password = Hash::make($new_user->password);
-      $user->api_token = uniqid(base64_encode(str_random(60)));
+      $user->api_token = uniqid(str_random(60));
       $user->salary_rank_id = 1;
       if ($user->save()) {
         $result = UserHelper::createInfoExtend($new_user, $user, $checkImage);
