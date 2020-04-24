@@ -45,6 +45,11 @@
                     <span slot="title">Làm bù</span>
                   </el-menu-item>
                 </router-link>
+                <router-link to="/users_requests/check_camera">
+                  <el-menu-item index="1-3-3">
+                    <span slot="title">Khiếu lại chấm công</span>
+                  </el-menu-item>
+                </router-link>
               </el-submenu>
             </el-menu-item-group>
             <el-menu-item-group title="Tổ chức">
@@ -87,6 +92,11 @@
             <router-link to="/request_leaves">
               <el-menu-item index="4-2">
                 <span slot="title">Làm bù</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/request_check_camera">
+              <el-menu-item index="4-3">
+                <span slot="title">Khiếu lại chấm công</span>
               </el-menu-item>
             </router-link>
           </el-submenu>

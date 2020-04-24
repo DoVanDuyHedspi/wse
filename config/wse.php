@@ -13,4 +13,6 @@ return [
   'afternoon_end' => '16:45:00',
   'form_request_type' => ['OT', 'ILM', 'LEM', 'ILA', 'LEA', 'LO', 'RM', 'QQD', 'QQV', 'QQF'],
   'form_request_status' => ['waiting', 'cancel', 'forward', 'accept', 'refuse'],
+  'form_check_camera_result' => ['waiting', 'fail', 'success'],
+  'form_check_camera_status' => ['waiting', 'accept', 'refuse']
 ];

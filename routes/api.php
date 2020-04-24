@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Storage;
 
 $router->apiResource('events', 'Api\EventController')->only(['index', 'show']);
 $router->post('/events', 'Api\EventController@update');
@@ -8,6 +9,10 @@ $router->apiResource('form_requests', 'Api\FormRequestController');
 $router->get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
 $router->post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
+
+$router->apiResource('form_complain', 'Api\FormComplainController');
+$router->get('/form_complain/users/requests', 'Api\FormComplainController@usersRequests');
+$router->post('/form_complain/approve_request', 'Api\FormComplainController@approveRequest');
 
 $router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
 
