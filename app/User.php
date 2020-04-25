@@ -150,4 +150,9 @@ class User extends Authenticatable implements HasMedia
   {
     return $this->hasMany(FormRequest::class, 'user_code', 'employee_code');
   }
+
+  public function form_complains() 
+  {
+    return $this->hasMany(FormComplain::class, 'user_code', 'employee_code');
+  }
 }

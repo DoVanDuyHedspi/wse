@@ -6,7 +6,11 @@ import NewRequestOT from './NewRequestOTComponent';
 import EditRequestOT from './EditRequestOTComponent';
 import UsersRequestsLeaves from './UsersRequestLeavesComponent';
 import UsersRequestsOT from './UsersRequestOTComponent';
-
+import IndexRequestCheckCamera from './IndexRequestCheckCameraComponent';
+import NewRequestCheckCamera from './NewRequestCheckCameraComponent';
+import EditRequestCheckCamera from './EditRequestCheckCameraComponent';
+import UsersRequestCheckCamera from './UsersRequestCheckCameraComponent';
+import CheckCamera from './CheckCameraComponent';
 export default [
   {
     path: '/request_leaves', component: IndexRequestLeaves, name: 'request_leaves.index'
@@ -35,5 +39,20 @@ export default [
     path: '/users_requests/leaves', component: UsersRequestsLeaves, name: 'users_requests_leaves.index', meta: {
       permission: 'check-requests',
     }
+  },
+  {
+    path: '/request_check_camera/', component: IndexRequestCheckCamera, name: 'request_check_camera.index'
+  },
+  {
+    path: '/request_check_camera/new', component: NewRequestCheckCamera, name: 'request_check_camera.new'
+  },
+  {
+    path: '/request_check_camera/edit/:id', component: EditRequestCheckCamera, name: 'request_check_camera.eidt'
+  },
+  {
+    path: '/users_requests/request_check_camera', component: UsersRequestCheckCamera, name: 'users_request_check_camera.index'
+  },
+  {
+    path: '/users_requests/check_camera', component: CheckCamera, name: 'check_camera'
   },
 ]

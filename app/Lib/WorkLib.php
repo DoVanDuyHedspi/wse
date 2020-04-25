@@ -50,4 +50,35 @@ class WorkLib
     $res = json_decode($res->getBody()->getContents(), true);
     return $res;
   }
+
+  public function searchEventOfUser($date, $begin_time, $end_time, $user_code)
+  {
+    $begin = $date.'T'.$begin_time;
+    $end = $date.'T'.$end_time;
+    $client = new GuzzleHttp();
+    $info = [
+      "operator" => "SearchControl",
+      "info" => [
+        "DeviceID" => $this->device_id,
+        "CustomizeID" => $user_code,
+        "Picture" => 0,
+        "BeginTime" => $begin,
+        "EndTime" => $end,
+        "RequestCount" => 100,
+        "IdType" => 0,
+        "SearchType" => 1,
+      ]
+    ];
+    $body = json_encode($info, JSON_UNESCAPED_SLASHES);
+    $res = $client->request(
+      'POST',
+      $this->machine_ip . '/action/SearchControl',
+      [
+        'headers' => $this->headers,
+        'body' => $body
+      ]
+    );
+    $res = json_decode($res->getBody()->getContents(), true);
+    return $res;
+  }
 }

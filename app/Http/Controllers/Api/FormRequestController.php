@@ -104,9 +104,14 @@ class FormRequestController extends Controller
 
   public function update(Request $request, FormRequest $formRequest)
   {
+    if ($formRequest->user_code != Auth::user()->employee_code) {
+      return response([
+        'status' => false,
+        'message' => "Bạn không có quyền chỉnh sửa yêu cầu của người này!"
+      ], 200);
+    }
     $validator = Validator::make($request->all(), [
       'user_code' => 'required',
-      'type' => 'required',
       'id' => 'required'
     ]);
     if ($validator->fails()) {
@@ -115,11 +120,11 @@ class FormRequestController extends Controller
         'message' => 'Hãy nhập đủ thông tin!'
       ], 200);
     }
-    $form = FormRequest::where('id', $request->id)->where('type', $request->type)->first();
+    $form = FormRequest::where('id', $request->id)->first();
     if ($form == null) {
       return response([
         'status' => false,
-        'message' => 'Thông tin của yêu cầu không chính xác!'
+        'message' => 'Yêu cầu này không tồn tại!'
       ], 200);
     }
     $form->type = $request->type;

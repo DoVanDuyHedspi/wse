@@ -85,7 +85,7 @@
         <el-table-column property="reason" label="Lý do" width="120"></el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
-            <el-button-group>
+            <!-- <el-button-group> -->
               <router-link :to="'/request_ot/edit/' + scope.row.id">
                 <el-button
                   size="mini"
@@ -110,7 +110,7 @@
                   v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
                 ></el-button>
               </el-tooltip>
-            </el-button-group>
+            <!-- </el-button-group> -->
           </template>
         </el-table-column>
       </el-table>

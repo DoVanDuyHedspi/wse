@@ -68,7 +68,13 @@
       >
         <!-- <el-table-column type="selection" width="55"></el-table-column> -->
         <el-table-column fixed property="user_code" label="Mã nhân viên" width="120"></el-table-column>
-        <el-table-column fixed property="user.name" label="Tên nhân viên" width="150"></el-table-column>
+        <el-table-column fixed property="user.name" label="Tên nhân viên" width="150">
+          <template slot-scope="scope">
+            <router-link :to="'/users/'+scope.row.user.id">
+              <span>{{scope.row.user.name}}</span>
+            </router-link>
+          </template>
+        </el-table-column>
         <el-table-column label="Loại hình" class-name="text-center" width="120">
           <template slot-scope="scope">
             <div v-if="scope.row.type == 'RM'">Làm remote</div>
