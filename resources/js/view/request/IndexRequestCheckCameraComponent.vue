@@ -79,30 +79,30 @@
         <el-table-column property="reply" label="Trả lời" width="120"></el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
-              <router-link :to="'/request_check_camera/edit/' + scope.row.id">
-                <el-button
-                  size="mini"
-                  type="primary"
-                  icon="el-icon-edit"
-                  v-if="scope.row.status == 'waiting'"
-                ></el-button>
-              </router-link>
+            <router-link :to="'/request_check_camera/edit/' + scope.row.id">
               <el-button
                 size="mini"
-                type="danger"
-                icon="el-icon-delete"
+                type="primary"
+                icon="el-icon-edit"
                 v-if="scope.row.status == 'waiting'"
-                @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
               ></el-button>
-              <el-tooltip content="Đã xử lý" placement="top">
-                <el-button
-                  class="mx-0 my-1"
-                  size="mini"
-                  icon="el-icon-s-check"
-                  disabled
-                  v-if="scope.row.status == 'accept' || scope.row.status == 'refuse'"
-                ></el-button>
-              </el-tooltip>
+            </router-link>
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              v-if="scope.row.status == 'waiting'"
+              @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
+            ></el-button>
+            <el-tooltip content="Đã xử lý" placement="top">
+              <el-button
+                class="mx-0 my-1"
+                size="mini"
+                icon="el-icon-s-check"
+                disabled
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse'"
+              ></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -174,7 +174,7 @@ export default {
         .then(response => {
           this.form_requests = response.data;
         });
-      
+
       this.dataTable = this.getDataTable();
     },
     deleteFormRequest(index, form_request) {

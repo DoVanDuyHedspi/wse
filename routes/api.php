@@ -11,8 +11,9 @@ $router->post('/form_requests/approve_request', 'Api\FormRequestController@appro
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 
 $router->apiResource('form_complain', 'Api\FormComplainController');
-$router->get('/form_complain/users/requests', 'Api\FormComplainController@usersRequests');
-$router->post('/form_complain/approve_request', 'Api\FormComplainController@approveRequest');
+$router->get('/form_complain/manage/requests', 'Api\FormComplainController@usersRequests');
+$router->post('/form_complain/manage/approve', 'Api\FormComplainController@approveRequest');
+$router->post('/form_complain/manage/check_camera', 'Api\FormComplainController@checkCamera');
 
 $router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
 
@@ -31,3 +32,5 @@ $router->resource('/positions', 'Api\PositionController')->only(['store', 'updat
 $router->get('/company/getInfo', 'Api\CompanyController@getInfo');
 $router->post('/company/settingTimekeeping', 'Api\CompanyController@settingTimekeeping');
 $router->get('/company/getTimekeeping', 'Api\CompanyController@getTimekeeping');
+
+

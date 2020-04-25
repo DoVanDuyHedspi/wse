@@ -45,7 +45,7 @@
                     <span slot="title">Làm bù</span>
                   </el-menu-item>
                 </router-link>
-                <router-link to="/users_requests/check_camera">
+                <router-link to="/users_requests/request_check_camera">
                   <el-menu-item index="1-3-3">
                     <span slot="title">Khiếu lại chấm công</span>
                   </el-menu-item>

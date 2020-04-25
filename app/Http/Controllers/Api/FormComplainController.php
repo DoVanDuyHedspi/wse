@@ -7,12 +7,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Components\GoogleClient;
+use App\Event;
+use App\Helpers\EventHelper;
+use App\Http\Resources\FormComplainResource;
+use App\Lib\WorkLib;
+use Google_Service_Drive;
 
 class FormComplainController extends Controller
 {
-  public function __construct()
+  protected $client;
+
+  public function __construct(GoogleClient $client)
   {
     $this->middleware('auth:api');
+    $this->client = $client->getClient();
   }
 
   public function index(Request $request)
@@ -75,15 +84,38 @@ class FormComplainController extends Controller
         'message' => 'Hãy nhập đủ và đúng thông tin!'
       ], 200);
     }
-    $form = new FormComplain();
-    $form->begin_time = date('H:i', strtotime($request->begin_time));
-    $form->end_time = date('H:i', strtotime($request->end_time));
-    if ($form->end_time >= $form->begin_time) {
+    //kiem tra xem co event trong khoang thoi gian nay chua
+    $message = '';
+    $begin_time =  date('H:i', strtotime($request->begin_time));
+    $end_time = date('H:i', strtotime($request->end_time));
+    $event = Event::where('user_code', $request->user()->employee_code)->whereDate('date', date('Y-m-d', strtotime($request->date)))->first();
+    if ($event) {
+      $time_in = date('H:i', strtotime($event->time_in));
+      if ($begin_time <= $time_in && $time_in <= $end_time) {
+        $message = 'Đã có bản ghi chấm công trong khoảng thời gian xác minh!';
+      }
+      if ($event->time_out) {
+        $time_out = date('H:i', strtotime($event->time_out));
+        if ($begin_time <= $time_out && $time_out <= $end_time) {
+          $message = 'Đã có bản ghi chấm công trong khoảng thời gian xác minh!';
+        }
+        if ($time_in <= $begin_time && $end_time <= $time_out) {
+          $message = 'Thời điểm xác minh đã nằm trong thời gian được chấm công!';
+        }
+      }
+    }
+    if ($end_time <= $begin_time) {
+      $message = 'Thời điểm kết thúc phải sau thời điểm bắt đầu';
+    }
+    if (strlen($message) != 0) {
       return response([
         'status' => false,
-        'message' => 'Thời điểm kết thúc phải sau thời điểm bắt đầu'
+        'message' => $message
       ], 200);
     }
+    $form = new FormComplain();
+    $form->begin_time = $begin_time;
+    $form->end_time = $end_time;
     $form->user_code = $request->user()->employee_code;
     $form->date = date('Y-m-d', strtotime($request->date));
     $form->note = $request->note;
@@ -184,12 +216,97 @@ class FormComplainController extends Controller
         'message' => 'Yêu cầu này không tồn tại'
       ], 200);
     }
-    $form->status = $request->action;
-    if ($form->status == 'refuse') {
-      $form->result = 'fail';
+    if ($request->action == 'refuse' || $request->action == 'accept') {
+      $form->status = $request->action;
+      if ($form->status == 'refuse') {
+        $form->result = 'fail';
+      }
+    } else {
+      $form->result = $request->action;
+      if ($form->result == 'success') {
+        if ($request->time == null) {
+          return response([
+            'status' => false,
+            'message' => 'Hãy nhập thời gian chấm công!'
+          ], 200);
+        } else {
+          $form->reply = $request->reply;
+          $time = date('H:i', strtotime($request->time));
+          $date = date("Y-m-d", strtotime($form->date));
+          $ev = Event::where('date', $date)->where('user_code', $form->user_code)->first();
+          if (!$ev) {
+            $new_event = new Event();
+            $new_event->date = $date;
+            $new_event->time_in = $time;
+            $new_event->user_code = $form->user_code;
+            $new_event->status = 1;
+            $new_event->save();
+          }  else if ($ev->time_out == null) {
+            if (date('H:i', strtotime($ev->time_in)) > $time) {
+              $ev->time_out = $ev->time_in;
+              $ev->time_in = $time;
+            } else {
+              $ev->time_out = $time;
+            }
+            $ev_update = EventHelper::updateEventInfo($ev);
+            $ev_update->save();
+          } else if (date('H:i', strtotime($ev->time_out)) <= $time) {
+            $ev->time_out = $time;
+            $ev_update = EventHelper::updateEventInfo($ev);
+            $ev_update->save();
+          }
+        }
+      }
     }
+
     $form->save();
     return response(['status' => true, 'form_complain' => $form], 200);
   }
 
+  public function checkCamera(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'date' => 'required | date',
+    ]);
+    if ($validator->fails()) {
+      return response([
+        'status' => false,
+        'message' => 'Thiếu ngày cần xác minh!'
+      ], 200);
+    }
+    //get video id
+    $date = date('Y-m-d', strtotime($request->date));
+    $videoName = 'wse-' . $date;
+    $drive = new Google_Service_Drive($this->client);
+    $query   =   "'" . config('wse.drive_folder_id') . "' in parents and trashed=false";
+    $optParams   =   [
+      'fields' => 'files(id, name)',
+      'q'   =>   $query
+    ];
+    $results   =   $drive->files->listFiles($optParams);
+    $listVideo = (array) $results->files;
+    $listVideoUrl = [];
+    foreach ($listVideo as $video) {
+      if ($video->name == $videoName) {
+        $url = "https://drive.google.com/file/d/" . $video->id . "/preview";
+        array_push($listVideoUrl, $url);
+      }
+    }
+    //get request and user info
+    $forms = FormComplain::with('user')->where('status', 'accept')->where('result', 'waiting')->where('date', $date)->orderBy('created_at', 'desc')->get();
+    foreach ($forms as $form) {
+      $data = new WorkLib();
+      $res = $data->searchEventOfUser($date, $form->begin_time, $form->end_time, $form->user_code);
+      $search_info = [];
+      if (isset($res['info']['SearchInfo'])) {
+        $events = $res['info']['SearchInfo'];
+        foreach ($events as $event) {
+          array_push($search_info, date('H:i:s', strtotime($event['Time'])));
+        }
+      }
+      $form['search_info'] = $search_info;
+    }
+    $forms = FormComplainResource::collection($forms);
+    return response(['forms' => $forms, 'list_video_url' => $listVideoUrl]);
+  }
 }

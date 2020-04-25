@@ -61,7 +61,9 @@
     </el-row>
     <el-row>
       <el-col :span="24" class="text-center">
-        <el-button type="success" icon="el-icon-video-play">Tiến hành xác minh</el-button>
+        <router-link to="/users_requests/check_camera">
+          <el-button type="success" icon="el-icon-video-play">Tiến hành xác minh</el-button>
+        </router-link>   
       </el-col>
     </el-row>
     <el-row>
@@ -200,7 +202,7 @@ export default {
   },
   methods: {
     getFormRequest() {
-      axios.get("/api/form_complain/users/requests").then(response => {
+      axios.get("/api/form_complain/manage/requests").then(response => {
         this.form_requests = response.data;
       });
     },
@@ -226,7 +228,7 @@ export default {
     },
     filterFormRequests: async function() {
       await axios
-        .get("/api/form_complain/users/requests", {
+        .get("/api/form_complain/manage/requests", {
           params: {
             date_begin: this.filter.range_date ? this.filter.range_date[0] : "",
             date_end: this.filter.range_date ? this.filter.range_date[1] : "",
@@ -254,7 +256,7 @@ export default {
         }
       ).then(() => {
         axios
-          .post("/api/form_complain/approve_request", {
+          .post("/api/form_complain/manage/approve", {
             request_id: form_request.id,
             action: action
           })

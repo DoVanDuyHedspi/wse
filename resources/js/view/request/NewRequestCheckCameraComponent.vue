@@ -190,10 +190,9 @@ export default {
     compareTime(time1, time2) {
       console.log(time1);
       console.log(time2);
-
       let datetime1 = new Date("01/01/2000 " + time1);
       let datetime2 = new Date("01/01/2000 " + time2);
-      if (datetime1 > datetime2) {
+      if (datetime1 >= datetime2) {
         return true;
       }
       return false;
