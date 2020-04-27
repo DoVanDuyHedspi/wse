@@ -7,6 +7,8 @@ $router->apiResource('events', 'Api\EventController')->only(['index', 'show']);
 $router->post('/events', 'Api\EventController@update');
 $router->apiResource('form_requests', 'Api\FormRequestController');
 $router->get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
+$router->get('/form_requests/users/ot_rm', 'Api\FormRequestController@usersOtRmRequests');
+$router->post('/form_requests/users/ot_rm/confirm', 'Api\FormRequestController@confirmOtRmRequests');
 $router->post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 

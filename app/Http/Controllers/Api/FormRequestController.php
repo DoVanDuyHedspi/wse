@@ -348,6 +348,36 @@ class FormRequestController extends Controller
     return response(['status' => false, 'message' => 'Bạn không có quyền kiểm tra hoặc duyệt yêu cầu của nhân viên'], 200);
   }
 
+  public function usersOtRmRequests(Request $request)
+  {
+    if (Auth::user()->can('approve-requests')) {
+      $filter = $request->query();
+      $date = '';
+      if (count($filter) && $filter["date"]) {
+        $date = date('Y-m-d', strtotime($filter["date"]));
+      } else {
+        $date = date('Y-m-d');
+      }
+      if (count($filter)) {
+        $forms = FormRequest::with('user')->whereIn('type', ['OT', 'RM'])->where('status', 'accept')->whereDate("work_date", '=', $date)->whereHas('user', function ($query) use ($filter) {
+          return $query->when($filter["group_id"], function ($q, $group_id) {
+            return $q->where("group_id", $group_id);
+          })->when($filter["branch_id"], function ($q, $branch_id) {
+            return $q->where("branch_id", $branch_id);
+          })->when($filter["search"], function ($q, $search) {
+            return $q->where(function ($qr) use ($search) {
+              $qr->where("name", "like", '%' . $search . '%')->orWhere("employee_code", "like", '%' . $search . '%');
+            });
+          });
+        })->orderBy('created_at', 'desc')->get();
+      } else {
+        $forms = FormRequest::with('user')->whereIn('type', ['OT', 'RM'])->where('status', 'accept')->whereDate("work_date", '=', $date)->orderBy('created_at', 'desc')->get();
+      }
+      return $forms;
+    }
+    return response(['status' => false, 'message' => 'Bạn không có quyền xác nhận yêu cầu của nhân viên'], 200);
+  }
+
   public function approveRequest(Request $request)
   {
     $validator = Validator::make($request->all(), [
@@ -376,16 +406,8 @@ class FormRequestController extends Controller
     }
     if (in_array($request->action, ['accept', 'refuse']) && Auth::user()->can('approve-requests')) {
       $form->status = $request->action;
-
       if ($request->action == 'accept') {
-
-        $message = self::acceptRequest($form);
-        if (strlen($message) != 0) {
-          return response([
-            'status' => false,
-            'message' => $message
-          ], 200);
-        }
+        self::acceptRequest($form);
       }
       $form->save();
       return response([
@@ -398,67 +420,104 @@ class FormRequestController extends Controller
     ], 200);
   }
 
-  static function acceptRequest($request)
+  public function confirmOtRmRequests(Request $request)
   {
-    $message = '';
-    if (in_array($request->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO'])) {
-      $event_work = Event::whereDate('date', '=', date('Y-m-d', strtotime($request->work_date)))->first();
-      $event_leave = Event::whereDate('date', '=', date('Y-m-d', strtotime($request->leave_date)))->first();
-      if ($event_work) {
-        $time_in = date('H:i', strtotime($event_work->time_in));
-        $time_out = date('H:i', strtotime($event_work->time_out));
-        $work_begin = date('H:i', strtotime($request->work_time_begin));
-        $work_end = date('H:i', strtotime($request->work_time_end));
-        if ($time_in <= $work_begin && $time_out >= $work_end) {
-          if ($request->type == 'ILM') {
-            $event_leave->ILM = 0;
-          } else if ($request->type == 'LEM') {
-            $event_leave->LEM = 0;
-          } else if ($request->type == 'ILA') {
-            $event_leave->ILA = 0;
-          } else if ($request->type == 'LEA') {
-            $event_leave->LEA = 0;
-          }
+    $validator = Validator::make($request->all(), [
+      'request_id' => 'required'
+    ]);
+    if ($validator->fails()) {
 
-          $has_error = $event_leave->ILM + $event_leave->LEM + $event_leave->ILA + $event_leave->LEA;
-          if ($has_error == 0) {
-            $event_leave->status = 2;
-          }
-          $event_leave->fined_time -= $request->range_time;
-          $event_leave->save();
-        } else {
-          $message = $message  . "Nhân viên chưa làm bù đủ giờ\n";
+      return response([
+        'status' => false,
+        'message' => 'Hãy nhập đủ thông tin!'
+      ], 200);
+    }
+    $form = FormRequest::find($request->request_id);
+    if ($form == null) {
+
+      return response([
+        'status' => false,
+        'message' => 'Yêu cầu này không tồn tại'
+      ], 200);
+    }
+    if (Auth::user()->can('approve-requests')) {
+      $form->has_worked = 1;
+      $form->save();
+      if ($form->type == 'RM') {
+        $event = Event::whereDate('date', '=', date('Y-m-d', strtotime($form->work_date)))->first();
+        if(!$event) {
+          $event = new Event();
+          $event->status = 1;
         }
-      } else {
-        $message = $message . "Nhân viên chưa làm bù\n";
+        $event->date = date('Y-m-d', strtotime($form->work_date));
+        $event->time_in = date('H:i', strtotime($form->work_time_begin));
+        $event->time_out = date('H:i', strtotime($form->work_time_end));
+        $event->user_code = $form->user_code;
+        $ev_update = EventHelper::updateEventInfo($event);
+        $ev_update->save();
+
+        return response([
+          'status' => true
+        ], 200);
       }
-    } else if (in_array($request->type, ['QQD', 'QQV', 'QQF'])) {
-      $event_work = Event::whereDate('date', '=', date('Y-m-d', strtotime($request->work_date)))->first();
-      if ($request->type == 'QQF') {
-        $event_work->time_in = date('H:i', strtotime($request->work_time_begin));
-        $event_work->time_out = date('H:i', strtotime($request->work_time_end));
-      } else if ($request->type == 'QQV') {
-        $event_work->time_out = date('H:i', strtotime($request->work_time_end));
+    } else {
+      return response([
+        'status' => false,
+        'message' => 'Bạn không có quyền xác nhận nhân viên đã làm ot, remote!'
+      ], 200);
+    }
+  }
+
+  static function acceptRequest($form)
+  {
+    if (in_array($form->type, ['ILM', 'ILA', 'LEM', 'LEA', 'LO'])) {
+      $event_work = Event::whereDate('date', '=', date('Y-m-d', strtotime($form->work_date)))->first();
+      $event_leave = Event::whereDate('date', '=', date('Y-m-d', strtotime($form->leave_date)))->first();
+      if ($event_work) {
+        if ($event_work->time_in && $event_work->time_out) {
+          $time_in = date('H:i', strtotime($event_work->time_in));
+          $time_out = date('H:i', strtotime($event_work->time_out));
+          $work_begin = date('H:i', strtotime($form->work_time_begin));
+          $work_end = date('H:i', strtotime($form->work_time_end));
+          if ($time_in <= $work_begin && $time_out >= $work_end) {
+            $form->has_worked = 1;
+            $form->save();
+
+            if ($form->type == 'ILM') {
+              $event_leave->ILM = 0;
+            } else if ($form->type == 'LEM') {
+              $event_leave->LEM = 0;
+            } else if ($form->type == 'ILA') {
+              $event_leave->ILA = 0;
+            } else if ($form->type == 'LEA') {
+              $event_leave->LEA = 0;
+            }
+            $has_error = $event_leave->ILM + $event_leave->LEM + $event_leave->ILA + $event_leave->LEA;
+            if ($has_error == 0) {
+              $event_leave->status = 2;
+            }
+            $event_leave->fined_time -= $form->range_time;
+            $event_leave->save();
+          }
+        }
+      }
+    } else if (in_array($form->type, ['QQD', 'QQV', 'QQF'])) {
+      $event_work = Event::whereDate('date', '=', date('Y-m-d', strtotime($form->work_date)))->first();
+      if ($form->type == 'QQF') {
+        $event_work->time_in = date('H:i', strtotime($form->work_time_begin));
+        $event_work->time_out = date('H:i', strtotime($form->work_time_end));
+      } else if ($form->type == 'QQV') {
+        $event_work->time_out = date('H:i', strtotime($form->work_time_end));
       } else {
         if ($event_work->time_out) {
-          $event_work->time_in = date('H:i', strtotime($request->work_time_begin));
+          $event_work->time_in = date('H:i', strtotime($form->work_time_begin));
         } else {
           $event_work->time_out =  $event_work->time_in;
-          $event_work->time_in = date('H:i', strtotime($request->work_time_begin));
+          $event_work->time_in = date('H:i', strtotime($form->work_time_begin));
         }
       }
       $ev_update = EventHelper::updateEventInfo($event_work);
       $ev_update->save();
-    } else if ($request->type == 'OT') {
-      $new_event = new Event();
-      $new_event->date = date('Y-m-d', strtotime($request->work_date));
-      $new_event->time_in = date('H:i', strtotime($request->work_time_begin));
-      $new_event->time_out = date('H:i', strtotime($request->work_time_end));
-      $new_event->user_code = $request->user_code;
-      $new_event->status = 1;
-      $ev_update = EventHelper::updateEventInfo($new_event);
-      $ev_update->save();
     }
-    return $message;
   }
 }

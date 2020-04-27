@@ -60,6 +60,13 @@
       </el-col>
     </el-row>
     <el-row>
+      <el-col :span="24" class="text-center">
+        <router-link to="/users_requests/confirm_worked">
+          <el-button type="success" icon="el-icon-caret-right">Xác nhận đã làm việc</el-button>
+        </router-link>
+      </el-col>
+    </el-row>
+    <el-row>
       <el-table
         ref="multipleTable"
         style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
@@ -100,8 +107,6 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
-
         <el-table-column label="Thời gian làm" width="150">
           <template slot-scope="scope">
             <div>{{scope.row.work_time_begin + " - " + scope.row.work_time_end }}</div>
@@ -119,6 +124,17 @@
           class-name="text-center"
         ></el-table-column>
         <el-table-column property="reason" label="Lý do" width="120"></el-table-column>
+        <el-table-column label="Đã làm?" width="120" class-name="text-center">
+          <template slot-scope="scope">
+            <div v-if="scope.row.has_worked">
+              <el-tag type="success">Đã làm</el-tag>
+            </div>
+            <div v-else>
+              <el-tag type="warning">Chưa làm</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
             <el-tooltip content="Hủy bỏ" placement="top">
@@ -251,9 +267,9 @@ export default {
       let end = begin + this.pageSize;
       return this.form_requests.slice(begin, end);
     },
-    filterFormRequests() {
+    filterFormRequests: async function() {
       let form_requests = [];
-      axios
+      await axios
         .get("/api/form_requests/users/requests", {
           params: {
             date_begin: this.filter.range_date ? this.filter.range_date[0] : "",

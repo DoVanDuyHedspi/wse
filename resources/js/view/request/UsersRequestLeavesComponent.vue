@@ -107,7 +107,6 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
         <el-table-column label="Thời gian xin nghỉ" width="170">
           <template slot-scope="scope">
             <div
@@ -124,8 +123,7 @@
             >{{scope.row.work_time_begin + " - " + scope.row.work_time_end + " " + scope.row.work_date }}</div>
           </template>
         </el-table-column>
-        <el-table-column property="reason" label="Lý do" width="200"></el-table-column>
-        <el-table-column label="Làm bù" width="150">
+        <el-table-column label="Thời gian làm bù" width="150">
           <template
             slot-scope="scope"
             v-if="['ILM','ILA','LEM','LEA','LO'].includes(scope.row.type)"
@@ -133,14 +131,27 @@
             <div>{{scope.row.work_time_begin + " - " + scope.row.work_time_end + " " + scope.row.work_date}}</div>
           </template>
         </el-table-column>
-
+        <el-table-column property="reason" label="Lý do" width="200"></el-table-column>
         <el-table-column
           property="range_time"
           label="Thời gian (phút)"
           width="70"
           class-name="text-center"
         ></el-table-column>
-
+        <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
+        <el-table-column label="Đã làm bù?" width="120" class-name="text-center">
+          <template
+            slot-scope="scope"
+            v-if="['ILM','ILA','LEM','LEA','LO'].includes(scope.row.type)"
+          >
+            <div v-if="scope.row.has_worked">
+              <el-tag type="success">Đã làm</el-tag>
+            </div>
+            <div v-else>
+              <el-tag type="warning">Chưa làm</el-tag>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
             <el-tooltip content="Hủy bỏ" placement="top">
@@ -277,9 +288,9 @@ export default {
       let end = begin + this.pageSize;
       return this.form_requests.slice(begin, end);
     },
-    filterFormRequests() {
+    filterFormRequests: async function() {
       let form_requests = [];
-      axios
+      await axios
         .get("/api/form_requests/users/requests", {
           params: {
             date_begin: this.filter.range_date ? this.filter.range_date[0] : "",
