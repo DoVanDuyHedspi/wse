@@ -11,6 +11,7 @@ import NewRequestCheckCamera from './NewRequestCheckCameraComponent';
 import EditRequestCheckCamera from './EditRequestCheckCameraComponent';
 import UsersRequestCheckCamera from './UsersRequestCheckCameraComponent';
 import CheckCamera from './CheckCameraComponent';
+import ConfirmWorked from './ConfirmWorkedComponent';
 export default [
   {
     path: '/request_leaves', component: IndexRequestLeaves, name: 'request_leaves.index'
@@ -41,6 +42,11 @@ export default [
     }
   },
   {
+    path: '/users_requests/confirm_worked', component: ConfirmWorked, name: 'confirm_worked', meta: {
+      permission: 'approve-requests',
+    }
+  },
+  {
     path: '/request_check_camera/', component: IndexRequestCheckCamera, name: 'request_check_camera.index'
   },
   {
@@ -50,9 +56,13 @@ export default [
     path: '/request_check_camera/edit/:id', component: EditRequestCheckCamera, name: 'request_check_camera.eidt'
   },
   {
-    path: '/users_requests/request_check_camera', component: UsersRequestCheckCamera, name: 'users_request_check_camera.index'
+    path: '/users_requests/request_check_camera', component: UsersRequestCheckCamera, name: 'users_request_check_camera.index', meta: {
+      permission: 'approve-requests',
+    }
   },
   {
-    path: '/users_requests/check_camera', component: CheckCamera, name: 'check_camera'
+    path: '/users_requests/check_camera', component: CheckCamera, name: 'check_camera', meta: {
+      permission: 'approve-requests',
+    }
   },
 ]

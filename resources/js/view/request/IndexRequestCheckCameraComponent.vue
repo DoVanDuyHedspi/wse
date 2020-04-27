@@ -163,8 +163,8 @@ export default {
       let end = begin + this.pageSize;
       return this.form_requests.slice(begin, end);
     },
-    filterFormRequests() {
-      axios
+    filterFormRequests: async function() {
+      await axios
         .get("/api/form_complain", {
           params: {
             month: this.filter.month,

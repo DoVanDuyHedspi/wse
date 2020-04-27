@@ -64,8 +64,6 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
-
         <el-table-column label="Thời gian làm" width="150">
           <template slot-scope="scope">
             <div>{{scope.row.work_time_begin + " - " + scope.row.work_time_end }}</div>
@@ -83,33 +81,46 @@
           class-name="text-center"
         ></el-table-column>
         <el-table-column property="reason" label="Lý do" width="120"></el-table-column>
+        <el-table-column label="Đã làm?" width="120" class-name="text-center">
+          <template
+            slot-scope="scope"
+          >
+            <div v-if="scope.row.has_worked">
+              <el-tag type="success">Đã làm</el-tag>
+            </div>
+            <div v-else>
+              <el-tag type="warning">Chưa làm</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
             <!-- <el-button-group> -->
-              <router-link :to="'/request_ot/edit/' + scope.row.id">
-                <el-button
-                  size="mini"
-                  type="primary"
-                  icon="el-icon-edit"
-                  v-if="scope.row.status == 'waiting'"
-                ></el-button>
-              </router-link>
+            <router-link :to="'/request_ot/edit/' + scope.row.id">
               <el-button
                 size="mini"
-                type="danger"
-                icon="el-icon-delete"
-                v-if="scope.row.status == 'waiting' || scope.row.status == 'forward'"
-                @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
+                type="primary"
+                icon="el-icon-edit"
+                v-if="scope.row.status == 'waiting'"
               ></el-button>
-              <el-tooltip content="Đã xử lý" placement="top">
-                <el-button
-                  class="mx-0 my-1"
-                  size="mini"
-                  icon="el-icon-s-check"
-                  disabled
-                  v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
-                ></el-button>
-              </el-tooltip>
+            </router-link>
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              v-if="scope.row.status == 'waiting' || scope.row.status == 'forward'"
+              @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
+            ></el-button>
+            <el-tooltip content="Đã xử lý" placement="top">
+              <el-button
+                class="mx-0 my-1"
+                size="mini"
+                icon="el-icon-s-check"
+                disabled
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+              ></el-button>
+            </el-tooltip>
             <!-- </el-button-group> -->
           </template>
         </el-table-column>
@@ -177,9 +188,9 @@ export default {
       let end = begin + this.pageSize;
       return this.form_requests.slice(begin, end);
     },
-    filterFormRequests() {
+    filterFormRequests: async function() {
       let form_requests = [];
-      axios
+      await axios
         .get("/api/form_requests", {
           params: {
             month: this.filter.month,

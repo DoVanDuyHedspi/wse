@@ -66,14 +66,50 @@ class WorkingTimesheets extends Command
           }
           $ev_update = EventHelper::updateEventInfo($ev);
           $ev_update->save();
+          self::updateFormRequest($ev_update);
         } else if (date('H:i', strtotime($ev->time_out)) <= $time) {
           $ev->time_out = $time;
           $ev_update = EventHelper::updateEventInfo($ev);
           $ev_update->save();
+          self::updateFormRequest($ev_update);
         }
       }
     }
 
     $this->info('Thành công!');
+  }
+
+  static function updateFormRequest($event_work)
+  {
+    $form_requests = Event::whereDate('work_date', '=', date('Y-m-d', strtotime($event_work->date)))->where('status', 'accept')->get();
+    if (count($form_requests) != 0) {
+      foreach ($form_requests as $form_request) {
+        $time_in = date('H:i', strtotime($event_work->time_in));
+        $time_out = date('H:i', strtotime($event_work->time_out));
+        $work_begin = date('H:i', strtotime($form_request->work_time_begin));
+        $work_end = date('H:i', strtotime($form_request->work_time_end));
+        $event_leave = Event::whereDate('date', '=', date('Y-m-d', strtotime($form_request->leave_date)))->first();
+        if ($time_in <= $work_begin && $time_out >= $work_end) {
+          $form_request->has_worked = 1;
+          $form_request->save();
+
+          if ($form_request->type == 'ILM') {
+            $event_leave->ILM = 0;
+          } else if ($form_request->type == 'LEM') {
+            $event_leave->LEM = 0;
+          } else if ($form_request->type == 'ILA') {
+            $event_leave->ILA = 0;
+          } else if ($form_request->type == 'LEA') {
+            $event_leave->LEA = 0;
+          }
+          $has_error = $event_leave->ILM + $event_leave->LEM + $event_leave->ILA + $event_leave->LEA;
+          if ($has_error == 0) {
+            $event_leave->status = 2;
+          }
+          $event_leave->fined_time -= $form_request->range_time;
+          $event_leave->save();
+        }
+      }
+    }
   }
 }

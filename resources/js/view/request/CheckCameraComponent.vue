@@ -26,6 +26,7 @@
         style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
         border
         :data="dataTable"
+        v-loading="loading"
       >
         <el-table-column fixed property="user_code" label="Mã nhân viên" width="120"></el-table-column>
         <el-table-column fixed property="user.name" label="Tên nhân viên" width="150">
@@ -206,12 +207,14 @@ export default {
         index: "",
         reply: "",
         request_id: ""
-      }
+      },
+      loading: false
     };
   },
   methods: {
-    fetchData() {
-      axios
+    fetchData: async function() {
+      this.loading = true;
+      await axios
         .post("/api/form_complain/manage/check_camera", {
           date: this.date
         })
@@ -219,6 +222,7 @@ export default {
           this.dataTable = response.data.forms;
           this.listVideoUrl = response.data.list_video_url;
         });
+      this.loading = false;
     },
     openUserInfo(user) {
       this.dialog.user_avatar = user.user_avatar;
