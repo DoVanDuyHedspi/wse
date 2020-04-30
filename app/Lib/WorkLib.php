@@ -53,8 +53,8 @@ class WorkLib
 
   public function searchEventOfUser($date, $begin_time, $end_time, $user_code)
   {
-    $begin = $date.'T'.$begin_time;
-    $end = $date.'T'.$end_time;
+    $begin = $date . 'T' . $begin_time;
+    $end = $date . 'T' . $end_time;
     $client = new GuzzleHttp();
     $info = [
       "operator" => "SearchControl",
@@ -73,6 +73,31 @@ class WorkLib
     $res = $client->request(
       'POST',
       $this->machine_ip . '/action/SearchControl',
+      [
+        'headers' => $this->headers,
+        'body' => $body
+      ]
+    );
+    $res = json_decode($res->getBody()->getContents(), true);
+    return $res;
+  }
+
+  public function searchUserByPicture($picture)
+  {
+    $client = new GuzzleHttp();
+    $picinfo = 'data:image/jpeg;base64,' . $picture;
+    $info = [
+      "operator" => "GetPictureSearch",
+      "info" => [
+        "MaxSimilarity" => 60,
+        "MaxNum" => 1
+      ],
+      "picinfo" => $picinfo
+    ];
+    $body = json_encode($info, JSON_UNESCAPED_SLASHES);
+    $res = $client->request(
+      'POST',
+      $this->machine_ip . '/action/GetPictureSearch',
       [
         'headers' => $this->headers,
         'body' => $body

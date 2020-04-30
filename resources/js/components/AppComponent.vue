@@ -10,7 +10,7 @@
           active-text-color="#ffd04b"
         >
           <el-menu-item index="0" class="text-center">
-            <span slot="title">WSE</span>
+            <el-image src="/storage/logo/logo.png" style="width: 100px; height: 50px"></el-image>
           </el-menu-item>
           <el-submenu index="1">
             <template slot="title">

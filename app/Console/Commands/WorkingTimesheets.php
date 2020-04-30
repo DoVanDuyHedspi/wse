@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Event;
+use App\FormRequest;
 use App\Helpers\EventHelper;
 use App\Lib\WorkLib;
 use Carbon\Carbon;
@@ -81,7 +82,7 @@ class WorkingTimesheets extends Command
 
   static function updateFormRequest($event_work)
   {
-    $form_requests = Event::whereDate('work_date', '=', date('Y-m-d', strtotime($event_work->date)))->where('status', 'accept')->get();
+    $form_requests = FormRequest::whereDate('work_date', '=', date('Y-m-d', strtotime($event_work->date)))->where('status', 'accept')->get();
     if (count($form_requests) != 0) {
       foreach ($form_requests as $form_request) {
         $time_in = date('H:i', strtotime($event_work->time_in));
