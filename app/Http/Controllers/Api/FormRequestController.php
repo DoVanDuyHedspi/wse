@@ -359,7 +359,7 @@ class FormRequestController extends Controller
         $date = date('Y-m-d');
       }
       if (count($filter)) {
-        $forms = FormRequest::with('user')->whereIn('type', ['OT', 'RM'])->where('status', 'accept')->whereDate("work_date", '=', $date)->whereHas('user', function ($query) use ($filter) {
+        $forms = FormRequest::with('user')->whereIn('type', ['OT', 'RM'])->where('status', 'accept')->where('has_worked', '0')->whereDate("work_date", '=', $date)->whereHas('user', function ($query) use ($filter) {
           return $query->when($filter["group_id"], function ($q, $group_id) {
             return $q->where("group_id", $group_id);
           })->when($filter["branch_id"], function ($q, $branch_id) {
@@ -442,24 +442,39 @@ class FormRequestController extends Controller
     }
     if (Auth::user()->can('approve-requests')) {
       $form->has_worked = 1;
-      $form->save();
+      $event = Event::whereDate('date', '=', date('Y-m-d', strtotime($form->work_date)))->first();
       if ($form->type == 'RM') {
-        $event = Event::whereDate('date', '=', date('Y-m-d', strtotime($form->work_date)))->first();
-        if(!$event) {
+        $word_date = date('Y-m-d', strtotime($form->work_date));
+        $time_in = date('H:i', strtotime($form->work_time_begin));
+        $time_out = date('H:i', strtotime($form->work_time_end));
+        $user_code = $form->user_code;
+        if (!$event) {
           $event = new Event();
+          $event->date = $word_date;
+          $event->time_in = $time_in;
+          $event->time_out = $time_out;
+          $event->user_code = $user_code;
           $event->status = 1;
+        } else if ($event->time_out == null) {
+          if (date('H:i', strtotime($event->time_in)) > $time_in) {
+            $event->time_out = $time_out;
+            $event->time_in = $time_in;
+          } else {
+            $event->time_out = $time_out;
+          }
+        } else if (date('H:i', strtotime($event->time_out)) <= $time_in) {
+          $event->time_out = $time_out;
+          
         }
-        $event->date = date('Y-m-d', strtotime($form->work_date));
-        $event->time_in = date('H:i', strtotime($form->work_time_begin));
-        $event->time_out = date('H:i', strtotime($form->work_time_end));
-        $event->user_code = $form->user_code;
-        $ev_update = EventHelper::updateEventInfo($event);
-        $ev_update->save();
-
-        return response([
-          'status' => true
-        ], 200);
+        $event = EventHelper::updateEventInfo($event);
+        $event->save();
+        self::updateFormRequest($event);
       }
+      $form->event_id = $event->id;
+      $form->save();
+      return response([
+        'status' => true
+      ], 200);
     } else {
       return response([
         'status' => false,
@@ -518,6 +533,40 @@ class FormRequestController extends Controller
       }
       $ev_update = EventHelper::updateEventInfo($event_work);
       $ev_update->save();
+    }
+  }
+
+  static function updateFormRequest($event_work)
+  {
+    $form_requests = FormRequest::whereDate('work_date', '=', date('Y-m-d', strtotime($event_work->date)))->where('status', 'accept')->get();
+    if (count($form_requests) != 0) {
+      foreach ($form_requests as $form_request) {
+        $time_in = date('H:i', strtotime($event_work->time_in));
+        $time_out = date('H:i', strtotime($event_work->time_out));
+        $work_begin = date('H:i', strtotime($form_request->work_time_begin));
+        $work_end = date('H:i', strtotime($form_request->work_time_end));
+        $event_leave = Event::whereDate('date', '=', date('Y-m-d', strtotime($form_request->leave_date)))->first();
+        if ($time_in <= $work_begin && $time_out >= $work_end) {
+          $form_request->has_worked = 1;
+          $form_request->save();
+
+          if ($form_request->type == 'ILM') {
+            $event_leave->ILM = 0;
+          } else if ($form_request->type == 'LEM') {
+            $event_leave->LEM = 0;
+          } else if ($form_request->type == 'ILA') {
+            $event_leave->ILA = 0;
+          } else if ($form_request->type == 'LEA') {
+            $event_leave->LEA = 0;
+          }
+          $has_error = $event_leave->ILM + $event_leave->LEM + $event_leave->ILA + $event_leave->LEA;
+          if ($has_error == 0) {
+            $event_leave->status = 2;
+          }
+          $event_leave->fined_time -= $form_request->range_time;
+          $event_leave->save();
+        }
+      }
     }
   }
 }

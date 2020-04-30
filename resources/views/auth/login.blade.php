@@ -56,7 +56,7 @@
             </ol>
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
-                <img class="d-block img-fluid" src="https://static.pexels.com/photos/33972/pexels-photo.jpg" alt="First slide">
+                <img class="d-block img-fluid" src="/storage/login_image/photo1.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
                     <h2>This is Heaven</h2>
@@ -65,7 +65,7 @@
                 </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="https://images.pexels.com/photos/7097/people-coffee-tea-meeting.jpg" alt="First slide">
+                <img class="d-block img-fluid" src="/storage/login_image/photo2.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
                     <h2>This is Heaven</h2>
@@ -74,7 +74,7 @@
                 </div>
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="https://images.pexels.com/photos/872957/pexels-photo-872957.jpeg" alt="First slide">
+                <img class="d-block img-fluid" src="/storage/login_image/photo3.jpeg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
                     <h2>This is Heaven</h2>

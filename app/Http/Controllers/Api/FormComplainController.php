@@ -307,6 +307,6 @@ class FormComplainController extends Controller
       $form['search_info'] = $search_info;
     }
     $forms = FormComplainResource::collection($forms);
-    return response(['forms' => $forms, 'list_video_url' => $listVideoUrl]);
+    return response(['forms' => $forms, 'list_video_url' => array_reverse($listVideoUrl)]);
   }
 }

@@ -13,4 +13,9 @@ class Event extends Model
   protected $casts = [
     'date' => 'date:Y-m-d',
   ];
+
+  public function form_requests() 
+  {
+    return $this->hasMany(FormRequest::class);
+  }
 }

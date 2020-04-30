@@ -7,6 +7,7 @@ use App\FakeFaceReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Lib\WorkLib;
 
 class FakeFaceReportController extends Controller
 {
@@ -25,9 +26,9 @@ class FakeFaceReportController extends Controller
         return $query->whereDate("date_time", '>=', date('Y-m-d H:i:s', strtotime($date_begin)));
       })->when($filter["date_end"], function ($query, $date_end) {
         return $query->whereDate("date_time", '<=', date('Y-m-d H:i:s', strtotime($date_end)));
-      })->get();
+      })->with('user')->orderBy('created_at', 'desc')->get();
     } else {
-      $reports = FakeFaceReport::all();
+      $reports = FakeFaceReport::orderBy('created_at', 'desc')->with('user')->get();
     }
 
 
@@ -57,6 +58,20 @@ class FakeFaceReportController extends Controller
       ], 200);
     }
     $report = new FakeFaceReport();
+    $data = new WorkLib();
+    $res = $data->searchUserByPicture($request->image_base64);
+    
+    if (isset($res['info']['SearchInfo'])) {
+      $user_code = $res['info']['SearchInfo'][0]['CustomizeID'];
+      $report->user_code = $user_code;
+      $date = date('Y-m-d', strtotime($request->date_time));
+      $end_time = date('H:i:s', strtotime($request->date_time));
+      $begin_time = date('H:i:s', (strtotime($request->date_time)-300));
+      $result = $data->searchEventOfUser($date, $begin_time, $end_time, $user_code);
+      if (isset($result['info']['SearchInfo'])) {
+        $report->spoofing_success = 1;
+      }
+    }
     $report->branch_id = $request->branch_id;
     $report->date_time = date('Y-m-d H:i:s', strtotime($request->date_time));
     if ($report->save()) {

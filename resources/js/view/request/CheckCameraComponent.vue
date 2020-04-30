@@ -1,11 +1,14 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
+    <el-row class="mt-4 mb-2">
       <el-col :span="24" class="text-center">
         <h2>GIẢI QUYẾT KHIẾU LẠI</h2>
       </el-col>
     </el-row>
     <el-row :gutter="20">
+      <el-col :span="24" class="text-center mb-3">
+        <h4>Ngày: {{result_date}}</h4>
+      </el-col>
       <el-col :span="24" class="text-center">
         <el-date-picker
           v-model="date"
@@ -13,11 +16,9 @@
           format="dd-MM-yyyy"
           value-format="dd-MM-yyyy"
           placeholder="Ngày xác minh"
+          :picker-options="pickerOptions"
         ></el-date-picker>
         <el-button type="primary" @click="fetchData">Tìm</el-button>
-      </el-col>
-      <el-col :span="24">
-        <h4>Ngày: {{date}}</h4>
       </el-col>
     </el-row>
     <el-row>
@@ -187,7 +188,13 @@ export default {
       error: {
         message: ""
       },
+      result_date: "",
       date: "",
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        }
+      },
       dataTable: [],
       listVideoUrl: [],
       dialogVisible: false,
@@ -223,6 +230,7 @@ export default {
           this.listVideoUrl = response.data.list_video_url;
         });
       this.loading = false;
+      this.result_date = this.date;
     },
     openUserInfo(user) {
       this.dialog.user_avatar = user.user_avatar;
@@ -293,7 +301,7 @@ export default {
           .post("/api/form_complain/manage/approve", {
             request_id: this.drawer.request_id,
             action: "success",
-            time: this.drawer.time,
+            time: this.drawer.time
           })
           .then(response => {
             if (response.data.status === false) {
@@ -306,7 +314,7 @@ export default {
             } else {
               this.dataTable.splice(this.drawer.index, 1);
               this.$store.dispatch("fetchUsersTimesheets");
-              this.drawerVisible =false;
+              this.drawerVisible = false;
               this.$notify({
                 title: "Hoàn thành",
                 message: "Cập nhật thành công",

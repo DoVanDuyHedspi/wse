@@ -19,22 +19,16 @@
           <span class="block solved mr-2"></span> Đi muộn, về sớm (sáng/chiều) đã làm bù
         </el-col>
         <el-col :span="8">
-          <span class="block leave mr-2"></span> Không có dữ liệu/Không đủ thời gian làm việc
+          <span class="block leave mr-2"></span>Không đủ thời gian làm việc tối thiểu
         </el-col>
         <el-col :span="8">
           <span class="block today mr-2"></span> Hôm nay
-        </el-col>
-        <el-col :span="8">
-          <span class="block past mr-2"></span> Quá khứ
-        </el-col>
-        <el-col :span="8">
-          <span class="block future mr-2"></span> Tương lai
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="8" class="text-right">Tổng số lần bị phạt: {{penalty.number_of_fines}} (lần)</el-col>
         <el-col :span="8" class="text-center">Tổng ngày đi làm: {{number_working_days}} (ngày)</el-col>
-        <el-col :span="8" class="text-left">Tổng thời gian làm thêm: 0 (giờ)</el-col>
+        <el-col :span="8" class="text-left">Tổng thời gian làm thêm: {{total_overtime}} (giờ)</el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col
@@ -74,6 +68,7 @@ export default {
         number_of_fines: 0
       },
       number_working_days: 0,
+      total_overtime: 0,
       note: false
     };
   },
@@ -105,11 +100,12 @@ export default {
       params["date"] = date;
       this.$store.dispatch("fetchEvents", params).then(
         response => {
-          let penalty = this.$store.getters.getInfoPenalty;
-          this.penalty.actual_penalty_time = penalty["actual_penalty_time"];
-          this.penalty.block_penalty_time = penalty["block_penalty_time"];
-          this.penalty.number_of_fines = penalty["number_of_fines"];
-          this.number_working_days = penalty["number_working_days"];
+          let info = this.$store.getters.getTimeSheetInfo;
+          this.penalty.actual_penalty_time = info["actual_penalty_time"];
+          this.penalty.block_penalty_time = info["block_penalty_time"];
+          this.penalty.number_of_fines = info["number_of_fines"];
+          this.number_working_days = info["number_working_days"];
+          this.total_overtime = info['total_overtime'];
           if (response.data.status === false) {
             this.error.message = response.data.message;
           }

@@ -73,6 +73,19 @@
             >></el-image>
           </template>
         </el-table-column>
+        <el-table-column property="user.name" label="Nhận diện" width="150" class-name="text-center">
+          <template slot-scope="scope">
+            <router-link :to="'/users/'+scope.row.user.id" v-if="scope.row.user" >
+              <span>{{scope.row.user.name}}</span>
+            </router-link>
+          </template>
+        </el-table-column>
+        <el-table-column label="Kết quả giả mạo" class-name="text-center">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.spoofing_success" type="warning">Thành công</el-tag>
+            <el-tag v-else type="info">Thất bại</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="Thao tác" class-name="text-center">
           <template slot-scope="scope">
             <el-button
@@ -149,7 +162,7 @@ export default {
               });
             } else {
               this.dataTable.splice(index, 1);
-              this.srcList.splice(index,1);
+              this.srcList.splice(index, 1);
               this.$notify({
                 title: "Hoàn thành",
                 message: "Xóa report thành công",

@@ -45,6 +45,7 @@
           format="dd-MM-yyyy"
           value-format="dd-MM-yyyy"
           placeholder="Ngày ot, remote"
+          :picker-options="pickerOptions"
           class="w-100"
         ></el-date-picker>
       </el-col>
@@ -134,7 +135,12 @@ export default {
       currentPage: 1,
       pageSize: 5,
       dataTable: [],
-      confirm_date: moment().format('DD-MM-YYYY'),
+      confirm_date: moment().format("DD-MM-YYYY"),
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        }
+      },
       filter: {
         date: "",
         branch_id: "",
@@ -192,9 +198,11 @@ export default {
         .then(response => {
           this.form_requests = response.data;
         });
-      
+
       this.dataTable = this.getDataTable();
-      this.confirm_date = this.filter.date ? this.filter.date : this.confirm_date;
+      this.confirm_date = this.filter.date
+        ? this.filter.date
+        : this.confirm_date;
     },
     handleConfirm: async function(form_request, index) {
       await this.$confirm(
@@ -205,10 +213,10 @@ export default {
           cancelButtonText: "Hủy",
           type: "warning"
         }
-      ).then( async () => {
+      ).then(async () => {
         await axios
           .post("/api/form_requests/users/ot_rm/confirm", {
-            request_id: form_request.id,
+            request_id: form_request.id
           })
           .then(response => {
             if (response.data.status === false) {
