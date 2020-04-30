@@ -91,7 +91,7 @@ class EventController extends Controller
   {
     $date = $request->query()['date'];
     $date = date('Y-m', strtotime($date));
-    $events = Event::where('user_code', $id)->where('date', 'like', $date . '%')->get();
+    $events = Event::where('user_code', $id)->where('date', 'like', $date . '%')->with('form_requests')->get();
     return EventResource::collection($events);
   }
 

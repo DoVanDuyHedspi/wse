@@ -10,7 +10,7 @@
           active-text-color="#ffd04b"
         >
           <el-menu-item index="0" class="text-center">
-            <el-image src="/storage/logo/logo.png" style="width: 100px; height: 50px"></el-image>
+            <span slot="title" id="logo">WSE</span>
           </el-menu-item>
           <el-submenu index="1">
             <template slot="title">
@@ -247,5 +247,12 @@ export default {
 .avatar {
   vertical-align: middle;
   cursor: pointer;
+}
+
+#logo {
+  color: red;
+  font-weight: 900;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace
 }
 </style>

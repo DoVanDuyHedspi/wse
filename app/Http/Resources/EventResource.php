@@ -45,6 +45,7 @@ class EventResource extends JsonResource
       'fined_time' => $this->fined_time,
       'number_of_fines' =>  $this->ILM + $this->LEM + $this->ILA + $this->LEA,
       'working_day' => $working_day,
+      'form_requests' => $this->form_requests,
     ];
   }
 }

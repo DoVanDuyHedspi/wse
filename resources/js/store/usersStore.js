@@ -97,16 +97,22 @@ const usersStore = new Vuex.Store({
     getUsersDataTable: (state) => {
       return state.users.slice(0, 10)
     },
-    getInfoPenalty: (state) => {
+    getTimeSheetInfo: (state) => {
       let actual_penalty_time = 0;
       let number_of_fines = 0;
       let number_working_days = 0;
+      let total_overtime = 0;
       state.events.map(function (event) {
-        actual_penalty_time = actual_penalty_time + event.fined_time;
+        actual_penalty_time +=  event.fined_time;
         if (event.number_of_fines == 1) {
           number_of_fines++;
         }
-        number_working_days = number_working_days + event.working_day;
+        number_working_days +=  event.working_day;
+        event.form_requests.map(function (form_request){
+          if(form_request.type == 'OT' && form_request.has_worked == 1) {
+            total_overtime += form_request.range_time;
+          }
+        })
       });
       let block_penalty_time = 0;
       if (actual_penalty_time % 30 == 0) {
@@ -119,6 +125,7 @@ const usersStore = new Vuex.Store({
       data['block_penalty_time'] = block_penalty_time;
       data['number_of_fines'] = number_of_fines;
       data['number_working_days'] = number_working_days;
+      data['total_overtime'] = total_overtime/60;
       return data;
     },
     getDateOfMonth: (state) => {
