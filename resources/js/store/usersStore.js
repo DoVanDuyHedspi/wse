@@ -71,25 +71,25 @@ const usersStore = new Vuex.Store({
     }
   },
   mutations: {
-    FETCH(state, users) {
+    SET_USERS(state, users) {
       state.users = users;
     },
-    FETCH_ONE(state, user) {
+    SET_USER(state, user) {
       state.user = user;
     },
-    FETCH_COMPANY_INFO(state, info) {
+    SET_COMPANY_INFO(state, info) {
       state.infoCompany = info;
     },
     UPDATE_USERS(state, users) {
       state.users = users;
     },
-    FETCH_EVENTS(state, events) {
+    SET_EVENTS(state, events) {
       state.events = events;
     },
-    FETCH_USERS_TIMESHEETS(state, users_timesheets) {
+    SET_USERS_TIMESHEETS(state, users_timesheets) {
       state.users_timesheets = users_timesheets;
     },
-    FETCH_TIMEKEEPING(state, timekeeping) {
+    SET_TIMEKEEPING(state, timekeeping) {
       state.timekeeping = timekeeping;
     }
   },
@@ -144,7 +144,7 @@ const usersStore = new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.get('api/users')
           .then(response => {
-            commit('FETCH', response.data);
+            commit('SET_USERS', response.data);
             resolve(response);
           }, error => {
             reject(error)
@@ -154,13 +154,13 @@ const usersStore = new Vuex.Store({
     async fetchOne({ commit }, id) {
       let response = await axios.get(`api/users/${id}/edit`);
       if (response.data.status !== false) {
-        commit('FETCH_ONE', response.data);
+        commit('SET_USER', response.data);
       }
       return response;
     },
     fetchCompanyInfo({ commit }) {
       return axios.get('api/company/getInfo').then(response => {
-        commit('FETCH_COMPANY_INFO', response.data)
+        commit('SET_COMPANY_INFO', response.data)
       }).catch();
     },
     async fetchEvents({ commit }, params) {
@@ -170,28 +170,28 @@ const usersStore = new Vuex.Store({
         }
       });
       if (response.data.status !== false) {
-        commit('FETCH_EVENTS', response.data.data);
+        commit('SET_EVENTS', response.data.data);
       }
       return response;
     },
     async fetchUsersTimesheets({ commit }) {
       let response = await axios.get(`api/events`);
       if (response.data.status !== false) {
-        commit('FETCH_USERS_TIMESHEETS', response.data.data);
+        commit('SET_USERS_TIMESHEETS', response.data.data);
       }
       return response;
     },
     async fetchTimekeeping({ commit }) {
       let response = await axios.get(`api/company/getTimekeeping`);
       if (response.data.status !== false) {
-        commit('FETCH_TIMEKEEPING', response.data);
+        commit('SET_TIMEKEEPING', response.data);
       }
     },
     updateUsers({ commit }, users) {
       commit('UPDATE_USERS', users);
     },
     updateUsersTimesheets({ commit }, users_timesheets) {
-      commit('FETCH_USERS_TIMESHEETS', users_timesheets);
+      commit('SET_USERS_TIMESHEETS', users_timesheets);
     },
     deleteUser({ }, id) {
       return new Promise((resolve, reject) => {

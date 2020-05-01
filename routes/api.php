@@ -20,6 +20,8 @@ $router->post('/form_complain/manage/check_camera', 'Api\FormComplainController@
 $router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
 
 $router->resource('/users', 'Api\UserController');
+$router->get('/users/{id}/notifications', 'Api\UserController@notification');
+$router->post('/users/notifications/{id}/read', 'Api\UserController@markAsReadNoti');
 
 $router->resource('/permissions', 'Api\PermissionController');
 
@@ -34,5 +36,6 @@ $router->resource('/positions', 'Api\PositionController')->only(['store', 'updat
 $router->get('/company/getInfo', 'Api\CompanyController@getInfo');
 $router->post('/company/settingTimekeeping', 'Api\CompanyController@settingTimekeeping');
 $router->get('/company/getTimekeeping', 'Api\CompanyController@getTimekeeping');
+$router->get('/company/timeUpdateTimekeepingData', 'Api\CompanyController@timeUpdateTimekeepingData');
 
 

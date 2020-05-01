@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\NotificationResource;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -211,5 +213,24 @@ class UserController extends Controller
         'message' => $e->getMessage(),
       ], 200);
     }
+  }
+
+  public function notification($id)
+  {
+    $user = User::find($id);
+    if(!$user) {
+      return response([
+        'status' => false,
+        'message' => 'Không tìm thấy nhân viên này!'
+      ], 200);
+    }
+    $notifications = $user->notifications;
+    return NotificationResource::collection($notifications);;
+  }
+
+  public function markAsReadNoti($id)
+  {
+    $noti = DB::table('notifications')->where('id', $id)->update(['read_at' => now()]);
+    return response(['status'=>true],200);
   }
 }

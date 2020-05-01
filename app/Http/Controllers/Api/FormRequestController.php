@@ -7,6 +7,7 @@ use App\FormRequest;
 use App\Helpers\EventHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\ResultOfRequest;
 use App\SettingCompany;
 use App\User;
 use Illuminate\Support\Facades\Validator;
@@ -400,6 +401,9 @@ class FormRequestController extends Controller
     if (in_array($request->action, ['forward', 'cancel']) && Auth::user()->can('check-requests')) {
       $form->status = $request->action;
       $form->save();
+      if($request->action == 'cancel') {
+        $form->user->notify(new ResultOfRequest($form));
+      }
       return response([
         'status' => true
       ], 200);
@@ -410,6 +414,7 @@ class FormRequestController extends Controller
         self::acceptRequest($form);
       }
       $form->save();
+      $form->user->notify(new ResultOfRequest($form));
       return response([
         'status' => true
       ], 200);

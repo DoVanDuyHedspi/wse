@@ -11,6 +11,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\SettingCompany;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
@@ -80,5 +81,16 @@ class CompanyController extends Controller
   {
     $timekeeping = SettingCompany::where('type', 'timekeeping')->first();
     return $timekeeping->value;
+  }
+
+  public function timeUpdateTimekeepingData()
+  {
+    try {
+      $fetch_data_info = SettingCompany::where('type', 'fetch_data_info')->first();
+      $value = $fetch_data_info->value;
+      return response(['status'=>true, 'fetch_at' => $value['fetch_at']], 200);
+    } catch(Exception $e) {
+      abort(404);
+    }
   }
 }
