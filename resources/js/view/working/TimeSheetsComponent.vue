@@ -41,7 +41,10 @@
         >Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
       </el-row>
     </div>
-    <div class="bh-white mt-3 p-2">
+    <div class="mt-3 pl-2">
+      <b>Cập nhật lúc:</b> <span>{{timeUpdateTimekeepingData}}</span>
+    </div>
+    <div class="bh-white p-2">
       <calendar-view :show-date="showDate" :events="events" class="theme-default">
         <calendar-view-header
           slot="header"
@@ -69,7 +72,8 @@ export default {
       },
       number_working_days: 0,
       total_overtime: 0,
-      note: false
+      note: false,
+      timeUpdateTimekeepingData: '',
     };
   },
   components: {
@@ -79,6 +83,7 @@ export default {
   created() {
     let now = new Date().toJSON().slice(0, 10);
     this.fetchData(now);
+    this.getTimeUpdate();
   },
   computed: {
     ...mapState(["events"])
@@ -114,6 +119,13 @@ export default {
           console.log(error);
         }
       );
+    },
+    getTimeUpdate() {
+      axios.get('/api/company/timeUpdateTimekeepingData').then(response => {
+        this.timeUpdateTimekeepingData = response.data.fetch_at;
+      }).catch(function (error) {
+        console.log(error);
+      })
     },
     handleNote() {
       console.log("tets");

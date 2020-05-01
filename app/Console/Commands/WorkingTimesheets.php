@@ -6,6 +6,7 @@ use App\Event;
 use App\FormRequest;
 use App\Helpers\EventHelper;
 use App\Lib\WorkLib;
+use App\SettingCompany;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -76,13 +77,14 @@ class WorkingTimesheets extends Command
         }
       }
     }
-
+    self::fetchDataInfo();
     $this->info('Thành công!');
   }
 
   static function updateFormRequest($event_work)
   {
-    $form_requests = FormRequest::whereDate('work_date', '=', date('Y-m-d', strtotime($event_work->date)))->where('status', 'accept')->get();
+    $form_requests = FormRequest::whereDate('work_date', '=', date('Y-m-d', strtotime($event_work->date)))
+      ->whereIn('type', ['ILM', 'ILA', 'LO', 'LEM', 'LEA'])->where('status', 'accept')->get();
     if (count($form_requests) != 0) {
       foreach ($form_requests as $form_request) {
         $time_in = date('H:i', strtotime($event_work->time_in));
@@ -112,5 +114,21 @@ class WorkingTimesheets extends Command
         }
       }
     }
+  }
+
+  static function fetchDataInfo()
+  {
+    $value = [];
+    $timekeeping_data = SettingCompany::where('type', 'fetch_data_info')->first();
+    if (!$timekeeping_data) {
+      $timekeeping_data = new SettingCompany();
+      $timekeeping_data->type = 'fetch_data_info'; 
+      $value['fetch_at'] = date('d-m-Y H:i:s');
+      $timekeeping_data->value = $value;
+    }
+    $value = $timekeeping_data->value;
+    $value['fetch_at'] = date('d-m-Y H:i:s');
+    $timekeeping_data->value = $value;
+    $timekeeping_data->save();
   }
 }

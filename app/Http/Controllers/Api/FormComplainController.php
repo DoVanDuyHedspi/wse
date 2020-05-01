@@ -12,6 +12,8 @@ use App\Event;
 use App\Helpers\EventHelper;
 use App\Http\Resources\FormComplainResource;
 use App\Lib\WorkLib;
+use App\Notifications\ResultOfComplain;
+use App\Notifications\ResultOfRequest;
 use Google_Service_Drive;
 
 class FormComplainController extends Controller
@@ -258,7 +260,7 @@ class FormComplainController extends Controller
         }
       }
     }
-
+    $form->user->notify(new ResultOfComplain($form));
     $form->save();
     return response(['status' => true, 'form_complain' => $form], 200);
   }
