@@ -22,6 +22,7 @@ $router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only([
 $router->resource('/users', 'Api\UserController');
 $router->get('/users/{id}/notifications', 'Api\UserController@notification');
 $router->post('/users/notifications/{id}/read', 'Api\UserController@markAsReadNoti');
+$router->post('/users/export/csv/', 'Api\UserController@exportCsv');
 
 $router->resource('/permissions', 'Api\PermissionController');
 
