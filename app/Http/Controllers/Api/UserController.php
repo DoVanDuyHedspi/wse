@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Branch;
 use App\EmployeeType;
+use App\Exports\UsersExport;
 use App\Group;
 use App\Permission;
 use App\Position;
@@ -18,7 +19,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Excel;
 
 class UserController extends Controller
 {
@@ -218,7 +222,7 @@ class UserController extends Controller
   public function notification($id)
   {
     $user = User::find($id);
-    if(!$user) {
+    if (!$user) {
       return response([
         'status' => false,
         'message' => 'Không tìm thấy nhân viên này!'
@@ -231,6 +235,11 @@ class UserController extends Controller
   public function markAsReadNoti($id)
   {
     $noti = DB::table('notifications')->where('id', $id)->update(['read_at' => now()]);
-    return response(['status'=>true],200);
+    return response(['status' => true], 200);
+  }
+
+  public function exportCsv(Request $request)
+  {
+    return Excel::download(new UsersExport($request->listUserIds), 'users.xlsx');
   }
 }

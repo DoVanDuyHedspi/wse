@@ -176,7 +176,7 @@ return [
     App\Providers\RouteServiceProvider::class,
     App\Providers\PermissionsServiceProvider::class,
     App\Providers\HelperServiceProvider::class,
-
+    Maatwebsite\Excel\ExcelServiceProvider::class,
   ],
 
   /*
@@ -227,6 +227,7 @@ return [
     'View' => Illuminate\Support\Facades\View::class,
     'UserHelper' => App\Helpers\UserHelper::class,
     'EventHelper' => App\Helpers\EventHelper::class,
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
   ],
 

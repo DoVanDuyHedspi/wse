@@ -22,6 +22,12 @@
             </div>
           </el-col>
           <el-col :span="12" class="text-right">
+            <el-button
+              round
+              icon="el-icon-download"
+              type="primary"
+              @click="downloadCsv"
+            >Download CSV</el-button>
             <router-link to="/users/create">
               <el-button round icon="el-icon-plus" type="success">Thêm mới</el-button>
             </router-link>
@@ -163,8 +169,8 @@ export default {
     };
   },
   created() {
-    if(Object.keys(this.$route.query).length !== 0){
-      if(this.$route.query.branch_id){
+    if (Object.keys(this.$route.query).length !== 0) {
+      if (this.$route.query.branch_id) {
         this.filter.branch_id = parseInt(this.$route.query.branch_id);
       }
     }
@@ -178,6 +184,28 @@ export default {
     }
   }),
   methods: {
+    forceFileDownload(response) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "users.xlsx"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    },
+    downloadCsv() {
+      axios({
+        method: "post",
+        url: "/api/users/export/csv/",
+        responseType: "arraybuffer",
+        data: {
+          listUserIds: this.$store.getters.getListUserIds
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response);
+        })
+        .catch(() => console.log("error occured"));
+    },
     handleGroupChange() {
       if (Array.isArray(this.filter.group_id)) {
         this.filter.group_id = this.filter.group_id[
@@ -242,7 +270,7 @@ export default {
                 });
               }
               this.dataTable.splice(index, 1);
-              this.$store.dispatch('fetch');
+              this.$store.dispatch("fetch");
               this.$notify({
                 title: "Hoàn thành",
                 message: "Xóa thành viên thành công",

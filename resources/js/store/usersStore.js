@@ -97,6 +97,13 @@ const usersStore = new Vuex.Store({
     getUsersDataTable: (state) => {
       return state.users.slice(0, 10)
     },
+    getListUserIds: (state) => {
+      let list_id = [];
+      state.users.map(function (user) {
+        list_id.push(user.id);
+      })
+      return list_id;
+    },
     getTimeSheetInfo: (state) => {
       let actual_penalty_time = 0;
       let number_of_fines = 0;
