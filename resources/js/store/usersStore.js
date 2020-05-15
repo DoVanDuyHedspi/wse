@@ -104,6 +104,14 @@ const usersStore = new Vuex.Store({
       })
       return list_id;
     },
+    getListSuggestions: (state) => {
+      let listSuggestions = [];
+      state.users.map(function (user) {
+        listSuggestions.push({"value": user.employee_code + ' ' + user.name});
+      })
+      return listSuggestions;
+      // return [{"value":"vue"}, {"value":"duy"}];
+    },
     getTimeSheetInfo: (state) => {
       let actual_penalty_time = 0;
       let number_of_fines = 0;
@@ -144,6 +152,29 @@ const usersStore = new Vuex.Store({
       }
 
       return dates;
+    },
+    getTimekeeping: (state) => {
+      return state.timekeeping;
+    },
+    getTimeIn: (state) => (date) => {
+      let timeIn_timeOut = '';
+      state.events.map(function (event) {
+        if(event.startDate == date ) {
+          timeIn_timeOut = event.title;
+        }
+      }) 
+      let timeIn = timeIn_timeOut.split(" ")[0];
+      return timeIn;
+    },
+    getTimeOut: (state) => (date) => {
+      let timeIn_timeOut = '';
+      state.events.map(function (event) {
+        if(event.startDate == date ) {
+          timeIn_timeOut = event.title;
+        }
+      }) 
+      let timeOut = timeIn_timeOut.split(" ")[2];
+      return timeOut;
     }
   },
   actions: {

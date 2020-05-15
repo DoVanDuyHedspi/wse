@@ -27,11 +27,14 @@
         ></el-cascader>
       </el-col>
       <el-col :span="8">
-        <el-input
-          placeholder="Tìm kiếm theo tên, mã nhân viên"
+        <el-autocomplete
+          class="inline-input w-100"
           prefix-icon="el-icon-search"
           v-model="filter.search"
-        ></el-input>
+          :fetch-suggestions="querySearch"
+          placeholder="Tìm kiếm theo tên, mã nhân viên"
+          @select="handleSelect"
+        ></el-autocomplete>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="text-right">
@@ -250,9 +253,30 @@ export default {
     ...mapState(["infoCompany"]),
     getFormRequestData() {
       return this.getDataTable();
+    },
+    listSuggestions() {
+      return this.$store.getters.getListSuggestions;
     }
   },
   methods: {
+    querySearch(queryString, cb) {
+      var suggestions = this.listSuggestions;
+      var results = queryString
+        ? suggestions.filter(this.createFilter(queryString))
+        : suggestions;
+      cb(results);
+    },
+    createFilter(queryString) {
+      return suggestion => {
+        return (
+          suggestion.value.toLowerCase().indexOf(queryString.toLowerCase()) !==
+          -1
+        );
+      };
+    },
+    handleSelect(item) {
+      this.filter.search = this.filter.search.split(" ")[0];
+    },
     getFormRequest() {
       let that = this;
       axios.get("/api/form_requests/users/requests").then(response => {

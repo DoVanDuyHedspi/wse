@@ -139,13 +139,31 @@ export default {
           message: "Hãy nhập thời gian",
           trigger: "blur"
         }
-      },
-      validate: false
+      }
     };
   },
   created() {
     this.getUser();
-    // this.getWorkingTimeInfo();
+    if (Object.keys(this.$route.query).length !== 0) {
+      if (this.$route.query.type) {
+        this.form.type = this.$route.query.type;
+        if (this.form.type == "RM" && this.$route.query.date) {
+          this.form.work_time_begin =
+            this.$route.query.date +
+            " " +
+            this.specified_working_time.morning_begin;
+          this.form.work_time_end =
+            this.$route.query.date +
+            " " +
+            this.specified_working_time.afternoon_end;
+        } else if (this.form.type == "OT" && this.$route.query.date) {
+          this.form.work_time_begin =
+            this.$route.query.date +
+            " " +
+            this.specified_working_time.afternoon_end;
+        }
+      }
+    }
   },
   computed: mapState({
     user: state => state.user,
@@ -175,12 +193,13 @@ export default {
       this.form.work_time_begin = "";
       this.form.work_time_end = "";
       this.form.range_time = "";
-      this.validate = false;
     },
     validateWorkBegin() {
       if (this.validateDate()) {
-        let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format("HH:mm");
-        this.validate = true;
+        let work_time_begin = moment(
+          this.form.work_time_begin,
+          "DD-MM-YYYY HH:mm"
+        ).format("HH:mm");
         if (this.form.type == "OT") {
           if (
             this.compareTime(
@@ -197,7 +216,6 @@ export default {
                 center: true,
                 callback: action => {
                   this.form.work_time_begin = "";
-                  this.validate = false;
                   this.form.range_time = "";
                 }
               }
@@ -219,7 +237,6 @@ export default {
                 center: true,
                 callback: action => {
                   this.form.work_time_begin = "";
-                  this.validate = false;
                   this.form.range_time = "";
                 }
               }
@@ -233,10 +250,14 @@ export default {
     },
     validateDate() {
       if (this.form.work_time_begin && this.form.work_time_end) {
-        let date_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
-          "YYYY:MM:dddd"
-        );
-        let date_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format("YYYY:MM:dddd");
+        let date_begin = moment(
+          this.form.work_time_begin,
+          "DD-MM-YYYY HH:mm"
+        ).format("YYYY:MM:dddd");
+        let date_end = moment(
+          this.form.work_time_end,
+          "DD-MM-YYYY HH:mm"
+        ).format("YYYY:MM:dddd");
         if (date_begin != date_end) {
           this.$alert(
             "Thời gian làm đăng ký phải cùng trong một ngày",
@@ -249,7 +270,6 @@ export default {
                 if (this.form.type == "LO") {
                   this.form.leave_time_end = "";
                 } else {
-                  this.validate = false;
                   this.form.work_time_end = "";
                 }
               }
@@ -257,12 +277,14 @@ export default {
           );
           return false;
         } else {
-          let work_time_begin = moment(this.form.work_time_begin, 'DD-MM-YYYY HH:mm').format(
-            "HH:mm:ss"
-          );
-          let work_time_end = moment(this.form.work_time_end, 'DD-MM-YYYY HH:mm').format(
-            "HH:mm:ss"
-          );
+          let work_time_begin = moment(
+            this.form.work_time_begin,
+            "DD-MM-YYYY HH:mm"
+          ).format("HH:mm:ss");
+          let work_time_end = moment(
+            this.form.work_time_end,
+            "DD-MM-YYYY HH:mm"
+          ).format("HH:mm:ss");
           if (this.compareTime(work_time_begin, work_time_end)) {
             this.$alert(
               "Yêu cầu thời gian kết thúc phải lớn hơn thời gian bắt đầu",
@@ -273,7 +295,6 @@ export default {
                 center: true,
                 callback: action => {
                   this.form.work_time_end = "";
-                  this.validate = false;
                 }
               }
             );
@@ -309,7 +330,7 @@ export default {
     },
     createRequest(formName) {
       this.$refs[formName].validate(valid => {
-        if (valid && this.validate) {
+        if (valid) {
           this.form.user_code = this.user.employee_code;
           axios.post("/api/form_requests", this.form).then(response => {
             if (response.data.status === false) {

@@ -2,7 +2,7 @@
   <div class="p-3">
     <el-row class="my-4">
       <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH KHIẾU LẠI</h2>
+        <h2>DANH SÁCH KHIẾU NẠI</h2>
       </el-col>
       <el-col :span="8" class="text-left">
         <router-link to="/request_check_camera/new">

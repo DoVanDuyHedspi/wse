@@ -289,7 +289,60 @@ export default {
   },
   created() {
     this.getUser();
-    // this.getWorkingTimeInfo();
+    if (Object.keys(this.$route.query).length !== 0) {
+      if (this.$route.query.type) {
+        this.form.type = this.$route.query.type;
+        if (this.$route.query.date) {
+          let dateEvent = moment(this.$route.query.date, "DD-MM-YYYY").format(
+            "YYYY-MM-DD"
+          );
+          if (["ILM", "ILA"].includes(this.$route.query.type)) {
+            let timeIn = this.$store.getters.getTimeIn(dateEvent);
+            let leave_time_end = this.$route.query.date + " " + timeIn;
+            this.form.leave_time_end = leave_time_end;
+            if (this.$route.query.type == "ILM") {
+              this.validateIL(
+                "ILM",
+                this.specified_working_time.morning_late,
+                this.specified_working_time.morning_begin
+              );
+            } else {
+              this.validateIL(
+                "ILA",
+                this.specified_working_time.afternoon_late,
+                this.specified_working_time.afternoon_begin
+              );
+            }
+          } else if (["LEM", "LEA"].includes(this.$route.query.type)) {
+            let timeOut = this.$store.getters.getTimeOut(dateEvent);
+            let leave_time_begin = this.$route.query.date + " " + timeOut;
+            this.form.leave_time_begin = leave_time_begin;
+            if (this.$route.query.type == "LEM") {
+              this.validateLE(
+                "LEM",
+                this.specified_working_time.morning_late,
+                this.specified_working_time.morning_end
+              );
+            } else {
+              this.validateLE(
+                "LEA",
+                this.specified_working_time.afternoon_late,
+                this.specified_working_time.afternoon_end
+              );
+            }
+          } else if (["QQD", "QQV", "QQF"].includes(this.$route.query.type)) {
+            this.form.work_time_begin =
+              this.$route.query.date +
+              " " +
+              this.specified_working_time.morning_begin;
+            this.form.work_time_end =
+              this.$route.query.date +
+              " " +
+              this.specified_working_time.afternoon_end;
+          }
+        }
+      }
+    }
   },
   computed: mapState({
     user: state => state.user,

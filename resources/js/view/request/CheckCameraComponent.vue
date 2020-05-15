@@ -2,7 +2,7 @@
   <div class="p-3">
     <el-row class="mt-4 mb-2">
       <el-col :span="24" class="text-center">
-        <h2>GIẢI QUYẾT KHIẾU LẠI</h2>
+        <h2>GIẢI QUYẾT KHIẾU NẠI</h2>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -156,7 +156,7 @@
               }"
               class="w-100 mb-2"
             ></el-time-select>
-            <b>Trả lời khiếu lại</b>
+            <b>Trả lời khiếu nại</b>
             <el-input type="textarea" v-model="drawer.reply"></el-input>
           </div>
           <div class="text-center mt-3">
@@ -242,7 +242,7 @@ export default {
       this.dialogVisible = true;
     },
     handleApproveFail(form_request, index) {
-      this.$confirm("Bạn có chắc chắn khiếu lại này thất bại?", "Cảnh báo", {
+      this.$confirm("Bạn có chắc chắn khiếu nại này thất bại?", "Cảnh báo", {
         confirmButtonText: "Đồng ý",
         cancelButtonText: "Hủy",
         type: "warning"

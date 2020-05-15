@@ -2,7 +2,7 @@
   <div class="new_request bg-white">
     <div>
       <div class="header text-center">
-        <h4 class="m-0">KHIẾU LẠI KẾT QUẢ CHẤM CÔNG</h4>
+        <h4 class="m-0">KHIẾU NẠI KẾT QUẢ CHẤM CÔNG</h4>
       </div>
       <div class="body">
         <div class="content p-3">
@@ -144,6 +144,11 @@ export default {
   },
   created() {
     this.getUser();
+    if (Object.keys(this.$route.query).length !== 0) {
+      if (this.$route.query.date) {
+        this.form.date = this.$route.query.date;
+      }
+    }
   },
   computed: mapState({
     user: state => state.user,

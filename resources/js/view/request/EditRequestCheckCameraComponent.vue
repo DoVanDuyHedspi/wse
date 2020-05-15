@@ -2,7 +2,7 @@
   <div class="new_request bg-white">
     <div>
       <div class="header text-center">
-        <h4 class="m-0">KHIẾU LẠI KẾT QUẢ CHẤM CÔNG</h4>
+        <h4 class="m-0">KHIẾU NẠI KẾT QUẢ CHẤM CÔNG</h4>
       </div>
       <div class="body">
         <div class="content p-3">

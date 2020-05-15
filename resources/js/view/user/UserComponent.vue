@@ -72,12 +72,15 @@
                   :key="index"
                 ></el-option>
               </el-select>
-              <el-input
-                placeholder="Tìm kiếm"
+              <el-autocomplete
+                class="inline-input"
                 prefix-icon="el-icon-search"
                 v-model="filter.search"
-                class="filter"
-              ></el-input>
+                :fetch-suggestions="querySearch"
+                placeholder="Tìm kiếm"
+                @select="handleSelect"
+                @change="filterUsers"
+              ></el-autocomplete>
               <el-button type="primary" icon="el-icon-search" @click="filterUsers()">Lọc</el-button>
             </div>
           </el-col>
@@ -89,7 +92,7 @@
             <span style="color: blue">{{users.length}}</span> thành viên
           </h5>
           <el-table
-            :data="dataTable.length ? dataTable : getUsersDataTable"
+            :data="dataTable"
             style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
             stripe
           >
@@ -151,6 +154,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      users: [],
       error: {
         message: ""
       },
@@ -177,13 +181,34 @@ export default {
     this.filterUsers();
   },
   computed: mapState({
-    users: state => state.users,
+    // users: state => state.users,
     infoCompany: state => state.infoCompany,
-    getUsersDataTable(state) {
-      return state.users.slice(0, 5);
+    listSuggestions() {
+      return this.$store.getters.getListSuggestions;
     }
   }),
   methods: {
+    querySearch(queryString, cb) {
+      var suggestions = this.listSuggestions;
+      var results = queryString
+        ? suggestions.filter(this.createFilter(queryString))
+        : suggestions;
+      // call callback function to return suggestions
+      console.log(results);
+      cb(results);
+    },
+    createFilter(queryString) {
+      return suggestion => {
+        return (
+          suggestion.value.toLowerCase().indexOf(queryString.toLowerCase()) !==
+          -1
+        );
+      };
+    },
+    handleSelect(item) {
+      this.filter.search = this.filter.search.split(" ")[0];
+      this.filterUsers();
+    },
     forceFileDownload(response) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -233,7 +258,8 @@ export default {
           }
         })
         .then(response => {
-          this.$store.dispatch("updateUsers", response.data);
+          // this.$store.dispatch("updateUsers", response.data);
+          this.users = response.data;
           this.currentPage = 1;
           this.dataTable = this.getDataTable();
         });

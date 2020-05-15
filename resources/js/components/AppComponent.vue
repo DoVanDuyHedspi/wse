@@ -47,7 +47,7 @@
                 </router-link>
                 <router-link to="/users_requests/request_check_camera">
                   <el-menu-item index="1-3-3">
-                    <span slot="title">Khiếu lại chấm công</span>
+                    <span slot="title">Khiếu nại chấm công</span>
                   </el-menu-item>
                 </router-link>
               </el-submenu>
@@ -96,7 +96,7 @@
             </router-link>
             <router-link to="/request_check_camera">
               <el-menu-item index="4-3">
-                <span slot="title">Khiếu lại chấm công</span>
+                <span slot="title">Khiếu nại chấm công</span>
               </el-menu-item>
             </router-link>
           </el-submenu>

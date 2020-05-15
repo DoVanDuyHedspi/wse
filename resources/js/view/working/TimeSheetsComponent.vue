@@ -42,10 +42,16 @@
       </el-row>
     </div>
     <div class="mt-3 pl-2">
-      <b>Cập nhật lúc:</b> <span>{{timeUpdateTimekeepingData}}</span>
+      <b>Cập nhật lúc:</b>
+      <span>{{timeUpdateTimekeepingData}}</span>
     </div>
     <div class="bh-white p-2">
-      <calendar-view :show-date="showDate" :events="events" class="theme-default">
+      <calendar-view
+        :show-date="showDate"
+        :events="events"
+        @click-date="onClickDay"
+        class="theme-default"
+      >
         <calendar-view-header
           slot="header"
           slot-scope="t"
@@ -53,12 +59,70 @@
           @input="setShowDate"
         />
       </calendar-view>
+      <el-dialog
+        :title="'Làm đơn ngày ' + formForDate"
+        :visible.sync="dialogFormRequest"
+        :center="true"
+      >
+        <div class="text-center">
+          <el-row :gutter="15">
+            <el-col :span="24">
+              <div>
+                <b>Kiểu đơn:</b>
+                <el-radio v-model="formType" label="OT">Làm thêm</el-radio>
+                <el-radio v-model="formType" label="RM">Làm remote</el-radio>
+                <el-radio v-model="formType" label="leaves">Làm bù, quên chấm</el-radio>
+                <el-radio v-model="formType" label="complain">Khiếu nại</el-radio>
+              </div>
+              <el-divider class="mb-0"></el-divider>
+            </el-col>
+            <el-col :span="24" v-if="formType == 'leaves'" class="text-left mt-3">
+              <!-- <div class="text-center"><b>Loại</b></div> -->
+              <el-row :gutter="15">
+                <el-col :span="8" :offset="4">
+                  <div>
+                    <el-radio v-model="leaveType" label="ILM">Đến muộn sáng</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="leaveType" label="ILA">Đến muộn chiều</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="leaveType" label="LEM">Về sớm sáng</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="leaveType" label="LEA">Về sớm chiều</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="leaveType" label="LO">Rời khỏi vị trí</el-radio>
+                  </div>
+                </el-col>
+                <el-col :span="10" :offset="2">
+                  <div>
+                    <el-radio v-model="leaveType" label="QQD">Quên chấm đến</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="leaveType" label="QQV">Quên chấm về</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="leaveType" label="QQF">Quên chấm cả ngày</el-radio>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </div>
+
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="makeForm">Tiến hành</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 <script>
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
 import { mapState } from "vuex";
+import moment from "moment";
 require("vue-simple-calendar/static/css/default.css");
 require("vue-simple-calendar/static/css/holidays-us.css");
 export default {
@@ -73,7 +137,11 @@ export default {
       number_working_days: 0,
       total_overtime: 0,
       note: false,
-      timeUpdateTimekeepingData: '',
+      timeUpdateTimekeepingData: "",
+      dialogFormRequest: false,
+      formForDate: "",
+      formType: "leaves",
+      leaveType: "ILM"
     };
   },
   components: {
@@ -110,7 +178,7 @@ export default {
           this.penalty.block_penalty_time = info["block_penalty_time"];
           this.penalty.number_of_fines = info["number_of_fines"];
           this.number_working_days = info["number_working_days"];
-          this.total_overtime = info['total_overtime'];
+          this.total_overtime = info["total_overtime"];
           if (response.data.status === false) {
             this.error.message = response.data.message;
           }
@@ -121,15 +189,45 @@ export default {
       );
     },
     getTimeUpdate() {
-      axios.get('/api/company/timeUpdateTimekeepingData').then(response => {
-        this.timeUpdateTimekeepingData = response.data.fetch_at;
-      }).catch(function (error) {
-        console.log(error);
-      })
+      axios
+        .get("/api/company/timeUpdateTimekeepingData")
+        .then(response => {
+          this.timeUpdateTimekeepingData = response.data.fetch_at;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     handleNote() {
       console.log("tets");
       this.note = !this.note;
+    },
+    onClickDay(d) {
+      this.dialogFormRequest = true;
+      let date = moment(d.toLocaleDateString(), "MM-DD-YYYY").format(
+        "DD-MM-YYYY"
+      );
+      this.formForDate = date;
+    },
+    makeForm() {
+      if (this.formType == "leaves") {
+        this.$router.push(
+          "/request_leaves/new?date=" +
+            this.formForDate +
+            "&type=" +
+            this.leaveType
+        );
+      } else if (this.formType == "complain") {
+        this.$router.push("/request_check_camera/new?date=" + this.formForDate);
+      } else if (this.formType == "RM") {
+        this.$router.push(
+          "/request_ot/new?date=" + this.formForDate + "&type=" + this.formType
+        );
+      } else if (this.formType == "OT") {
+        this.$router.push(
+          "/request_ot/new?date=" + this.formForDate + "&type=" + this.formType
+        );
+      }
     }
   }
 };
@@ -151,6 +249,10 @@ export default {
 .theme-default .cv-day.past {
   // background: lightyellow;
   background: white;
+}
+
+.theme-default .cv-day:hover {
+  cursor: pointer;
 }
 
 .theme-default .cv-day.future {
@@ -175,7 +277,7 @@ export default {
 }
 
 .theme-default .cv-event.pink {
-  background-color:pink;
+  background-color: pink;
 }
 
 .theme-default .cv-header {
@@ -184,7 +286,7 @@ export default {
 }
 
 .theme-default .cv-header-day {
-    background-color: white;
+  background-color: white;
 }
 
 .theme-default .cv-day.today {

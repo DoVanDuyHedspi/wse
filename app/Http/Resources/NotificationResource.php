@@ -20,13 +20,13 @@ class NotificationResource extends JsonResource
     } else if ($this->type == 'App\Notifications\ResultOfComplain') {
       $type = 'form-complain';
       if($this->data['result'] == 'success') {
-        $mess = 'Kết quả khiếu lại của bạn là thành công';
+        $mess = 'Kết quả khiếu nại của bạn là thành công';
       } else if($this->data['result'] == 'fail') {
-        $mess = 'Kết quả xác minh khiếu lại: thất bại';
+        $mess = 'Kết quả xác minh khiếu nại: thất bại';
       } else if($this->data['status'] == 'accept') {
-        $mess = 'Khiếu lại của bạn đã được chấp nhận';
+        $mess = 'Khiếu nại của bạn đã được chấp nhận';
       } else if($this->data['status'] == 'refuse') {
-        $mess = 'Khiếu lại của bạn đã bị từ chối';
+        $mess = 'Khiếu nại của bạn đã bị từ chối';
       }
     }
     $date_time = date('d-m-Y H:i:s', strtotime($this->created_at));
