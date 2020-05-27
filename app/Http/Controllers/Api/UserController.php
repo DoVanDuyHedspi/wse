@@ -240,6 +240,6 @@ class UserController extends Controller
 
   public function exportCsv(Request $request)
   {
-    return Excel::download(new UsersExport($request->listUserIds), 'users.xlsx');
+    return Excel::download(new UsersExport($request->listUserIds), 'users.csv');
   }
 }

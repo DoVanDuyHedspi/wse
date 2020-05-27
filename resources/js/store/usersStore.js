@@ -107,7 +107,7 @@ const usersStore = new Vuex.Store({
     getListSuggestions: (state) => {
       let listSuggestions = [];
       state.users.map(function (user) {
-        listSuggestions.push({"value": user.employee_code + ' ' + user.name});
+        listSuggestions.push({ "value": user.employee_code + ' ' + user.name });
       })
       return listSuggestions;
       // return [{"value":"vue"}, {"value":"duy"}];
@@ -118,16 +118,13 @@ const usersStore = new Vuex.Store({
       let number_working_days = 0;
       let total_overtime = 0;
       state.events.map(function (event) {
-        actual_penalty_time +=  event.fined_time;
-        if (event.number_of_fines == 1) {
-          number_of_fines++;
-        }
-        number_working_days +=  event.working_day;
-        event.form_requests.map(function (form_request){
-          if(form_request.type == 'OT' && form_request.has_worked == 1) {
-            total_overtime += form_request.range_time;
-          }
-        })
+        actual_penalty_time += event.fined_time;
+        // if (event.number_of_fines == 1) {
+        number_of_fines+= event.number_of_fines;
+        // }
+        number_working_days += event.working_day;
+        total_overtime = event.overtime;
+
       });
       let block_penalty_time = 0;
       if (actual_penalty_time % 30 == 0) {
@@ -140,7 +137,7 @@ const usersStore = new Vuex.Store({
       data['block_penalty_time'] = block_penalty_time;
       data['number_of_fines'] = number_of_fines;
       data['number_working_days'] = number_working_days;
-      data['total_overtime'] = total_overtime/60;
+      data['total_overtime'] = total_overtime / 60;
       return data;
     },
     getDateOfMonth: (state) => {
@@ -159,20 +156,20 @@ const usersStore = new Vuex.Store({
     getTimeIn: (state) => (date) => {
       let timeIn_timeOut = '';
       state.events.map(function (event) {
-        if(event.startDate == date ) {
+        if (event.startDate == date) {
           timeIn_timeOut = event.title;
         }
-      }) 
+      })
       let timeIn = timeIn_timeOut.split(" ")[0];
       return timeIn;
     },
     getTimeOut: (state) => (date) => {
       let timeIn_timeOut = '';
       state.events.map(function (event) {
-        if(event.startDate == date ) {
+        if (event.startDate == date) {
           timeIn_timeOut = event.title;
         }
-      }) 
+      })
       let timeOut = timeIn_timeOut.split(" ")[2];
       return timeOut;
     }
@@ -212,8 +209,10 @@ const usersStore = new Vuex.Store({
       }
       return response;
     },
-    async fetchUsersTimesheets({ commit }) {
-      let response = await axios.get(`api/events`);
+    async fetchUsersTimesheets({ commit }, filter) {
+      let response = await axios.get(`api/events`, {
+        params: filter
+      });
       if (response.data.status !== false) {
         commit('SET_USERS_TIMESHEETS', response.data.data);
       }

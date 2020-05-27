@@ -28,7 +28,7 @@
               <router-link to="/manage_timesheets">
                 <el-menu-item index="1-2">
                   <!-- <i class="el-icon-user"></i> -->
-                  <span slot="title">Quản lý bảng thời gian</span>
+                  <span slot="title">Chấm công</span>
                 </el-menu-item>
               </router-link>
               <el-submenu index="1-3">
@@ -73,12 +73,22 @@
               </router-link>
             </el-menu-item-group>
           </el-submenu>
-          <router-link to="/user_timesheets">
-            <el-menu-item index="2">
+          <el-submenu index="2">
+            <template slot="title">
               <i class="el-icon-date"></i>
               <span slot="title">Lịch làm việc</span>
-            </el-menu-item>
-          </router-link>
+            </template>
+            <router-link to="/timekeeping/calendar_view">
+              <el-menu-item index="2-1">
+                <span slot="title">Xem dạng lịch</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/timekeeping/table_view">
+              <el-menu-item index="2-2">
+                <span slot="title">Xem dạng bảng</span>
+              </el-menu-item>
+            </router-link>
+          </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-s-order"></i>
@@ -119,7 +129,7 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-container >
+      <el-container>
         <el-header style="background-color:#fff; border-bottom: 1px solid rgba(128,128,128, 0.3)">
           <el-row :gutter="20">
             <el-col :span="6" style="line-height: 60px">

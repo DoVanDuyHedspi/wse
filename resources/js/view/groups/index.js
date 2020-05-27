@@ -1,4 +1,4 @@
-import Groups from './GroupComponent';
+import Groups from './SettingOrganizationComponent';
 
 export default [
   {

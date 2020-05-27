@@ -22,12 +22,6 @@
             </div>
           </el-col>
           <el-col :span="12" class="text-right">
-            <el-button
-              round
-              icon="el-icon-download"
-              type="primary"
-              @click="downloadCsv"
-            >Download CSV</el-button>
             <router-link to="/users/create">
               <el-button round icon="el-icon-plus" type="success">Thêm mới</el-button>
             </router-link>
@@ -87,17 +81,48 @@
         </el-row>
 
         <el-row>
-          <h5>
-            Số lượng:
-            <span style="color: blue">{{users.length}}</span> thành viên
-          </h5>
+          <el-col :span="24">
+            <el-row>
+              <el-col :span="24" class="text-right">
+                <el-dropdown :hide-on-click="false">
+                  <span class="el-dropdown-link" style="cursor: pointer; color: gray">
+                    <i class="el-icon-more-outline" style="font-size: 22px"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown" @click="downloadCsv">
+                    <el-dropdown-item>
+                      <span @click="downloadCsv('xlsx')">
+                        <i class="el-icon-download"></i> Xuất xlsx
+                      </span>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <span @click="downloadCsv('csv')">
+                        <i class="el-icon-download"></i> Xuất csv
+                      </span>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <span v-print="'#printMe'">
+                        <i class="el-icon-printer"></i> In
+                      </span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
+            </el-row>
+          </el-col>
           <el-table
             :data="dataTable"
             style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
             stripe
+            id="printMe"
           >
             <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="150"></el-table-column>
-            <el-table-column fixed prop="name" label="Tên" width="200"></el-table-column>
+            <el-table-column fixed property="name" label="Tên nhân viên" width="150">
+              <template slot-scope="scope">
+                <router-link :to="'/users/'+scope.row.id">
+                  <span>{{scope.row.name}}</span>
+                </router-link>
+              </template>
+            </el-table-column>
             <el-table-column prop="email" label="Email" width="200"></el-table-column>
             <el-table-column prop="position.name" label="Vị trí" width="150"></el-table-column>
             <el-table-column prop="gender" label="Giới tính" width="100"></el-table-column>
@@ -209,15 +234,20 @@ export default {
       this.filter.search = this.filter.search.split(" ")[0];
       this.filterUsers();
     },
-    forceFileDownload(response) {
+    forceFileDownload(response, type) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "users.xlsx"); //or any other extension
+      if (type == "csv") {
+        link.setAttribute("download", "users.csv");
+      } else if (type == "xlsx") {
+        link.setAttribute("download", "users.xlsx");
+      }
+
       document.body.appendChild(link);
       link.click();
     },
-    downloadCsv() {
+    downloadCsv(type) {
       axios({
         method: "post",
         url: "/api/users/export/csv/",
@@ -227,7 +257,7 @@ export default {
         }
       })
         .then(response => {
-          this.forceFileDownload(response);
+          this.forceFileDownload(response, type);
         })
         .catch(() => console.log("error occured"));
     },

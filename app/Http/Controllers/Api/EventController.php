@@ -18,22 +18,26 @@ class EventController extends Controller
   {
     $this->middleware('auth:api');
   }
-  
+
   public function index(Request $request)
   {
     $user = Auth::user();
     if ($user->can('update-timesheets')) {
       $year = date('Y');
       $month = date('m');
-      $allDayOfMonth = UserHelper::getAllDayOfMonth($year, $month);
-      // $employees = User::where('group_id', $user->group_id)->get();
       $filter = $request->query();
+
+
       if (count($filter)) {
         $employees = User::getRelationships()->filter($filter)->get();
+        if ($filter['month']) {
+          $year = date('Y', strtotime($filter['month']));
+          $month = date('m', strtotime($filter['month']));
+        }
       } else {
         $employees = User::all();
       };
-      
+      $allDayOfMonth = UserHelper::getAllDayOfMonth($year, $month);
       foreach ($employees as $employee) {
         $events = [];
         $number_working_days = 0;
@@ -83,16 +87,100 @@ class EventController extends Controller
     };
     return response([
       'status' => false,
-      'message' => 'Người dùng này không có quyền xem timesheets của nhân viên!'
+      'message' => 'Người dùng này không có quyền xem bảng chấm công của nhân viên!'
     ], 200);
   }
 
   public function show(Request $request, $id)
   {
     $date = $request->query()['date'];
-    $date = date('Y-m', strtotime($date));
-    $events = Event::where('user_code', $id)->where('date', 'like', $date . '%')->with('form_requests')->get();
-    return EventResource::collection($events);
+    // $date = date('Y-m', strtotime($date));
+    $year = date('Y', strtotime($date));
+    $month = date('m', strtotime($date));
+    $events = [];
+    $allDayOfMonth = UserHelper::getAllDayOfMonth($year, $month);
+    foreach ($allDayOfMonth as $date) {
+      if (date('Y-m-d') >= date('Y-m-d', strtotime($date))) {
+        $event = Event::where('user_code', $id)->where('date', $date)->first();
+        if ($event == null) {
+          array_push($events, [
+            'id' => $date,
+            'startDate' => date('Y-m-d', strtotime($date)),
+            'endDate' => date('Y-m-d', strtotime($date)),
+            'title' => '|',
+            'classes' => 'green',
+            'number_of_fines' => 0,
+            'working_day' => 0,
+            'fined_time' => 0,
+            'overtime' => 0,
+            'time_in' => '',
+            'time_out' => '',
+            'status' => '',
+            'type' => null,
+            'date' => date('D, d-m-Y', strtotime($date)),
+          ]);
+        } else {
+          if (date('Y-m-d') !== date('Y-m-d', strtotime($event->date))) {
+            $classe = 'default';
+            if ($event->type == null) {
+              $classe = 'green';
+            } else if ($event->status == 1) {
+              $classe = 'red';
+            } else if ($event->status == 2) {
+              $classe = 'pink';
+            }
+          }
+
+          $working_day = 0;
+          if ($event->type == 1 || $event->type == 2) {
+            $working_day = 0.5;
+          } else if ($event->type == 3) {
+            $working_day = 1;
+          }
+          $time_in = date('H:i', strtotime($event->time_in));
+          $time_out = $event->time_out ? date('H:i', strtotime($event->time_out)) : '--:--';
+          $overtime = 0;
+          if ($event->form_requests) {
+            foreach($event->form_requests as $form_request) {
+              if ($form_request->type == 'OT' && $form_request->has_worked == 1) {
+                $overtime = $form_request->range_time;
+              }
+            }
+          }
+          array_push($events,  [
+            'id' => $date,
+            'startDate' => date('Y-m-d', strtotime($event->date)),
+            'endDate' => date('Y-m-d', strtotime($event->date)),
+            'title' => $time_in . ' | ' . $time_out,
+            'classes' => $classe,
+            'fined_time' => $event->fined_time,
+            'number_of_fines' =>  $event->ILM + $event->LEM + $event->ILA + $event->LEA,
+            'working_day' => $working_day,
+            'overtime' => $overtime,
+            'time_in' => date('H:i', strtotime($event->time_in)),
+            'time_out' => $event->time_out ? date('H:i', strtotime($event->time_out)) : '--',
+            'status' => $event->status,
+            'type' => $event->type,
+            'date' => date('D, d-m-Y', strtotime($date)),
+          ]);
+        }
+      }
+    }
+    // dd($events);
+    // return [
+    //   'id' => $this->id,
+    //   'startDate' => date('Y-m-d', strtotime($this->date)),
+    //   'endDate' => date('Y-m-d', strtotime($this->date)),
+    //   'title' => $time_in . ' | ' . $time_out,
+    //   'classes' => $classe,
+    //   // 'url' => $url
+    //   'fined_time' => $this->fined_time,
+    //   'number_of_fines' =>  $this->ILM + $this->LEM + $this->ILA + $this->LEA,
+    //   'working_day' => $working_day,
+    //   'form_requests' => $this->form_requests,
+    // ];
+    // $events = Event::where('user_code', $id)->where('date', 'like', $date . '%')->with('form_requests')->get();
+    return response(['data' => $events]);
   }
 
   public function store(Request $request)
@@ -127,6 +215,19 @@ class EventController extends Controller
     return response([
       'status' => false,
       'message' => 'Người dùng này không có quyền chỉnh sửa timesheets của nhân viên!'
+    ], 200);
+  }
+
+  public function dailyCheckInOut(Request $request)
+  {
+    $user = Auth::user();
+    if ($user->can('update-timesheets')) {
+      $employees = EventHelper::dailyEvent($request);
+      return $employees;
+    };
+    return response([
+      'status' => false,
+      'message' => 'Người dùng này không có quyền xem bảng chấm công của nhân viên!'
     ], 200);
   }
 }

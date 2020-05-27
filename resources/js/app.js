@@ -9,11 +9,13 @@ import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/vi';
 import 'element-ui/lib/theme-chalk/index.css';
 import usersStore from './store/usersStore';
+import Print from 'vue-print-nb'
 // import { CalendarView, CalendarViewHeader } from 'vue-simple-calendar'
 
 Vue.use(ElementUI, { locale });
 Vue.use(VueRouter);
 Vue.use(routers);
+Vue.use(Print);
 
 const router = new VueRouter({
   mode: 'hash',
