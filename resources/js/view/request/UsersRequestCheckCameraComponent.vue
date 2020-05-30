@@ -41,8 +41,8 @@
       <el-col :span="8">
         <el-select class="w-100" v-model="filter.status" placeholder="Chọn trạng thái">
           <el-option value="waiting" label="Đang chờ"></el-option>
-          <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option>
+          <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
+          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>

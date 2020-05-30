@@ -41,8 +41,8 @@
       <el-col :span="8">
         <el-select class="w-100" v-model="filter.status" placeholder="Chọn trạng thái">
           <el-option value="waiting" label="Đang chờ"></el-option>
-          <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option>
+          <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
+          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -96,12 +96,12 @@
             <span v-if="scope.row.status == 'waiting'">
               <el-tag type="warning">Đang chờ</el-tag>
             </span>
-            <span v-if="scope.row.status == 'cancel'">
+            <!-- <span v-if="scope.row.status == 'cancel'">
               <el-tag type="danger">Hủy bỏ</el-tag>
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span>
+            </span> -->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -157,7 +157,7 @@
         </el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
-            <el-tooltip content="Hủy bỏ" placement="top">
+            <!-- <el-tooltip content="Hủy bỏ" placement="top">
               <el-button
                 class="mx-0 my-1"
                 size="mini"
@@ -176,14 +176,14 @@
                 v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index, 'forward')"
               ></el-button>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip content="Từ chối" placement="top">
               <el-button
                 class="mx-0 my-1"
                 size="mini"
                 type="info"
                 icon="el-icon-s-release"
-                v-if="scope.row.status == 'forward'"
+                v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index, 'refuse')"
               ></el-button>
             </el-tooltip>
@@ -193,7 +193,7 @@
                 size="mini"
                 type="success"
                 icon="el-icon-s-claim"
-                v-if="scope.row.status == 'forward'"
+                v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index,'accept')"
               ></el-button>
             </el-tooltip>
@@ -203,7 +203,7 @@
                 size="mini"
                 icon="el-icon-s-check"
                 disabled
-                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse'"
               ></el-button>
             </el-tooltip>
           </template>

@@ -14,8 +14,8 @@
       <el-col :span="16" class="text-right">
         <el-select v-model="filter.status" placeholder="Chọn trạng thái">
           <el-option value="waiting" label="Đang chờ"></el-option>
-          <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option>
+          <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
+          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -50,12 +50,12 @@
             <span v-if="scope.row.status == 'waiting'">
               <el-tag type="warning">Đang chờ</el-tag>
             </span>
-            <span v-if="scope.row.status == 'cancel'">
+            <!-- <span v-if="scope.row.status == 'cancel'">
               <el-tag type="danger">Hủy bỏ</el-tag>
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span>
+            </span> -->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -109,7 +109,7 @@
               size="mini"
               type="danger"
               icon="el-icon-delete"
-              v-if="scope.row.status == 'waiting' || scope.row.status == 'forward'"
+              v-if="scope.row.status == 'waiting'"
               @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
             ></el-button>
             <el-tooltip content="Đã xử lý" placement="top">
@@ -118,7 +118,7 @@
                 size="mini"
                 icon="el-icon-s-check"
                 disabled
-                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse'"
               ></el-button>
             </el-tooltip>
             <!-- </el-button-group> -->

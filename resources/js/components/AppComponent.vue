@@ -40,23 +40,32 @@
                     <span slot="title">Làm ngoài giờ, remote</span>
                   </el-menu-item>
                 </router-link>
-                <router-link to="/users_requests/leaves">
+                <router-link to="/users_requests/request_check_camera">
                   <el-menu-item index="1-3-2">
-                    <span slot="title">Làm bù</span>
+                    <span slot="title">Khiếu nại chấm công</span>
                   </el-menu-item>
                 </router-link>
-                <router-link to="/users_requests/request_check_camera">
+                <router-link to="/users_requests/leaves">
                   <el-menu-item index="1-3-3">
-                    <span slot="title">Khiếu nại chấm công</span>
+                    <span slot="title">Nghỉ phép</span>
+                  </el-menu-item>
+                </router-link>
+                <router-link to="/users_requests/leaves">
+                  <el-menu-item index="1-3-4">
+                    <span slot="title">Khác</span>
                   </el-menu-item>
                 </router-link>
               </el-submenu>
             </el-menu-item-group>
-            <el-menu-item-group title="Tổ chức">
+            <el-menu-item-group title="Thiết lập">
               <router-link to="/organization">
                 <el-menu-item index="1-3">
-                  <!-- <i class="el-icon-connection"></i> -->
-                  <span slot="title">Thiết lập tổ chức</span>
+                  <span slot="title">Tổ chức</span>
+                </el-menu-item>
+              </router-link>
+              <router-link to="/working-day/on-holiday">
+                <el-menu-item index="1-4">
+                  <span slot="title">Nghỉ phép</span>
                 </el-menu-item>
               </router-link>
             </el-menu-item-group>
@@ -99,14 +108,19 @@
                 <span slot="title">Làm ngoài giờ, remote</span>
               </el-menu-item>
             </router-link>
-            <router-link to="/request_leaves">
+            <router-link to="/request_check_camera">
               <el-menu-item index="4-2">
-                <span slot="title">Làm bù</span>
+                <span slot="title">Khiếu nại chấm công</span>
               </el-menu-item>
             </router-link>
-            <router-link to="/request_check_camera">
+            <router-link to="/request_leaves">
               <el-menu-item index="4-3">
-                <span slot="title">Khiếu nại chấm công</span>
+                <span slot="title">Nghỉ phép</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/request_leaves">
+              <el-menu-item index="4-4">
+                <span slot="title">Khác</span>
               </el-menu-item>
             </router-link>
           </el-submenu>

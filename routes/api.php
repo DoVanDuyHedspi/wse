@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Storage;
 $router->apiResource('events', 'Api\EventController')->only(['index', 'show']);
 $router->post('/events', 'Api\EventController@update');
 $router->get('/events/daily/checkinout', 'Api\EventController@dailyCheckInOut');
+
 $router->apiResource('form_requests', 'Api\FormRequestController');
 $router->get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
 $router->get('/form_requests/users/ot_rm', 'Api\FormRequestController@usersOtRmRequests');
 $router->post('/form_requests/users/ot_rm/confirm', 'Api\FormRequestController@confirmOtRmRequests');
 $router->post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
+
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 
 $router->apiResource('form_complain', 'Api\FormComplainController');
@@ -39,5 +41,7 @@ $router->get('/company/getInfo', 'Api\CompanyController@getInfo');
 $router->post('/company/settingTimekeeping', 'Api\CompanyController@settingTimekeeping');
 $router->get('/company/getTimekeeping', 'Api\CompanyController@getTimekeeping');
 $router->get('/company/timeUpdateTimekeepingData', 'Api\CompanyController@timeUpdateTimekeepingData');
+
+$router->resource('/holiday', 'Api\HolidayController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
 

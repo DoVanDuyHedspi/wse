@@ -398,16 +398,16 @@ class FormRequestController extends Controller
         'message' => 'Yêu cầu này không tồn tại'
       ], 200);
     }
-    if (in_array($request->action, ['forward', 'cancel']) && Auth::user()->can('check-requests')) {
-      $form->status = $request->action;
-      $form->save();
-      if($request->action == 'cancel') {
-        $form->user->notify(new ResultOfRequest($form));
-      }
-      return response([
-        'status' => true
-      ], 200);
-    }
+    // if (in_array($request->action, ['forward', 'cancel']) && Auth::user()->can('check-requests')) {
+    //   $form->status = $request->action;
+    //   $form->save();
+    //   if($request->action == 'cancel') {
+    //     $form->user->notify(new ResultOfRequest($form));
+    //   }
+    //   return response([
+    //     'status' => true
+    //   ], 200);
+    // }
     if (in_array($request->action, ['accept', 'refuse']) && Auth::user()->can('approve-requests')) {
       $form->status = $request->action;
       if ($request->action == 'accept') {
