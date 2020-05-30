@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Storage;
 
 $router->apiResource('events', 'Api\EventController')->only(['index', 'show']);
 $router->post('/events', 'Api\EventController@update');
+$router->get('/events/daily/checkinout', 'Api\EventController@dailyCheckInOut');
 $router->apiResource('form_requests', 'Api\FormRequestController');
 $router->get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
 $router->get('/form_requests/users/ot_rm', 'Api\FormRequestController@usersOtRmRequests');

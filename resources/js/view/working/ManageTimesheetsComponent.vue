@@ -4,78 +4,145 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
-        <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
-        <el-breadcrumb-item>Quản lý bảng thời gian</el-breadcrumb-item>
+        <el-breadcrumb-item>Chấm công</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="p-4 mt-3">
       <div class="mb-2">
         <el-row :gutter="20">
           <el-col :span="24" class="text-center">
-            <h2>QUẢN LÝ BẢNG THỜI GIAN</h2>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <div class="text-right">
-              <el-select v-model="filter.branch_id" class="filter" placeholder="Chi nhánh">
-                <el-option
-                  v-for="(type,index) in infoCompany.branches"
-                  :label="type.name"
-                  :value="type.id"
-                  :key="index"
-                ></el-option>
-              </el-select>
-              <el-cascader
-                v-model="filter.group_id"
-                :options="infoCompany.groups"
-                :props="{ checkStrictly: true, label: 'name', value: 'id' }"
-                :change="handleGroupChange()"
-                placeholder="Bộ phận"
-                class="filter"
-              ></el-cascader>
-              <el-select v-model="filter.position_id" class="filter" placeholder="Vị trí">
-                <el-option
-                  v-for="(type,index) in infoCompany.positions"
-                  :label="type.name"
-                  :value="type.id"
-                  :key="index"
-                ></el-option>
-              </el-select>
-              <el-select
-                v-model="filter.employee_type_id"
-                class="filter"
-                placeholder="Loại nhân viên"
-              >
-                <el-option
-                  v-for="(type,index) in infoCompany.employee_types"
-                  :label="type.name"
-                  :value="type.id"
-                  :key="index"
-                ></el-option>
-              </el-select>
-              <el-input
-                placeholder="Tìm kiếm"
-                prefix-icon="el-icon-search"
-                v-model="filter.search"
-                class="filter"
-              ></el-input>
-              <el-button type="primary" icon="el-icon-search" @click="filterEvents()">Lọc</el-button>
-            </div>
+            <h2>BẢNG CHẤM CÔNG</h2>
           </el-col>
         </el-row>
 
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-popover placement="bottom" width="300" trigger="click">
+              <el-row :gutter="20">
+                <el-col :span="24" class="my-2 text-left">
+                  <b class="mb-1">Chi nhánh</b>
+                  <el-select
+                    v-model="filter.branch_id"
+                    class="w-100"
+                    placeholder="Chi nhánh"
+                    @change="filterEvents"
+                    size="medium"
+                  >
+                    <el-option
+                      v-for="(type,index) in infoCompany.branches"
+                      :label="type.name"
+                      :value="type.id"
+                      :key="index"
+                    ></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="24" class="my-2 text-left">
+                  <b class="mb-1">Phòng ban</b>
+                  <el-cascader
+                    v-model="filter.group_id"
+                    :options="infoCompany.groups"
+                    :props="{ checkStrictly: true, label: 'name', value: 'id' }"
+                    :change="handleGroupChange()"
+                    placeholder="Phòng ban"
+                    class="w-100"
+                    size="medium"
+                  ></el-cascader>
+                </el-col>
+                <el-col :span="24" class="my-2 text-left">
+                  <b class="mb-1">Vị trí</b>
+                  <el-select
+                    v-model="filter.position_id"
+                    class="w-100"
+                    placeholder="Vị trí"
+                    @change="filterEvents"
+                    size="medium"
+                  >
+                    <el-option
+                      v-for="(type,index) in infoCompany.positions"
+                      :label="type.name"
+                      :value="type.id"
+                      :key="index"
+                    ></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="24" class="my-2 text-left">
+                  <b class="mb-1">Loại nhân viên</b>
+                  <el-select
+                    v-model="filter.employee_type_id"
+                    class="w-100"
+                    placeholder="Loại nhân viên"
+                    @change="filterEvents"
+                    size="medium"
+                  >
+                    <el-option
+                      v-for="(type,index) in infoCompany.employee_types"
+                      :label="type.name"
+                      :value="type.id"
+                      :key="index"
+                    ></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="24" class="my-2 text-left">
+                  <b class="mb-1">Tìm theo tên và mã số</b>
+                  <el-autocomplete
+                    class="inline-input w-100"
+                    prefix-icon="el-icon-search"
+                    v-model="filter.search"
+                    :fetch-suggestions="querySearch"
+                    placeholder="Tìm kiếm"
+                    @select="handleSelect"
+                    @change="filterEvents"
+                    size="medium"
+                  ></el-autocomplete>
+                  <!-- <el-button type="primary" icon="el-icon-search" @click="filterEvents()">Lọc</el-button> -->
+                </el-col>
+              </el-row>
+              <el-button slot="reference" size="medium">Lọc</el-button>
+            </el-popover>
+            <el-date-picker
+              v-model="filter.month"
+              type="month"
+              size="medium"
+              placeholder="Pick a month"
+              format="MM-yyyy"
+              value-format="DD-MM-yyyy"
+              @change="filterEvents"
+            ></el-date-picker>
+          </el-col>
+          <el-col :span="12" class="text-right">
+            <el-dropdown size="medium" split-button type="primary">
+              Chấm công
+              <el-dropdown-menu slot="dropdown">
+                <router-link to="/history_checkinout">
+                  <el-dropdown-item>
+                    <i class="el-icon-timer"></i> Lịch sử vào/ ra
+                  </el-dropdown-item>
+                </router-link>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <el-dropdown size="medium" split-button type="primary">
+              Xuất excel
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>
+                  <i class="el-icon-download"></i> Xuất bảng ngày công
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <i class="el-icon-download"></i> Xuất bảng đi muộn/về sớm
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-col>
+        </el-row>
         <el-row>
-          <h5>
-            Số lượng:
-            <span style="color: blue">{{users.length}}</span> thành viên
-          </h5>
           <el-table
             :data="dataTable.length ? dataTable : getUsersDataTable"
             style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
             stripe
             border
             header-cell-class-name="text-center"
+            v-loading="loading"
+            element-loading-text="Loading..."
+            element-loading-spinner="el-icon-loading"
           >
             <el-table-column
               fixed
@@ -84,29 +151,33 @@
               width="150"
               class-name="text-center"
             ></el-table-column>
-            <el-table-column fixed prop="name" label="Tên" width="150"></el-table-column>
+            <el-table-column fixed property="name" label="Tên nhân viên" width="150">
+              <template slot-scope="scope">
+                <router-link :to="'/users/'+scope.row.id">
+                  <span>{{scope.row.name}}</span>
+                </router-link>
+              </template>
+            </el-table-column>
             <el-table-column
-              fixed
               prop="number_working_days"
               label="Số ngày làm"
               class-name="text-center"
               width="100"
             ></el-table-column>
             <el-table-column
-              fixed
               prop="number_penalty"
               label="Tổng số lỗi"
               class-name="text-center text-red"
               width="100"
             ></el-table-column>
-            <el-table-column fixed prop="ILM" label="ILM" class-name="text-center" width="60"></el-table-column>
-            <el-table-column fixed prop="LEM" label="LEM" class-name="text-center" width="60"></el-table-column>
-            <el-table-column fixed prop="ILA" label="ILA" class-name="text-center" width="60"></el-table-column>
-            <el-table-column fixed prop="LEA" label="LEA" class-name="text-center" width="60"></el-table-column>
+            <!-- <el-table-column prop="ILM" label="ILM" class-name="text-center" width="60"></el-table-column>
+            <el-table-column prop="LEM" label="LEM" class-name="text-center" width="60"></el-table-column>
+            <el-table-column prop="ILA" label="ILA" class-name="text-center" width="60"></el-table-column>
+            <el-table-column prop="LEA" label="LEA" class-name="text-center" width="60"></el-table-column>-->
             <el-table-column
-              v-for="(date, index) in month"
+              v-for="(date, index) in dateOfMonth"
               :key="index"
-              :label="date"
+              :label="getDay(date)"
               width="135"
               class-name="text-center"
             >
@@ -114,9 +185,16 @@
                 <el-button
                   plain
                   size="mini"
+                  type="warning"
+                  @click="handleOpen(scope.row, scope.row.events[index])"
+                  v-if="isSunday(date)"
+                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                <el-button
+                  plain
+                  size="mini"
                   type="success"
                   @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-if="scope.row.events[index].type === null"
+                  v-else-if="scope.row.events[index].type === null"
                 >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
                 <el-button
                   plain
@@ -157,21 +235,12 @@
             <el-time-select
               placeholder="Thời gian đến"
               v-model="form.time_in"
-              :picker-options="{
-      start: '07:45',
-      step: '00:15',
-      end: '18:45'
-    }"
+              :picker-options="{start: '07:45',step: '00:15',end: '18:45'}"
             ></el-time-select>
             <el-time-select
               placeholder="Thời gian về"
               v-model="form.time_out"
-              :picker-options="{
-      start: '07:45',
-      step: '00:15',
-      end: '18:45',
-      minTime: form.time_in
-    }"
+              :picker-options="{start: '07:45',step: '00:15',end: '18:45',minTime: form.time_in}"
             ></el-time-select>
           </div>
           <div class="text-center mt-3">
@@ -192,24 +261,40 @@
         ></el-pagination>
       </div>
     </div>
+    <div id="footer" class="p-3">
+      <span class="mr-3">
+        <span style="background: #E6A23C" class="dot"></span> Không tính công
+      </span>
+      <span class="mr-3">
+        <span style="background: #F56C6C" class="dot"></span>Vào trễ, ra sớm
+      </span>
+      <span class="mr-3">
+        <span style="background: #FFFFFF; border: 1px black solid" class="dot"></span>Chấm công đúng giờ
+      </span>
+      <span class="mr-3">
+        <span style="background: #67C23A" class="dot"></span>Không chấm công/Không đủ thời gian làm tối thiểu
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
 export default {
   data() {
     return {
       error: {
         message: ""
       },
-      month: [],
+      loading: false,
       filter: {
         branch_id: "",
         group_id: "",
         position_id: "",
         employee_type_id: "",
-        search: ""
+        search: "",
+        month: moment().format("DD-MM-YYYY")
       },
       currentPage: 1,
       pageSize: 5,
@@ -238,16 +323,71 @@ export default {
     users: state => state.users_timesheets,
     infoCompany: state => state.infoCompany,
     getUsersDataTable(state) {
-      this.month = this.$store.getters.getDateOfMonth;
       return state.users_timesheets.slice(0, this.pageSize);
+    },
+    listSuggestions() {
+      return this.$store.getters.getListSuggestions;
+    },
+    dateOfMonth() {
+      return this.$store.getters.getDateOfMonth;
     }
   }),
   methods: {
+    querySearch(queryString, cb) {
+      var suggestions = this.listSuggestions;
+      var results = queryString
+        ? suggestions.filter(this.createFilter(queryString))
+        : suggestions;
+      cb(results);
+    },
+    createFilter(queryString) {
+      return suggestion => {
+        return (
+          suggestion.value.toLowerCase().indexOf(queryString.toLowerCase()) !==
+          -1
+        );
+      };
+    },
+    handleSelect(item) {
+      this.filter.search = this.filter.search.split(" ")[0];
+      this.filterEvents();
+    },
+    isSunday(date) {
+      var myDate = moment(date, "DD-MM-YYYY").format("MM-DD-YYYYY");
+      myDate = new Date(myDate);
+      if (myDate.getDay() == 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getDay(date) {
+      var myDate = moment(date, "DD-MM-YYYY").format("MM-DD-YYYYY");
+      myDate = new Date(myDate);
+      var day = myDate.getDay();
+      switch (day) {
+        case 0:
+          return date + " CN";
+        case 1:
+          return date + " T2";
+        case 2:
+          return date + " T3";
+        case 3:
+          return date + " T4";
+        case 4:
+          return date + " T5";
+        case 5:
+          return date + " T6";
+        case 6:
+          return date + " T7";
+      }
+    },
     handleGroupChange() {
       if (Array.isArray(this.filter.group_id)) {
         this.filter.group_id = this.filter.group_id[
           this.filter.group_id.length - 1
         ];
+        this.filterEvents();
       }
     },
     handleSizeChange(val) {
@@ -258,22 +398,25 @@ export default {
       this.currentPage = val;
       this.dataTable = this.getDataTable();
     },
-    filterEvents() {
-      axios
+    filterEvents: async function() {
+      this.loading = true;
+      await axios
         .get("/api/events", {
           params: {
             branch_id: this.filter.branch_id,
             group_id: this.filter.group_id,
             position_id: this.filter.position_id,
             employee_type_id: this.filter.employee_type_id,
-            search: this.filter.search
+            search: this.filter.search,
+            month: this.filter.month
           }
         })
         .then(response => {
           this.$store.dispatch("updateUsersTimesheets", response.data.data);
           this.currentPage = 1;
-          this.dataTable = this.getDataTable();
         });
+      this.dataTable = this.getDataTable();
+      this.loading = false;
     },
     getDataTable() {
       let begin = (this.currentPage - 1) * this.pageSize;
@@ -322,19 +465,37 @@ export default {
           }
         });
       }
-      await this.$store.dispatch("fetchUsersTimesheets");
+      await this.$store.dispatch("fetchUsersTimesheets", this.filter);
       this.dataTable = this.getDataTable();
     }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
 .filter {
-  max-width: 15%;
+  width: 100%;
 }
 
 .text-red {
   color: red;
+}
+.th-date {
+  background: #e3e3e3;
+}
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  border-top: 1px solid rgba(128, 128, 128, 0.3);
+  padding-left: 10% !important;
+}
+.dot {
+  height: 10px;
+  width: 10px;
+  margin-right: 10px;
+  border-radius: 100%;
+  display: inline-block;
 }
 </style>

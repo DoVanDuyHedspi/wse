@@ -21,17 +21,17 @@ class UsersExport implements WithHeadings, WithMapping, FromQuery
   {
     return [
       'id',
-      'name',
-      'employee_code',
-      'gender',
-      'email',
-      'personal_email',
-      'phone_number',
-      'nationality',
-      'birthday',
-      'current_address',
-      'permanent_address',
-      'tax_code'
+      'Tên',
+      'Mã số nhân viên',
+      'Giới tính',
+      'Email công việc',
+      'Email cá nhân',
+      'Số điện thoại',
+      'Quốc tịch',
+      'Ngày sinh',
+      'Địa chỉ hiện tại',
+      'Địa chỉ thường chú',
+      'Mã số thuế'
     ];
   }
 
