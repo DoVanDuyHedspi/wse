@@ -35,14 +35,14 @@
                 <template slot="title">
                   <span slot="title">Yêu cầu của nhân viên</span>
                 </template>
-                <router-link to="/users_requests/ot_remote">
+                <router-link to="/users_requests/request_check_camera">
                   <el-menu-item index="1-3-1">
-                    <span slot="title">Làm ngoài giờ, remote</span>
+                    <span slot="title">Khiếu nại chấm công</span>
                   </el-menu-item>
                 </router-link>
-                <router-link to="/users_requests/request_check_camera">
+                <router-link to="/users_requests/ot_remote">
                   <el-menu-item index="1-3-2">
-                    <span slot="title">Khiếu nại chấm công</span>
+                    <span slot="title">Làm ngoài giờ, remote</span>
                   </el-menu-item>
                 </router-link>
                 <router-link to="/users_requests/leaves">
@@ -50,7 +50,7 @@
                     <span slot="title">Nghỉ phép</span>
                   </el-menu-item>
                 </router-link>
-                <router-link to="/users_requests/leaves">
+                <router-link to="/users_requests/other">
                   <el-menu-item index="1-3-4">
                     <span slot="title">Khác</span>
                   </el-menu-item>
@@ -103,14 +103,14 @@
               <i class="el-icon-s-order"></i>
               <span slot="title">Yêu cầu cá nhân</span>
             </template>
-            <router-link to="/request_ot">
+            <router-link to="/request_check_camera">
               <el-menu-item index="4-1">
-                <span slot="title">Làm ngoài giờ, remote</span>
+                <span slot="title">Khiếu nại chấm công</span>
               </el-menu-item>
             </router-link>
-            <router-link to="/request_check_camera">
+            <router-link to="/request_ot">
               <el-menu-item index="4-2">
-                <span slot="title">Khiếu nại chấm công</span>
+                <span slot="title">Làm ngoài giờ, remote</span>
               </el-menu-item>
             </router-link>
             <router-link to="/request_leaves">
@@ -118,7 +118,7 @@
                 <span slot="title">Nghỉ phép</span>
               </el-menu-item>
             </router-link>
-            <router-link to="/request_leaves">
+            <router-link to="/other_request">
               <el-menu-item index="4-4">
                 <span slot="title">Khác</span>
               </el-menu-item>
@@ -162,37 +162,39 @@
                   style="line-height: normal;"
                 >
                   <el-popover placement="bottom" width="400" trigger="click">
-                    <el-row class="m-0">
-                      <el-col :span="24" class="text-left">
-                        <span style="font-size: 16px; color: #ff000091">Thông báo của bạn</span>
-                      </el-col>
-                    </el-row>
-                    <el-divider class="my-0"></el-divider>
-                    <el-row
-                      :gutter="15"
-                      v-for="(noti, index) in notifications"
-                      :key="index"
-                      :class="{unread: !noti.read_at}"
-                      class="noti_row"
-                    >
-                      <el-col :span="4">
-                        <i class="el-icon-message" style="font-size: 40px; color: #ff000091"></i>
-                      </el-col>
-                      <el-col :span="20">
-                        <router-link to="/request_leaves" v-if="noti.type == 'form-request'">
-                          <span @click="readNoti(noti.id, index)">{{noti.message}}</span>
-                        </router-link>
-                        <router-link
-                          to="/request_check_camera"
-                          v-else-if="noti.type == 'form-complain'"
-                        >
-                          <span @click="readNoti(noti.id, index)">{{noti.message}}</span>
-                        </router-link>
-                        <br />
-                        <small>{{noti.date_time}}</small>
-                      </el-col>
-                    </el-row>
-                    <el-divider class="my-0"></el-divider>
+                    <div class="noti">
+                      <el-row class="m-0">
+                        <el-col :span="24" class="text-left">
+                          <span style="font-size: 16px; color: #ff000091">Thông báo của bạn</span>
+                        </el-col>
+                      </el-row>
+                      <el-divider class="my-0"></el-divider>
+                      <el-row
+                        :gutter="15"
+                        v-for="(noti, index) in notifications"
+                        :key="index"
+                        :class="{unread: !noti.read_at}"
+                        class="noti_row"
+                      >
+                        <el-col :span="4">
+                          <i class="el-icon-message" style="font-size: 40px; color: #ff000091"></i>
+                        </el-col>
+                        <el-col :span="20">
+                          <router-link to="/other_request" v-if="noti.type == 'form-request'">
+                            <span @click="readNoti(noti.id, index)">{{noti.message}}</span>
+                          </router-link>
+                          <router-link
+                            to="/request_check_camera"
+                            v-else-if="noti.type == 'form-complain'"
+                          >
+                            <span @click="readNoti(noti.id, index)">{{noti.message}}</span>
+                          </router-link>
+                          <br />
+                          <small>{{noti.date_time}}</small>
+                        </el-col>
+                      </el-row>
+                      <el-divider class="my-0"></el-divider>
+                    </div>
                     <i
                       slot="reference"
                       class="el-icon-message-solid"
@@ -355,6 +357,10 @@ export default {
   background: #e6f2ff;
 }
 
+.noti {
+  max-height: 300px;
+  overflow: auto;
+}
 .noti_row {
   margin: 0 !important;
   padding: 5px 0 5px 0;

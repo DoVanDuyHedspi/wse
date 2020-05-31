@@ -1,8 +1,18 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH KHIẾU NẠI</h2>
+    <el-row class="my-2">
+      <el-col :span="24">
+        <!-- <h2>DANH SÁCH KHIẾU NẠI</h2> -->
+        <div>
+          <el-button type="primary" size="medium">Yêu cầu khiếu nại</el-button>
+          <router-link to="/request_ot">
+            <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
+          </router-link>
+          <router-link to="/other_request">
+            <el-button type="default" size="medium">Yêu cầu khác</el-button>
+          </router-link>
+        </div>
+        <el-divider></el-divider>
       </el-col>
       <el-col :span="8" class="text-left">
         <router-link to="/request_check_camera/new">

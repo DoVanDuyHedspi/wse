@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
+    <!-- <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
         <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
         <el-breadcrumb-item>Thành viên</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="p-4 mt-3">
       <div class="mb-2">
         <el-row :gutter="20">
@@ -23,14 +23,34 @@
           </el-col>
           <el-col :span="12" class="text-right">
             <router-link to="/users/create">
-              <el-button round icon="el-icon-plus" type="success">Thêm mới</el-button>
+              <el-button icon="el-icon-plus" type="primary" size="medium">Thêm mới</el-button>
             </router-link>
+            <el-dropdown size="medium" split-button type="primary">
+              <i class="el-icon-download mr-1"></i>Xuất
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>
+                  <span @click="downloadCsv('xlsx')">
+                    <i class="el-icon-download"></i> Xuất xlsx
+                  </span>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <span @click="downloadCsv('csv')">
+                    <i class="el-icon-download"></i> Xuất csv
+                  </span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="text-right">
-              <el-select v-model="filter.branch_id" class="filter" placeholder="Chi nhánh">
+              <el-select
+                v-model="filter.branch_id"
+                class="filter"
+                placeholder="Chi nhánh"
+                size="medium"
+              >
                 <el-option
                   v-for="(type,index) in infoCompany.branches"
                   :label="type.name"
@@ -45,8 +65,14 @@
                 :change="handleGroupChange()"
                 placeholder="Bộ phận"
                 class="filter"
+                size="medium"
               ></el-cascader>
-              <el-select v-model="filter.position_id" class="filter" placeholder="Vị trí">
+              <el-select
+                v-model="filter.position_id"
+                class="filter"
+                placeholder="Vị trí"
+                size="medium"
+              >
                 <el-option
                   v-for="(type,index) in infoCompany.positions"
                   :label="type.name"
@@ -58,6 +84,7 @@
                 v-model="filter.employee_type_id"
                 class="filter"
                 placeholder="Loại nhân viên"
+                size="medium"
               >
                 <el-option
                   v-for="(type,index) in infoCompany.employee_types"
@@ -74,41 +101,18 @@
                 placeholder="Tìm kiếm"
                 @select="handleSelect"
                 @change="filterUsers"
+                size="medium"
               ></el-autocomplete>
-              <el-button type="primary" icon="el-icon-search" @click="filterUsers()">Lọc</el-button>
+              <el-button
+                type="primary"
+                icon="el-icon-search"
+                @click="filterUsers()"
+                size="medium"
+              ></el-button>
             </div>
           </el-col>
         </el-row>
 
-        <el-row>
-          <el-col :span="24">
-            <el-row>
-              <el-col :span="24" class="text-right">
-                <el-dropdown :hide-on-click="false">
-                  <span class="el-dropdown-link" style="cursor: pointer; color: gray">
-                    <i class="el-icon-more-outline" style="font-size: 22px"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown" @click="downloadCsv">
-                    <el-dropdown-item>
-                      <span @click="downloadCsv('xlsx')">
-                        <i class="el-icon-download"></i> Xuất xlsx
-                      </span>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <span @click="downloadCsv('csv')">
-                        <i class="el-icon-download"></i> Xuất csv
-                      </span>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <span v-print="'#printMe'">
-                        <i class="el-icon-printer"></i> In
-                      </span>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </el-col>
-            </el-row>
-          </el-col>
           <el-table
             :data="dataTable"
             style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"

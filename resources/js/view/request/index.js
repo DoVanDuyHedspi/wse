@@ -1,10 +1,10 @@
-import IndexRequestLeaves from './IndexRequestLeavesComponent';
-import NewRequestLeaves from './NewRequestLeavesComponent';
-import EditRequestLeaves from './EditRequestLeavesComponent';
+import IndexOtherLeaves from './IndexOtherRequestComponent';
+import NewOtherRequest from './NewOtherRequestComponent';
+import EditOtherRequest from './EditOtherRequestComponent';
 import IndexRequestOT from './IndexRequestOTComponent';
 import NewRequestOT from './NewRequestOTComponent';
 import EditRequestOT from './EditRequestOTComponent';
-import UsersRequestsLeaves from './UsersRequestLeavesComponent';
+import UsersOtherRequest from './UsersOtherRequestComponent';
 import UsersRequestsOT from './UsersRequestOTComponent';
 import IndexRequestCheckCamera from './IndexRequestCheckCameraComponent';
 import NewRequestCheckCamera from './NewRequestCheckCameraComponent';
@@ -14,13 +14,13 @@ import CheckCamera from './CheckCameraComponent';
 import ConfirmWorked from './ConfirmWorkedComponent';
 export default [
   {
-    path: '/request_leaves', component: IndexRequestLeaves, name: 'request_leaves.index'
+    path: '/other_request', component: IndexOtherLeaves, name: 'other_request.index'
   },
   {
-    path: '/request_leaves/new', component: NewRequestLeaves, name: 'request_leaves.new'
+    path: '/other_request/new', component: NewOtherRequest, name: 'other_request.new'
   },
   {
-    path: '/request_leaves/edit/:id', component: EditRequestLeaves, name: 'request_leaves.edit'
+    path: '/other_request/edit/:id', component: EditOtherRequest, name: 'other_request.edit'
   },
   {
     path: '/request_ot', component: IndexRequestOT, name: 'request_ot.index'
@@ -37,7 +37,7 @@ export default [
     }
   },
   {
-    path: '/users_requests/leaves', component: UsersRequestsLeaves, name: 'users_requests_leaves.index', meta: {
+    path: '/users_requests/other', component: UsersOtherRequest, name: 'users_requests_other.index', meta: {
       permission: 'check-requests',
     }
   },

@@ -717,7 +717,7 @@ export default {
                 type: "success",
                 position: "bottom-right"
               });
-              this.$router.push("/request_leaves");
+              this.$router.push("/other_request");
             }
           });
         }

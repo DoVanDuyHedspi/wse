@@ -18,7 +18,8 @@ $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkin
 $router->apiResource('form_complain', 'Api\FormComplainController');
 $router->get('/form_complain/manage/requests', 'Api\FormComplainController@usersRequests');
 $router->post('/form_complain/manage/approve', 'Api\FormComplainController@approveRequest');
-$router->post('/form_complain/manage/check_camera', 'Api\FormComplainController@checkCamera');
+$router->post('/form_complain/manage/approved_form', 'Api\FormComplainController@approvedForm');
+$router->get('/video/googleDrive', 'Api\FormComplainController@getVideoFromGgDrive');
 
 $router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
 

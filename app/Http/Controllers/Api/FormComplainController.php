@@ -14,7 +14,9 @@ use App\Http\Resources\FormComplainResource;
 use App\Lib\WorkLib;
 use App\Notifications\ResultOfComplain;
 use App\Notifications\ResultOfRequest;
+use Exception;
 use Google_Service_Drive;
+use Illuminate\Support\Str;
 
 class FormComplainController extends Controller
 {
@@ -243,7 +245,7 @@ class FormComplainController extends Controller
             $new_event->user_code = $form->user_code;
             $new_event->status = 1;
             $new_event->save();
-          }  else if ($ev->time_out == null) {
+          } else if ($ev->time_out == null) {
             if (date('H:i', strtotime($ev->time_in)) > $time) {
               $ev->time_out = $ev->time_in;
               $ev->time_in = $time;
@@ -265,50 +267,105 @@ class FormComplainController extends Controller
     return response(['status' => true, 'form_complain' => $form], 200);
   }
 
-  public function checkCamera(Request $request)
+  public function approvedForm(Request $request)
   {
-    $validator = Validator::make($request->all(), [
-      'date' => 'required | date',
-    ]);
-    if ($validator->fails()) {
+    // $validator = Validator::make($request->all(), [
+    //   'date' => 'required | date',
+    // ]);
+    // if ($validator->fails()) {
+    //   return response([
+    //     'status' => false,
+    //     'message' => 'Thiếu ngày cần xác minh!'
+    //   ], 200);
+    // }
+    //get video id
+    // $date = date('Y-m-d', strtotime($request->date));
+    // $videoName = 'wse-' . $date;
+    // $drive = new Google_Service_Drive($this->client);
+    // $query   =   "'" . config('wse.drive_folder_id') . "' in parents and trashed=false";
+    // $optParams   =   [
+    //   'fields' => 'files(id, name)',
+    //   'q'   =>   $query
+    // ];
+    // $results   =   $drive->files->listFiles($optParams);
+    // $listVideo = (array) $results->files;
+    // $listVideoUrl = [];
+    // foreach ($listVideo as $video) {
+    //   if ($video->name == $videoName) {
+    //     $url = "https://drive.google.com/file/d/" . $video->id . "/preview";
+    //     array_push($listVideoUrl, $url);
+    //   }
+    // }
+    //get request and user info
+    try {
+      $forms = FormComplain::with('user')->where('status', 'accept')->where('result', 'waiting')->orderBy('created_at', 'desc')->get();
+      foreach ($forms as $form) {
+        $data = new WorkLib();
+        $res = $data->searchEventOfUser($form->date, $form->begin_time, $form->end_time, $form->user_code);
+        $search_info = [];
+        if (isset($res['info']['SearchInfo'])) {
+          $events = $res['info']['SearchInfo'];
+          foreach ($events as $event) {
+            array_push($search_info, date('H:i:s', strtotime($event['Time'])));
+          }
+        }
+        $form['search_info'] = $search_info;
+      }
+      $forms = FormComplainResource::collection($forms);
+      return response(['forms' => $forms]);
+    } catch (Exception $e) {
       return response([
         'status' => false,
-        'message' => 'Thiếu ngày cần xác minh!'
+        'message' => $e->getMessage(),
       ], 200);
     }
-    //get video id
-    $date = date('Y-m-d', strtotime($request->date));
-    $videoName = 'wse-' . $date;
-    $drive = new Google_Service_Drive($this->client);
-    $query   =   "'" . config('wse.drive_folder_id') . "' in parents and trashed=false";
-    $optParams   =   [
-      'fields' => 'files(id, name)',
-      'q'   =>   $query
-    ];
-    $results   =   $drive->files->listFiles($optParams);
-    $listVideo = (array) $results->files;
-    $listVideoUrl = [];
-    foreach ($listVideo as $video) {
-      if ($video->name == $videoName) {
-        $url = "https://drive.google.com/file/d/" . $video->id . "/preview";
-        array_push($listVideoUrl, $url);
-      }
-    }
-    //get request and user info
-    $forms = FormComplain::with('user')->where('status', 'accept')->where('result', 'waiting')->where('date', $date)->orderBy('created_at', 'desc')->get();
-    foreach ($forms as $form) {
-      $data = new WorkLib();
-      $res = $data->searchEventOfUser($date, $form->begin_time, $form->end_time, $form->user_code);
-      $search_info = [];
-      if (isset($res['info']['SearchInfo'])) {
-        $events = $res['info']['SearchInfo'];
-        foreach ($events as $event) {
-          array_push($search_info, date('H:i:s', strtotime($event['Time'])));
+
+    // return response(['forms' => $forms, 'list_video_url' => array_reverse($listVideoUrl)]);
+  }
+
+  public function getVideoFromGgDrive(Request $request)
+  {
+    try {
+      $params = $request->query();
+
+      if (!$params['date'] || !$params['begin_time'] || !$params['end_time']) {
+        return response([
+          'status' => false,
+          'message' => 'Hãy nhập đủ thông tin ngày và khoảng thời gian muốn lấy video',
+        ], 200);
+      } else {
+        $datetime_begin = strtotime($params['date'] . ' ' . $params['begin_time']);
+        $datetime_end = strtotime($params['date'] . ' ' . $params['end_time']);
+        $drive = new Google_Service_Drive($this->client);
+        $query   =   "'" . config('wse.drive_folder_id') . "' in parents and trashed=false";
+        $optParams   =   [
+          'fields' => 'files(id, name)',
+          'q'   =>   $query
+        ];
+
+        $results   =   $drive->files->listFiles($optParams);
+        $listFiles = (array) $results->files;
+        $listVideoUrl = [];
+        foreach ($listFiles as $file) {
+          $res = Str::is('*-*.*', $file->name);
+          if ($res) {
+            $nameFile = explode(".", $file->name)[0];
+            $video_begin = explode("-", $nameFile)[0];
+            $video_end = explode("-", $nameFile)[1];
+            if ($datetime_begin > $video_end || $datetime_end < $video_begin) {
+              continue;
+            } else {
+              array_push($listVideoUrl, "https://drive.google.com/file/d/" . $file->id . "/preview");
+            }
+          }
         }
+        return array_reverse($listVideoUrl);
       }
-      $form['search_info'] = $search_info;
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
     }
-    $forms = FormComplainResource::collection($forms);
-    return response(['forms' => $forms, 'list_video_url' => array_reverse($listVideoUrl)]);
   }
 }

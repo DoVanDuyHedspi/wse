@@ -1,9 +1,19 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
+    <el-row class="my-2">
+      <!-- <el-col :span="24" class="text-center">
         <h2>DANH SÁCH KHIẾU NẠI CHẤM CÔNG</h2>
-      </el-col>
+      </el-col>-->
+      <div>
+        <el-button type="primary" size="medium">Yêu cầu khiếu nại</el-button>
+        <router-link to="/users_requests/ot_remote">
+          <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
+        </router-link>
+        <router-link to="/users_requests/other">
+          <el-button type="default" size="medium">Yêu cầu khác</el-button>
+        </router-link>
+      </div>
+      <el-divider></el-divider>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="8">
@@ -41,10 +51,15 @@
     </el-row>
     <el-row :gutter="20" class="text-right">
       <el-col :span="8">
-        <el-select class="w-100" v-model="filter.status" placeholder="Chọn trạng thái" size="medium">
+        <el-select
+          class="w-100"
+          v-model="filter.status"
+          placeholder="Chọn trạng thái"
+          size="medium"
+        >
           <el-option value="waiting" label="Đang chờ"></el-option>
           <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
+          <el-option value="forward" label="Chuyển tiếp"></el-option>-->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>

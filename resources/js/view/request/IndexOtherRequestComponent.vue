@@ -1,11 +1,21 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH YÊU CẦU</h2>
+    <el-row class="my-2">
+      <el-col :span="24">
+        <!-- <h2>DANH SÁCH YÊU CẦU</h2> -->
+        <div>
+          <router-link to="/request_check_camera">
+            <el-button type="default" size="medium">Yêu cầu khiếu nại</el-button>
+          </router-link>
+          <router-link to="/request_ot">
+            <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
+          </router-link>
+          <el-button type="primary" size="medium">Yêu cầu khác</el-button>
+        </div>
+        <el-divider></el-divider>
       </el-col>
       <el-col :span="8" class="text-left">
-        <router-link to="/request_leaves/new">
+        <router-link to="/other_request/new">
           <el-button type="primary" size="medium">
             <i class="el-icon-plus"></i>Thêm mới
           </el-button>
@@ -15,7 +25,7 @@
         <el-select v-model="filter.status" placeholder="Chọn trạng thái" size="medium">
           <el-option value="waiting" label="Đang chờ"></el-option>
           <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
+          <el-option value="forward" label="Chuyển tiếp"></el-option>-->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -62,7 +72,7 @@
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span> -->
+            </span>-->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -108,15 +118,19 @@
             slot-scope="scope"
             v-if="['ILM','ILA','LEM','LEA','LO'].includes(scope.row.type)"
           >
-            <div v-if="scope.row.has_worked"><el-tag type="success">Đã làm</el-tag></div>
-            <div v-else><el-tag type="warning">Chưa làm</el-tag></div>
+            <div v-if="scope.row.has_worked">
+              <el-tag type="success">Đã làm</el-tag>
+            </div>
+            <div v-else>
+              <el-tag type="warning">Chưa làm</el-tag>
+            </div>
           </template>
         </el-table-column>
         <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
             <!-- <el-button-group> -->
-            <router-link :to="'/request_leaves/edit/' + scope.row.id">
+            <router-link :to="'/other_request/edit/' + scope.row.id">
               <el-button
                 size="mini"
                 type="primary"

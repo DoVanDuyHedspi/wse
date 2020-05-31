@@ -254,7 +254,7 @@ export default {
     makeForm() {
       if (this.formType == "leaves") {
         this.$router.push(
-          "/request_leaves/new?date=" +
+          "/other_request/new?date=" +
             this.formForDate +
             "&type=" +
             this.leaveType

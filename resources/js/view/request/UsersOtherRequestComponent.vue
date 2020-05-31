@@ -1,8 +1,18 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH YÊU CẦU IL, LE, LO, QQ</h2>
+    <el-row class="my-2">
+      <el-col :span="24">
+        <!-- <h2>DANH SÁCH YÊU CẦU IL, LE, LO, QQ</h2> -->
+        <div>
+          <router-link to="/users_requests/request_check_camera">
+            <el-button type="default" size="medium">Yêu cầu khiếu nại</el-button>
+          </router-link>
+          <router-link to="/users_requests/ot_remote">
+            <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
+          </router-link>
+          <el-button type="primary" size="medium">Yêu cầu khác</el-button>
+        </div>
+        <el-divider></el-divider>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -41,10 +51,15 @@
     </el-row>
     <el-row :gutter="20" class="text-right">
       <el-col :span="8">
-        <el-select class="w-100" v-model="filter.status" placeholder="Chọn trạng thái" size="medium">
+        <el-select
+          class="w-100"
+          v-model="filter.status"
+          placeholder="Chọn trạng thái"
+          size="medium"
+        >
           <el-option value="waiting" label="Đang chờ"></el-option>
           <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
+          <el-option value="forward" label="Chuyển tiếp"></el-option>-->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -104,7 +119,7 @@
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span> -->
+            </span>-->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -179,7 +194,7 @@
                 v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index, 'forward')"
               ></el-button>
-            </el-tooltip> -->
+            </el-tooltip>-->
             <el-tooltip content="Từ chối" placement="top">
               <el-button
                 class="mx-0 my-1"
