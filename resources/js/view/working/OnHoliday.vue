@@ -1,12 +1,10 @@
 <template>
   <div class="p-4 mt-3">
     <div>
-      <el-button-group>
-        <el-button type="primary" size="medium">Thiết lập nghỉ lễ</el-button>
-        <router-link to="/working-day/on-leave-type">
-          <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
-        </router-link>
-      </el-button-group>
+      <el-button type="primary" size="medium">Thiết lập nghỉ lễ</el-button>
+      <router-link to="/working-day/on-leave-type">
+        <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
+      </router-link>
     </div>
     <el-divider></el-divider>
     <div class="p-3">
@@ -82,27 +80,26 @@ export default {
         confirmButtonText: "Đồng ý",
         cancelButtonText: "Hủy",
         type: "warning"
-      })
-        .then(() => {
-          axios.delete("/api/holiday/" + holiday.id).then(response => {
-            if (response.data.status === false) {
-              this.error.message = response.data.message;
-              this.$notify.error({
-                title: "Thất bại",
-                message: response.data.message,
-                position: "bottom-right"
-              });
-            } else {
-              this.$notify({
-                title: "Hoàn thành",
-                message: "Xóa ngày nghỉ lễ thành công",
-                type: "success",
-                position: "bottom-right"
-              });
-              this.dataTable.splice(index, 1);
-            }
-          });
-        })
+      }).then(() => {
+        axios.delete("/api/holiday/" + holiday.id).then(response => {
+          if (response.data.status === false) {
+            this.error.message = response.data.message;
+            this.$notify.error({
+              title: "Thất bại",
+              message: response.data.message,
+              position: "bottom-right"
+            });
+          } else {
+            this.$notify({
+              title: "Hoàn thành",
+              message: "Xóa ngày nghỉ lễ thành công",
+              type: "success",
+              position: "bottom-right"
+            });
+            this.dataTable.splice(index, 1);
+          }
+        });
+      });
     }
   }
 };

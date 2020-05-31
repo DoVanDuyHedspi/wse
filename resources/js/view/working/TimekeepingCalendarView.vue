@@ -336,7 +336,7 @@ export default {
 }
 
 .theme-default .cv-day.today {
-  background: yellow;
+  background: #96c2f2;
 }
 
 // .cv-day,

@@ -35,7 +35,7 @@
           </el-col>
           <el-col :span="8" class="text-right">
             <el-dropdown size="medium" split-button type="primary">
-              Xuất
+              <i class="el-icon-download"></i>Xuất
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
                   <i class="el-icon-download"></i> Xuất xlsx
@@ -43,13 +43,11 @@
                 <el-dropdown-item>
                   <i class="el-icon-download"></i> Xuất csv
                 </el-dropdown-item>
-                <el-dropdown-item>
-                  <span v-print="'#table'">
-                    <i class="el-icon-printer"></i> In
-                  </span>
-                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
+            <el-button size="medium" type="primary" v-print="'#table'">
+              <i class="el-icon-printer"></i> In
+            </el-button>
           </el-col>
         </el-row>
         <el-table :data="events" style="width: 100%" id="table">

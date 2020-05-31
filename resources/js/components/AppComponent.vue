@@ -71,12 +71,12 @@
             </el-menu-item-group>
             <el-menu-item-group title="Phân quyền hệ thống">
               <router-link to="/role">
-                <el-menu-item index="1-4">
+                <el-menu-item index="1-5">
                   <span slot="title">Nhóm quyền</span>
                 </el-menu-item>
               </router-link>
               <router-link to="/permission">
-                <el-menu-item index="1-5">
+                <el-menu-item index="1-6">
                   <span slot="title">Quyền hạn</span>
                 </el-menu-item>
               </router-link>

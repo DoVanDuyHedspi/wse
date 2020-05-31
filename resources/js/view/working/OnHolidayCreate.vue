@@ -1,12 +1,10 @@
 <template>
   <div class="p-4 bg-white" id="on-holiday-create">
     <div>
-      <el-button-group>
-        <el-button type="primary" size="medium">Thiết lập nghỉ lễ</el-button>
-        <router-link to="/working-day/on-leave-type">
-          <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
-        </router-link>
-      </el-button-group>
+      <el-button type="primary" size="medium">Thiết lập nghỉ lễ</el-button>
+      <router-link to="/working-day/on-leave-type">
+        <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
+      </router-link>
     </div>
     <el-divider></el-divider>
     <div class="text-right mb-2">

@@ -6,7 +6,8 @@ import OnHoliday from './OnHoliday';
 import OnHolidayCreate from './OnHolidayCreate';
 import OnLeaveType from './OnLeaveType';
 import OnLeaveTypeCreate from './OnLeaveTypeCreate';
-import OnHolidayEdit from './OnHolidayEdit'
+import OnHolidayEdit from './OnHolidayEdit';
+import OnLeaveTypeEdit from './OnLeaveTypeEdit';
 
 export default [
   {
@@ -39,5 +40,8 @@ export default [
   },
   {
     path: '/working-day/on-leave-type/create', component: OnLeaveTypeCreate, name: 'working.onLeaveType.create'
+  },
+  {
+    path: '/working-day/on-leave-type/edit/:id', component: OnLeaveTypeEdit, name: 'working.onLeaveType.edit'
   },
 ]

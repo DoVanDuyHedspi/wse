@@ -44,4 +44,4 @@ $router->get('/company/timeUpdateTimekeepingData', 'Api\CompanyController@timeUp
 
 $router->resource('/holiday', 'Api\HolidayController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
-
+$router->resource('/leave_type', 'Api\LeaveTypeController')->only(['index', 'store', 'show', 'update', 'destroy']);

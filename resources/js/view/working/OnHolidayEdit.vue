@@ -1,12 +1,10 @@
 <template>
   <div class="p-4 bg-white" id="on-holiday-create">
     <div>
-      <el-button-group>
-        <el-button type="primary" size="medium">Thiết lập nghỉ lễ</el-button>
-        <router-link to="/working-day/on-leave-type">
-          <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
-        </router-link>
-      </el-button-group>
+      <el-button type="primary" size="medium">Thiết lập nghỉ lễ</el-button>
+      <router-link to="/working-day/on-leave-type">
+        <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
+      </router-link>
     </div>
     <el-divider></el-divider>
     <div class="text-right mb-2">
@@ -93,7 +91,7 @@ export default {
         start_date: "",
         end_date: "",
         coefficients_salary: 1,
-        id: "",
+        id: ""
       },
       rules: {
         name: {
@@ -136,24 +134,26 @@ export default {
     updateHoliday(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          axios.put("/api/holiday/"+ this.form.id, this.form).then(response => {
-            if (response.data.status === false) {
-              this.error.message = response.data.message;
-              this.$notify.error({
-                title: "Thất bại",
-                message: response.data.message,
-                position: "bottom-right"
-              });
-            } else {
-              this.$notify({
-                title: "Hoàn thành",
-                message: "Thêm mới nghỉ lễ thành công",
-                type: "success",
-                position: "bottom-right"
-              });
-              this.$router.push("/working-day/on-holiday");
-            }
-          });
+          axios
+            .put("/api/holiday/" + this.form.id, this.form)
+            .then(response => {
+              if (response.data.status === false) {
+                this.error.message = response.data.message;
+                this.$notify.error({
+                  title: "Thất bại",
+                  message: response.data.message,
+                  position: "bottom-right"
+                });
+              } else {
+                this.$notify({
+                  title: "Hoàn thành",
+                  message: "Thêm mới nghỉ lễ thành công",
+                  type: "success",
+                  position: "bottom-right"
+                });
+                this.$router.push("/working-day/on-holiday");
+              }
+            });
         }
       });
     }

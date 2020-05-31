@@ -6,13 +6,13 @@
       </el-col>
       <el-col :span="8" class="text-left">
         <router-link to="/request_leaves/new">
-          <el-button type="success" round>
+          <el-button type="primary" size="medium">
             <i class="el-icon-plus"></i>Thêm mới
           </el-button>
         </router-link>
       </el-col>
       <el-col :span="16" class="text-right">
-        <el-select v-model="filter.status" placeholder="Chọn trạng thái">
+        <el-select v-model="filter.status" placeholder="Chọn trạng thái" size="medium">
           <el-option value="waiting" label="Đang chờ"></el-option>
           <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
           <el-option value="forward" label="Chuyển tiếp"></el-option> -->
@@ -24,8 +24,9 @@
           format="MM-yyyy"
           type="month"
           placeholder="Chọn tháng"
+          size="medium"
         ></el-date-picker>
-        <el-button type="primary" @click="filterFormRequests">Lọc</el-button>
+        <el-button type="primary" @click="filterFormRequests" size="medium">Lọc</el-button>
       </el-col>
     </el-row>
 

@@ -64,7 +64,7 @@
                   <el-form-item label="Thời gian bắt đầu " prop="begin_time">
                     <el-time-select
                       v-model="form.begin_time"
-                      :picker-options="{start: '00:00',step: '00:15',end: '24:00'}"
+                      :picker-options="{start: '07:00',step: '00:05',end: '24:00'}"
                       placeholder="Chọn thời gian bắt đầu"
                       class="w-100"
                       @blur="validateTime()"
@@ -75,7 +75,7 @@
                   <el-form-item label="Thời gian kết thúc " prop="end_time">
                     <el-time-select
                       v-model="form.end_time"
-                      :picker-options="{start: '00:00',step: '00:15',end: '24:00'}"
+                      :picker-options="{start: form.begin_time,step: '00:05',end: '24:00'}"
                       placeholder="Chọn thời gian kết thúc"
                       class="w-100"
                       @blur="validateTime()"

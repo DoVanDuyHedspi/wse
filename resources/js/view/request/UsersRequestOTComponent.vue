@@ -7,7 +7,7 @@
     </el-row>
     <el-row :gutter="20">
       <el-col :span="8">
-        <el-select class="w-100" v-model="filter.branch_id" placeholder="Chi nhánh">
+        <el-select class="w-100" v-model="filter.branch_id" placeholder="Chi nhánh" size="medium">
           <el-option
             v-for="(type,index) in infoCompany.branches"
             :label="type.name"
@@ -24,6 +24,7 @@
           :change="handleGroupChange()"
           placeholder="Bộ phận"
           class="w-100"
+          size="medium"
         ></el-cascader>
       </el-col>
       <el-col :span="8">
@@ -34,15 +35,21 @@
           :fetch-suggestions="querySearch"
           placeholder="Tìm kiếm theo tên, mã nhân viên"
           @select="handleSelect"
+          size="medium"
         ></el-autocomplete>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="text-right">
       <el-col :span="8">
-        <el-select class="w-100" v-model="filter.status" placeholder="Chọn trạng thái">
+        <el-select
+          class="w-100"
+          v-model="filter.status"
+          placeholder="Chọn trạng thái"
+          size="medium"
+        >
           <el-option value="waiting" label="Đang chờ"></el-option>
           <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option> -->
+          <el-option value="forward" label="Chuyển tiếp"></el-option>-->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -56,10 +63,11 @@
           end-placeholder="Ngày kết thúc"
           format="dd-MM-yyyy"
           class="w-100"
+          size="medium"
         ></el-date-picker>
       </el-col>
       <el-col :span="4">
-        <el-button class="w-100" type="primary" @click="filterFormRequests">Lọc</el-button>
+        <el-button class="w-100" type="primary" @click="filterFormRequests" size="medium">Lọc</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -101,7 +109,7 @@
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span> -->
+            </span>-->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -159,7 +167,7 @@
                 v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index, 'forward')"
               ></el-button>
-            </el-tooltip> -->
+            </el-tooltip>-->
             <el-tooltip content="Từ chối" placement="top">
               <el-button
                 class="mx-0 my-1"
