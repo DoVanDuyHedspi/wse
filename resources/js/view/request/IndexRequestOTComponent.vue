@@ -1,21 +1,34 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH YÊU CẦU OT VÀ REMOTE</h2>
+    <el-row class="my-2">
+      <el-col :span="24">
+        <!-- <h2>DANH SÁCH YÊU CẦU OT VÀ REMOTE</h2> -->
+        <div>
+          <router-link to="/request_check_camera">
+            <el-button type="default" size="medium">Yêu cầu khiếu nại</el-button>
+          </router-link>
+          <router-link to="/request_leave">
+            <el-button type="default" size="medium">Yêu cầu nghỉ phép</el-button>
+          </router-link>
+          <el-button type="primary" size="medium">Yêu cầu OT, Remote</el-button>
+          <router-link to="/other_request">
+            <el-button type="default" size="medium">Yêu cầu khác</el-button>
+          </router-link>
+        </div>
+        <el-divider></el-divider>
       </el-col>
       <el-col :span="8" class="text-left">
         <router-link to="/request_ot/new">
-          <el-button type="success" round>
+          <el-button type="primary" size="medium">
             <i class="el-icon-plus"></i>Thêm mới
           </el-button>
         </router-link>
       </el-col>
       <el-col :span="16" class="text-right">
-        <el-select v-model="filter.status" placeholder="Chọn trạng thái">
+        <el-select v-model="filter.status" placeholder="Chọn trạng thái" size="medium">
           <el-option value="waiting" label="Đang chờ"></el-option>
-          <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option>
+          <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
+          <el-option value="forward" label="Chuyển tiếp"></el-option>-->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -24,8 +37,9 @@
           format="MM-yyyy"
           type="month"
           placeholder="Chọn tháng"
+          size="medium"
         ></el-date-picker>
-        <el-button type="primary" @click="filterFormRequests">Lọc</el-button>
+        <el-button type="primary" @click="filterFormRequests" size="medium">Lọc</el-button>
       </el-col>
     </el-row>
 
@@ -50,12 +64,12 @@
             <span v-if="scope.row.status == 'waiting'">
               <el-tag type="warning">Đang chờ</el-tag>
             </span>
-            <span v-if="scope.row.status == 'cancel'">
+            <!-- <span v-if="scope.row.status == 'cancel'">
               <el-tag type="danger">Hủy bỏ</el-tag>
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span>
+            </span>-->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -82,9 +96,7 @@
         ></el-table-column>
         <el-table-column property="reason" label="Lý do" width="120"></el-table-column>
         <el-table-column label="Đã làm?" width="120" class-name="text-center">
-          <template
-            slot-scope="scope"
-          >
+          <template slot-scope="scope">
             <div v-if="scope.row.has_worked">
               <el-tag type="success">Đã làm</el-tag>
             </div>
@@ -109,7 +121,7 @@
               size="mini"
               type="danger"
               icon="el-icon-delete"
-              v-if="scope.row.status == 'waiting' || scope.row.status == 'forward'"
+              v-if="scope.row.status == 'waiting'"
               @click.native.prevent="deleteFormRequest(scope.$index, scope.row)"
             ></el-button>
             <el-tooltip content="Đã xử lý" placement="top">
@@ -118,7 +130,7 @@
                 size="mini"
                 icon="el-icon-s-check"
                 disabled
-                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse'"
               ></el-button>
             </el-tooltip>
             <!-- </el-button-group> -->
@@ -225,18 +237,19 @@ export default {
               message: response.data.message,
               position: "bottom-right"
             });
+          } else {
+            this.dataTable.splice(index, 1);
+            this.form_requests.splice(
+              (this.currentPage - 1) * this.pageSize + index,
+              1
+            );
+            this.$notify({
+              title: "Hoàn thành",
+              message: "Xóa yêu cầu thành công",
+              type: "success",
+              position: "bottom-right"
+            });
           }
-          this.dataTable.splice(index, 1);
-          this.form_requests.splice(
-            (this.currentPage - 1) * this.pageSize + index,
-            1
-          );
-          this.$notify({
-            title: "Hoàn thành",
-            message: "Xóa yêu cầu thành công",
-            type: "success",
-            position: "bottom-right"
-          });
         });
       });
     }

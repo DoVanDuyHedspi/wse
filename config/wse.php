@@ -12,7 +12,7 @@ return [
   'afternoon_late' => '14:45:00',
   'afternoon_end' => '16:45:00',
   'form_request_type' => ['OT', 'ILM', 'LEM', 'ILA', 'LEA', 'LO', 'RM', 'QQD', 'QQV', 'QQF'],
-  'form_request_status' => ['waiting', 'cancel', 'forward', 'accept', 'refuse'],
+  'form_request_status' => ['waiting', 'accept', 'refuse'],
   'form_check_camera_result' => ['waiting', 'fail', 'success'],
   'form_check_camera_status' => ['waiting', 'accept', 'refuse'],
   'drive_folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),

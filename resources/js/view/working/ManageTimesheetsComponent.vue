@@ -272,7 +272,7 @@
         <span style="background: #FFFFFF; border: 1px black solid" class="dot"></span>Chấm công đúng giờ
       </span>
       <span class="mr-3">
-        <span style="background: #67C23A" class="dot"></span>Không chấm công/Không đủ thời gian làm tối thiểu
+        <span style="background: #67C23A" class="dot"></span>Không đủ thời gian làm tối thiểu
       </span>
     </div>
   </div>

@@ -2,6 +2,12 @@ import TimekeepingCalendarView from './TimekeepingCalendarView';
 import TimekeepingTableView from './TimekeepingTableView';
 import ManageTimeSheets from './ManageTimesheetsComponent';
 import HistoryCheckInOut from './HistoryCheckInOutComponent';
+import OnHoliday from './OnHoliday';
+import OnHolidayCreate from './OnHolidayCreate';
+import OnLeaveType from './OnLeaveType';
+import OnLeaveTypeCreate from './OnLeaveTypeCreate';
+import OnHolidayEdit from './OnHolidayEdit';
+import OnLeaveTypeEdit from './OnLeaveTypeEdit';
 
 export default [
   {
@@ -19,5 +25,23 @@ export default [
     path: '/history_checkinout', component: HistoryCheckInOut, name: 'working.history_checkinout', meta: {
       permission: 'update-timesheets', 
     }
-  }
+  },
+  {
+    path: '/working-day/on-holiday', component: OnHoliday, name: 'working.onHoliday'
+  },
+  {
+    path: '/working-day/on-holiday/create', component: OnHolidayCreate, name: 'working.onHoliday.create'
+  },
+  {
+    path: '/working-day/on-holiday/edit/:id', component: OnHolidayEdit, name: 'working.onHoliday.edit'
+  },
+  {
+    path: '/working-day/on-leave-type', component: OnLeaveType, name: 'working.onLeaveType'
+  },
+  {
+    path: '/working-day/on-leave-type/create', component: OnLeaveTypeCreate, name: 'working.onLeaveType.create'
+  },
+  {
+    path: '/working-day/on-leave-type/edit/:id', component: OnLeaveTypeEdit, name: 'working.onLeaveType.edit'
+  },
 ]

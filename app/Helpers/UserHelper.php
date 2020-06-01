@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use App\Bank;
 use App\Education;
+use App\FormLeave;
+use App\Holiday;
 use App\IdentityCardPassport;
 use App\Lib\UserLib;
 use App\Permission;
@@ -139,4 +141,45 @@ class UserHelper
     }
     return $list;
   }
+
+  public static function isWeeken($date) {
+    return (date('N', strtotime($date)) == 7);
+  }
+
+  public static function isHoliday($date) {
+    $date = date('Y-m-d', strtotime($date));
+    $holiday = Holiday::whereDate('start_date', '<=' , $date)->whereDate('end_date', '>=', $date)->get();
+    // return $holiday;
+    if(count($holiday)) {
+      return true;
+    }
+    return false;
+  }
+
+  public static function isNPCL($user_code, $date) {
+    $date = date('Y-m-d', strtotime($date));
+    $formLeave = FormLeave::where('user_code', $user_code)->where('status', 'accept')
+      ->whereDate('begin_leave_date', '<=', $date)->whereDate('end_leave_date', '>=', $date)->with('leave_type')->first();
+    if($formLeave) {
+      if($formLeave->leave_type->has_salary == 1) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  public static function isNPKL($user_code, $date) {
+    $date = date('Y-m-d', strtotime($date));
+    $formLeave = FormLeave::where('user_code', $user_code)->where('status', 'accept')
+      ->whereDate('begin_leave_date', '<=', $date)->whereDate('end_leave_date', '>=', $date)->with('leave_type')->first();
+    if($formLeave) {
+      if($formLeave->leave_type->has_salary == 0) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
 }

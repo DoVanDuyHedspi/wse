@@ -1,18 +1,31 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH KHIẾU NẠI</h2>
+    <el-row class="my-2">
+      <el-col :span="24">
+        <!-- <h2>DANH SÁCH KHIẾU NẠI</h2> -->
+        <div>
+          <el-button type="primary" size="medium">Yêu cầu khiếu nại</el-button>
+          <router-link to="/request_leave">
+            <el-button type="default" size="medium">Yêu cầu nghỉ phép</el-button>
+          </router-link>
+          <router-link to="/request_ot">
+            <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
+          </router-link>
+          <router-link to="/other_request">
+            <el-button type="default" size="medium">Yêu cầu khác</el-button>
+          </router-link>
+        </div>
+        <el-divider></el-divider>
       </el-col>
       <el-col :span="8" class="text-left">
         <router-link to="/request_check_camera/new">
-          <el-button type="success" round>
+          <el-button type="primary" size="medium">
             <i class="el-icon-plus"></i>Thêm mới
           </el-button>
         </router-link>
       </el-col>
       <el-col :span="16" class="text-right">
-        <el-select v-model="filter.status" placeholder="Chọn trạng thái">
+        <el-select v-model="filter.status" placeholder="Chọn trạng thái" size="medium">
           <el-option value="waiting" label="Đang chờ"></el-option>
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
@@ -22,8 +35,9 @@
           format="MM-yyyy"
           type="month"
           placeholder="Chọn tháng"
+          size="medium"
         ></el-date-picker>
-        <el-button type="primary" @click="filterFormRequests">Lọc</el-button>
+        <el-button type="primary" @click="filterFormRequests" size="medium">Lọc</el-button>
       </el-col>
     </el-row>
 
@@ -195,18 +209,19 @@ export default {
               message: response.data.message,
               position: "bottom-right"
             });
+          } else {
+            this.dataTable.splice(index, 1);
+            this.form_requests.splice(
+              (this.currentPage - 1) * this.pageSize + index,
+              1
+            );
+            this.$notify({
+              title: "Hoàn thành",
+              message: "Xóa yêu cầu thành công",
+              type: "success",
+              position: "bottom-right"
+            });
           }
-          this.dataTable.splice(index, 1);
-          this.form_requests.splice(
-            (this.currentPage - 1) * this.pageSize + index,
-            1
-          );
-          this.$notify({
-            title: "Hoàn thành",
-            message: "Xóa yêu cầu thành công",
-            type: "success",
-            position: "bottom-right"
-          });
         });
       });
     }

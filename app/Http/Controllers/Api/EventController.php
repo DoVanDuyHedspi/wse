@@ -100,6 +100,20 @@ class EventController extends Controller
     $events = [];
     $allDayOfMonth = UserHelper::getAllDayOfMonth($year, $month);
     foreach ($allDayOfMonth as $date) {
+      $classes = 'ktc';
+      $isHoliday = UserHelper::isHoliday($date);
+      $isWeeken = UserHelper::isWeeken($date);
+      $isNPKL = UserHelper::isNPKL($id, $date);
+      $isNPCL = UserHelper::isNPCL($id, $date);
+      if ($isHoliday || $isNPCL) {
+        $classes = 'ncl';
+      }
+      if ($isNPKL) {
+        $classes = 'nkl';
+      }
+      if ($isWeeken) {
+        $classes = 'weeken';
+      }
       if (date('Y-m-d') >= date('Y-m-d', strtotime($date))) {
         $event = Event::where('user_code', $id)->where('date', $date)->first();
         if ($event == null) {
@@ -108,7 +122,7 @@ class EventController extends Controller
             'startDate' => date('Y-m-d', strtotime($date)),
             'endDate' => date('Y-m-d', strtotime($date)),
             'title' => '|',
-            'classes' => 'green',
+            'classes' => $classes,
             'number_of_fines' => 0,
             'working_day' => 0,
             'fined_time' => 0,
@@ -120,28 +134,38 @@ class EventController extends Controller
             'date' => date('D, d-m-Y', strtotime($date)),
           ]);
         } else {
-          if (date('Y-m-d') !== date('Y-m-d', strtotime($event->date))) {
-            $classe = 'default';
-            if ($event->type == null) {
-              $classe = 'green';
-            } else if ($event->status == 1) {
-              $classe = 'red';
-            } else if ($event->status == 2) {
-              $classe = 'pink';
+          if ($classes == 'ktc') {
+            $classes = 'dg';
+            if (date('Y-m-d') !== date('Y-m-d', strtotime($event->date))) {
+              if ($event->type == null) {
+                $classes = 'ktc';
+              } else if ($event->status == 1) {
+                $classes = 'dmvs';
+              } else if ($event->status == 2) {
+                $classes = 'dlb';
+              }
             }
           }
 
+
           $working_day = 0;
-          if ($event->type == 1 || $event->type == 2) {
-            $working_day = 0.5;
-          } else if ($event->type == 3) {
-            $working_day = 1;
+          $fined_time = 0;
+          $number_of_fines = 0;
+          if (!$isWeeken && !$isHoliday && !$isNPCL && !$isNPKL) {
+            if ($event->type == 1 || $event->type == 2) {
+              $working_day = 0.5;
+            } else if ($event->type == 3) {
+              $working_day = 1;
+            }
+            $fined_time = $event->fined_time;
+            $number_of_fines = $event->ILM + $event->LEM + $event->ILA + $event->LEA;
           }
+
           $time_in = date('H:i', strtotime($event->time_in));
           $time_out = $event->time_out ? date('H:i', strtotime($event->time_out)) : '--:--';
           $overtime = 0;
           if ($event->form_requests) {
-            foreach($event->form_requests as $form_request) {
+            foreach ($event->form_requests as $form_request) {
               if ($form_request->type == 'OT' && $form_request->has_worked == 1) {
                 $overtime = $form_request->range_time;
               }
@@ -152,9 +176,9 @@ class EventController extends Controller
             'startDate' => date('Y-m-d', strtotime($event->date)),
             'endDate' => date('Y-m-d', strtotime($event->date)),
             'title' => $time_in . ' | ' . $time_out,
-            'classes' => $classe,
-            'fined_time' => $event->fined_time,
-            'number_of_fines' =>  $event->ILM + $event->LEM + $event->ILA + $event->LEA,
+            'classes' => $classes,
+            'fined_time' => $fined_time,
+            'number_of_fines' =>  $number_of_fines,
             'working_day' => $working_day,
             'overtime' => $overtime,
             'time_in' => date('H:i', strtotime($event->time_in)),
@@ -172,7 +196,7 @@ class EventController extends Controller
     //   'startDate' => date('Y-m-d', strtotime($this->date)),
     //   'endDate' => date('Y-m-d', strtotime($this->date)),
     //   'title' => $time_in . ' | ' . $time_out,
-    //   'classes' => $classe,
+    //   'classes' => $classes,
     //   // 'url' => $url
     //   'fined_time' => $this->fined_time,
     //   'number_of_fines' =>  $this->ILM + $this->LEM + $this->ILA + $this->LEA,

@@ -6,17 +6,24 @@ use Illuminate\Support\Facades\Storage;
 $router->apiResource('events', 'Api\EventController')->only(['index', 'show']);
 $router->post('/events', 'Api\EventController@update');
 $router->get('/events/daily/checkinout', 'Api\EventController@dailyCheckInOut');
+
 $router->apiResource('form_requests', 'Api\FormRequestController');
 $router->get('/form_requests/users/requests', 'Api\FormRequestController@usersRequests');
 $router->get('/form_requests/users/ot_rm', 'Api\FormRequestController@usersOtRmRequests');
 $router->post('/form_requests/users/ot_rm/confirm', 'Api\FormRequestController@confirmOtRmRequests');
 $router->post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
+
+$router->apiResource('form_leaves', 'Api\FormLeaveController');
+$router->get('/form_leave/manage/requests', 'Api\FormLeaveController@usersRequests');
+$router->post('/form_leave/manage/approve', 'Api\FormLeaveController@approveRequest');
+
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 
 $router->apiResource('form_complain', 'Api\FormComplainController');
 $router->get('/form_complain/manage/requests', 'Api\FormComplainController@usersRequests');
 $router->post('/form_complain/manage/approve', 'Api\FormComplainController@approveRequest');
-$router->post('/form_complain/manage/check_camera', 'Api\FormComplainController@checkCamera');
+$router->post('/form_complain/manage/approved_form', 'Api\FormComplainController@approvedForm');
+$router->get('/video/googleDrive', 'Api\FormComplainController@getVideoFromGgDrive');
 
 $router->apiResource('fake_face_report', 'Api\FakeFaceReportController')->only(['index', 'destroy', 'store']);
 
@@ -40,4 +47,6 @@ $router->post('/company/settingTimekeeping', 'Api\CompanyController@settingTimek
 $router->get('/company/getTimekeeping', 'Api\CompanyController@getTimekeeping');
 $router->get('/company/timeUpdateTimekeepingData', 'Api\CompanyController@timeUpdateTimekeepingData');
 
+$router->resource('/holiday', 'Api\HolidayController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
+$router->resource('/leave_type', 'Api\LeaveTypeController')->only(['index', 'store', 'show', 'update', 'destroy']);

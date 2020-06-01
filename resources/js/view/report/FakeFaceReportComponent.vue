@@ -24,31 +24,32 @@
             <div class></div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-select class="w-100" v-model="filter.branch_id" placeholder="Chi nhánh">
-              <el-option
-                v-for="(type,index) in infoCompany.branches"
-                :label="type.name"
-                :value="type.id"
-                :key="index"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            <el-date-picker
-              v-model="filter.range_date"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="Ngày bắt đầu"
-              end-placeholder="Ngày kết thúc"
-              format="dd-MM-yyyy"
-              class="w-100"
-            ></el-date-picker>
-          </el-col>
-          <el-col :span="4">
-            <el-button class="w-100" type="primary" @click="filterReport">Lọc</el-button>
-          </el-col>
+        <el-row :gutter="20" class="text-right">
+          <!-- <el-col :span="8"> -->
+          <el-date-picker
+            v-model="filter.range_date"
+            type="daterange"
+            range-separator="-"
+            start-placeholder="Ngày bắt đầu"
+            end-placeholder="Ngày kết thúc"
+            format="dd-MM-yyyy"
+            size="medium"
+          ></el-date-picker>
+          <el-select v-model="filter.branch_id" placeholder="Chi nhánh" size="medium">
+            <el-option
+              v-for="(type,index) in infoCompany.branches"
+              :label="type.name"
+              :value="type.id"
+              :key="index"
+            ></el-option>
+          </el-select>
+          <!-- </el-col> -->
+          <!-- <el-col :span="12"> -->
+
+          <!-- </el-col> -->
+          <!-- <el-col :span="4"> -->
+          <el-button type="primary" @click="filterReport" size="medium">Lọc</el-button>
+          <!-- </el-col> -->
         </el-row>
         <div class="error" v-if="error.message.length">
           <div class="alert alert-danger" role="alert">{{ error.message }}</div>
@@ -61,7 +62,9 @@
         border
       >
         <!-- <el-table-column type="selection" width="55"></el-table-column> -->
-        <el-table-column property="id" label="#Id" class-name="text-center" width="50px"></el-table-column>
+        <el-table-column label="Stt" class-name="text-center" width="50px">
+          <template slot-scope="scope">{{scope.$index + 1}}</template>
+        </el-table-column>
         <el-table-column property="branch" label="Chi nhánh" class-name="text-center"></el-table-column>
         <el-table-column property="date_time" label="Thời gian" class-name="text-center"></el-table-column>
         <el-table-column label="Hình ảnh" class-name="text-center">
@@ -73,9 +76,14 @@
             >></el-image>
           </template>
         </el-table-column>
-        <el-table-column property="user.name" label="Nhận diện" width="150" class-name="text-center">
+        <el-table-column
+          property="user.name"
+          label="Nhận diện"
+          width="150"
+          class-name="text-center"
+        >
           <template slot-scope="scope">
-            <router-link :to="'/users/'+scope.row.user.id" v-if="scope.row.user" >
+            <router-link :to="'/users/'+scope.row.user.id" v-if="scope.row.user">
               <span>{{scope.row.user.name}}</span>
             </router-link>
           </template>

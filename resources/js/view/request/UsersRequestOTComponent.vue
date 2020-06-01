@@ -1,13 +1,32 @@
 <template>
   <div class="p-3">
-    <el-row class="my-4">
-      <el-col :span="24" class="text-center">
-        <h2>DANH SÁCH YÊU CẦU OT VÀ REMOTE</h2>
+    <el-row class="my-2">
+      <el-col :span="24">
+        <div>
+          <router-link to="/users_requests/request_check_camera">
+            <el-button type="default" size="medium">Yêu cầu khiếu nại</el-button>
+          </router-link>
+          <router-link to="/users_requests/leave">
+            <el-button type="default" size="medium">Yêu cầu nghỉ phép</el-button>
+          </router-link>
+          <el-button type="primary" size="medium">Yêu cầu OT, Remote</el-button>
+          <router-link to="/users_requests/other">
+            <el-button type="default" size="medium">Yêu cầu khác</el-button>
+          </router-link>
+        </div>
+        <el-divider class="mb-1"></el-divider>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24" class="text-right">
+        <router-link to="/users_requests/confirm_worked">
+          <el-button type="success" icon="el-icon-caret-right">Xác nhận đã làm việc</el-button>
+        </router-link>
       </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="8">
-        <el-select class="w-100" v-model="filter.branch_id" placeholder="Chi nhánh">
+        <el-select class="w-100" v-model="filter.branch_id" placeholder="Chi nhánh" size="medium">
           <el-option
             v-for="(type,index) in infoCompany.branches"
             :label="type.name"
@@ -24,6 +43,7 @@
           :change="handleGroupChange()"
           placeholder="Bộ phận"
           class="w-100"
+          size="medium"
         ></el-cascader>
       </el-col>
       <el-col :span="8">
@@ -34,15 +54,21 @@
           :fetch-suggestions="querySearch"
           placeholder="Tìm kiếm theo tên, mã nhân viên"
           @select="handleSelect"
+          size="medium"
         ></el-autocomplete>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="text-right">
       <el-col :span="8">
-        <el-select class="w-100" v-model="filter.status" placeholder="Chọn trạng thái">
+        <el-select
+          class="w-100"
+          v-model="filter.status"
+          placeholder="Chọn trạng thái"
+          size="medium"
+        >
           <el-option value="waiting" label="Đang chờ"></el-option>
-          <el-option value="cancel" label="Hủy bỏ"></el-option>
-          <el-option value="forward" label="Chuyển tiếp"></el-option>
+          <!-- <el-option value="cancel" label="Hủy bỏ"></el-option>
+          <el-option value="forward" label="Chuyển tiếp"></el-option>-->
           <el-option value="accept" label="Chấp nhận"></el-option>
           <el-option value="refuse" label="Từ chối"></el-option>
         </el-select>
@@ -56,17 +82,11 @@
           end-placeholder="Ngày kết thúc"
           format="dd-MM-yyyy"
           class="w-100"
+          size="medium"
         ></el-date-picker>
       </el-col>
       <el-col :span="4">
-        <el-button class="w-100" type="primary" @click="filterFormRequests">Lọc</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="24" class="text-center">
-        <router-link to="/users_requests/confirm_worked">
-          <el-button type="success" icon="el-icon-caret-right">Xác nhận đã làm việc</el-button>
-        </router-link>
+        <el-button class="w-100" type="primary" @click="filterFormRequests" size="medium">Lọc</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -96,12 +116,12 @@
             <span v-if="scope.row.status == 'waiting'">
               <el-tag type="warning">Đang chờ</el-tag>
             </span>
-            <span v-if="scope.row.status == 'cancel'">
+            <!-- <span v-if="scope.row.status == 'cancel'">
               <el-tag type="danger">Hủy bỏ</el-tag>
             </span>
             <span v-if="scope.row.status == 'forward'">
               <el-tag>Chuyển tiếp</el-tag>
-            </span>
+            </span>-->
             <span v-if="scope.row.status == 'accept'">
               <el-tag type="success">Chấp nhận</el-tag>
             </span>
@@ -140,7 +160,7 @@
         <el-table-column property="created_at" label="Thời gian tạo" width="120"></el-table-column>
         <el-table-column align="center" fixed="right" label="Thao tác" width="160">
           <template slot-scope="scope">
-            <el-tooltip content="Hủy bỏ" placement="top">
+            <!-- <el-tooltip content="Hủy bỏ" placement="top">
               <el-button
                 class="mx-0 my-1"
                 size="mini"
@@ -159,14 +179,14 @@
                 v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index, 'forward')"
               ></el-button>
-            </el-tooltip>
+            </el-tooltip>-->
             <el-tooltip content="Từ chối" placement="top">
               <el-button
                 class="mx-0 my-1"
                 size="mini"
                 type="info"
                 icon="el-icon-s-release"
-                v-if="scope.row.status == 'forward'"
+                v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index, 'refuse')"
               ></el-button>
             </el-tooltip>
@@ -176,7 +196,7 @@
                 size="mini"
                 type="success"
                 icon="el-icon-s-claim"
-                v-if="scope.row.status == 'forward'"
+                v-if="scope.row.status == 'waiting'"
                 @click.native.prevent="handleApprove(scope.row, scope.$index,'accept')"
               ></el-button>
             </el-tooltip>
@@ -186,7 +206,7 @@
                 size="mini"
                 icon="el-icon-s-check"
                 disabled
-                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse' || scope.row.status == 'cancel'"
+                v-if="scope.row.status == 'accept' || scope.row.status == 'refuse'"
               ></el-button>
             </el-tooltip>
           </template>
