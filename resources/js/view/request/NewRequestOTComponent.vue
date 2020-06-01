@@ -1,11 +1,18 @@
 <template>
-  <div class="new_request bg-white">
-    <div>
+  <div class="new_request">
+    <div class="text-right my-2">
+      <router-link to="/request_ot">
+        <el-button size="medium" type="primary">
+          <i class="el-icon-s-order"></i> Danh sách
+        </el-button>
+      </router-link>
+    </div>
+    <div class="bg-white">
       <div class="header text-center">
         <h4 class="m-0">Yêu cầu OT, REMOTE</h4>
       </div>
       <div class="body">
-        <div class="content p-3">
+        <div class="content py-3">
           <el-form
             :model="form"
             :rules="rules"
@@ -14,16 +21,22 @@
             class="form-request"
             label-position="top"
           >
-            <el-form-item label="Tên nhân viên">
-              <el-input :disabled="true" v-model="user.name"></el-input>
-            </el-form-item>
-            <el-form-item label="Mã số nhân viên">
-              <el-input :disabled="true" v-model="user.employee_code"></el-input>
-            </el-form-item>
-            <el-row :gutter="20">
+            <el-row :gutter="20" class="mb-0">
+              <el-col :span="12">
+                <el-form-item label="Tên nhân viên">
+                  <el-input :disabled="true" v-model="user.name" size="medium"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="Mã số nhân viên">
+                  <el-input :disabled="true" v-model="user.employee_code" size="medium"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="mb-0">
               <el-col :span="12">
                 <el-form-item label="Chi nhánh">
-                  <el-select v-model="user.branch_id" class="w-100" :disabled="true">
+                  <el-select v-model="user.branch_id" class="w-100" :disabled="true" size="medium">
                     <el-option
                       v-for="(type,index) in infoCompany.branches"
                       :label="type.name"
@@ -42,6 +55,7 @@
                     clearable
                     class="w-100"
                     :disabled="true"
+                    size="medium"
                   ></el-cascader>
                 </el-form-item>
               </el-col>
@@ -52,13 +66,14 @@
                 @change="hanldeChangeType()"
                 placeholder="Chọn hình thức"
                 style="width: 100%"
+                size="medium"
               >
                 <el-option label="Làm thêm giờ" value="OT"></el-option>
                 <el-option label="Làm remote" value="RM"></el-option>
               </el-select>
             </el-form-item>
             <div>
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="mb-0">
                 <el-col :span="12">
                   <el-form-item label="Thời gian bắt đầu " prop="work_time_begin">
                     <el-date-picker
@@ -69,6 +84,7 @@
                       style="width: 100%"
                       @blur="validateWorkBegin()"
                       :disabled="!form.type"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -82,6 +98,7 @@
                       style="width: 100%"
                       @blur="validateWorkEnd()"
                       :disabled="!form.type"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -383,6 +400,7 @@ export default {
           font-weight: bolder;
           padding: 0px;
           color: black;
+          margin: 0;
         }
       }
     }

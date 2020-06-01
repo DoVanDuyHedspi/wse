@@ -2,9 +2,34 @@
   <div id="timesheets">
     <div class="p-3 bg-white">
       <el-row :gutter="20">
-        <el-col :span="24" class="text-center">
-          <h2>BẢNG THỜI GIAN</h2>
+        <el-col :span="8">
+          <router-link to="/timekeeping/calendar_view">
+            <el-button size="mini" type="default">
+              <i class="el-icon-date"></i>
+            </el-button>
+          </router-link>
+          <el-button size="mini" type="primary">
+            <i class="el-icon-s-order"></i>
+          </el-button>
         </el-col>
+        <el-col :span="8" class="text-center">
+          <h2>BẢNG CHẤM CÔNG</h2>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="8" class="text-right">Tổng số lần bị phạt: {{penalty.number_of_fines}} (lần)</el-col>
+        <el-col :span="8" class="text-center">Tổng ngày đi làm: {{number_working_days}} (ngày)</el-col>
+        <el-col :span="8" class="text-left">Tổng thời gian làm thêm: {{total_overtime}} (giờ)</el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col
+          :span="12"
+          class="text-right"
+        >Tổng thời gian phạt theo block: {{penalty.block_penalty_time}} (phút)</el-col>
+        <el-col
+          :span="12"
+          class="text-left"
+        >Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
       </el-row>
     </div>
     <div class="mt-3 p-2">
@@ -66,19 +91,28 @@
           </el-table-column>
           <el-table-column prop="fined_time" label="Thời gian đi muộn/về sớm (phút)"></el-table-column>
           <el-table-column prop="overtime" label="Thời gian làm thêm (phút)"></el-table-column>
-          <el-table-column label="Trạng thái">
+          <el-table-column label="Trạng thái" width="230">
             <template slot-scope="scope">
-              <div v-if="isSunday(scope.row.date)">
-                <span style="background: #E6A23C" class="dot"></span>Cuối tuần
+              <div v-if="scope.row.classes == 'ktc'">
+                <span class="dot ktc"></span>Không được tính công
               </div>
-              <div v-else-if="scope.row.type == null">
-                <span style="background: #67C23A" class="dot"></span>Vắng mặt
+              <div v-if="scope.row.classes == 'dmvs'">
+                <span class="dot dmvs"></span>Vào trễ, ra sớm
               </div>
-              <div v-else-if="scope.row.number_of_fines == 0">
-                <span style="background: #FFFFFF; border: 1px black solid" class="dot"></span>Có mặt
+              <div v-if="scope.row.classes == 'dlb'">
+                <span class="dot dlb"></span>Đã làm bù
               </div>
-              <div v-else-if="scope.row.number_of_fines != 0">
-                <span style="background: #F56C6C" class="dot"></span>Có mặt
+              <div v-if="scope.row.classes == 'dg'">
+                <span class="dot dg"></span>Đúng giờ
+              </div>
+              <div v-if="scope.row.classes == 'weeken'">
+                <span class="dot weeken"></span>Cuối tuần
+              </div>
+              <div v-if="scope.row.classes == 'ncl'">
+                <span class="dot ncl"></span>Nghỉ phép có lương/ Nghỉ lễ
+              </div>
+              <div v-if="scope.row.classes == 'nkl'">
+                <span class="dot nkl"></span>Nghỉ phép không lương
               </div>
             </template>
           </el-table-column>
@@ -146,18 +180,27 @@
         </span>
       </el-dialog>
     </div>
-    <div id="footer" class="p-3">
+    <div id="footer-table" class="py-2 px-3">
       <span class="mr-3">
-        <span style="background: #E6A23C" class="dot"></span> Không tính công
+        <span class="dot ktc"></span> Không được tính công
       </span>
       <span class="mr-3">
-        <span style="background: #F56C6C" class="dot"></span>Vào trễ, ra sớm
+        <span class="dot dmvs"></span>Vào trễ, ra sớm
       </span>
       <span class="mr-3">
-        <span style="background: #FFFFFF; border: 1px black solid" class="dot"></span>Chấm công đúng giờ
+        <span class="dot dlb"></span>Đã làm bù
       </span>
       <span class="mr-3">
-        <span style="background: #67C23A" class="dot"></span>Không chấm công/Không đủ thời gian làm tối thiểu
+        <span class="dot dg"></span>Đúng giờ
+      </span>
+      <span class="mr-3">
+        <span class="dot weeken"></span>Cuối tuần
+      </span>
+      <span class="mr-3">
+        <span class="dot ncl"></span>Nghỉ phép có lương/ Nghỉ lễ
+      </span>
+      <span class="mr-3">
+        <span class="dot nkl"></span>Nghỉ phép không lương
       </span>
     </div>
   </div>
@@ -233,8 +276,8 @@ export default {
     },
     handleSelect(item) {
       var employee_code = this.employee.split(" ")[0];
-      let now = new Date().toJSON().slice(0, 10);
-      this.fetchData(now, employee_code);
+      // let now = new Date().toJSON().slice(0, 10);
+      this.fetchData(this.month, employee_code);
     },
     fetchData(date, id) {
       let params = [];
@@ -330,20 +373,75 @@ export default {
   display: inline-block;
 }
 
-#footer {
+#footer-table {
   position: fixed;
   bottom: 0;
   width: 100%;
   background: white;
-  border-top: 1px solid rgba(128, 128, 128, 0.3);
-  padding-left: 10% !important;
+  border-top: 2px solid rgba(128, 128, 128, 0.3);
 }
 
 .dot {
-  height: 10px;
-  width: 10px;
+  height: 12px;
+  width: 12px;
   margin-right: 10px;
   border-radius: 100%;
   display: inline-block;
+}
+
+.ktc {
+  border: 1.3px solid #909399;
+  background-color: rgb(244, 244, 245);
+  &:hover {
+    background-color: #909399;
+  }
+}
+
+.weeken {
+  border: 1.3px solid #909399;
+  background-color: white;
+  &:hover {
+    background-color: #909399;
+  }
+}
+
+.dg {
+  border: 1.3px solid #67c23a;
+  background-color: rgb(225, 243, 216);
+  &:hover {
+    background-color: #67c23a;
+  }
+}
+
+.ncl {
+  border: 1.3px solid yellow;
+  background-color: rgba(255, 247, 3, 0.15);
+  &:hover {
+    background-color: yellow;
+  }
+}
+
+.nkl {
+  border: 1.3px solid #e6a23c;
+  background-color: rgb(250, 236, 216);
+  &:hover {
+    background-color: #e6a23c;
+  }
+}
+
+.dmvs {
+  border: 1.3px solid red;
+  background-color: rgb(253, 226, 226);
+  &:hover {
+    background-color: red;
+  }
+}
+
+.dlb {
+  border: 1.3px solid pink;
+  background-color: rgb(254, 240, 240);
+  &:hover {
+    background-color: pink;
+  }
 }
 </style>

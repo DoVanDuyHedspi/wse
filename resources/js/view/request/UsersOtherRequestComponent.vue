@@ -7,6 +7,9 @@
           <router-link to="/users_requests/request_check_camera">
             <el-button type="default" size="medium">Yêu cầu khiếu nại</el-button>
           </router-link>
+          <router-link to="/users_requests/leave">
+            <el-button type="default" size="medium">Yêu cầu nghỉ phép</el-button>
+          </router-link>
           <router-link to="/users_requests/ot_remote">
             <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
           </router-link>

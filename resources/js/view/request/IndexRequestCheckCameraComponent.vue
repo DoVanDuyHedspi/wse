@@ -5,6 +5,9 @@
         <!-- <h2>DANH SÁCH KHIẾU NẠI</h2> -->
         <div>
           <el-button type="primary" size="medium">Yêu cầu khiếu nại</el-button>
+          <router-link to="/request_leave">
+            <el-button type="default" size="medium">Yêu cầu nghỉ phép</el-button>
+          </router-link>
           <router-link to="/request_ot">
             <el-button type="default" size="medium">Yêu cầu OT, Remote</el-button>
           </router-link>
@@ -206,18 +209,19 @@ export default {
               message: response.data.message,
               position: "bottom-right"
             });
+          } else {
+            this.dataTable.splice(index, 1);
+            this.form_requests.splice(
+              (this.currentPage - 1) * this.pageSize + index,
+              1
+            );
+            this.$notify({
+              title: "Hoàn thành",
+              message: "Xóa yêu cầu thành công",
+              type: "success",
+              position: "bottom-right"
+            });
           }
-          this.dataTable.splice(index, 1);
-          this.form_requests.splice(
-            (this.currentPage - 1) * this.pageSize + index,
-            1
-          );
-          this.$notify({
-            title: "Hoàn thành",
-            message: "Xóa yêu cầu thành công",
-            type: "success",
-            position: "bottom-right"
-          });
         });
       });
     }

@@ -181,17 +181,18 @@
       </el-drawer>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="18" >
+      <el-col :span="17" >
         <div
           style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
           class="p-3 bg-white"
         >
           <el-row :gutter="20">
             <el-col :span="24">
-              <h4>Danh danh video</h4>
+              <h5>Danh danh video</h5>
+              <el-divider class="my-1"></el-divider>
             </el-col>
-            <el-col v-for="(videoUrl, index) in listVideoUrl" :key="index" class="text-center">
-              <h4>Video số {{index+1}}</h4>
+            <el-col v-for="(videoUrl, index) in listVideoUrl" :key="index">
+              <h5>Video số {{index+1}}</h5>
               <iframe :src="videoUrl" width="100%" height="480"></iframe>
             </el-col>
             <el-col v-if="listVideoUrl.length == 0">
@@ -200,7 +201,7 @@
           </el-row>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7">
         <div
           style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
           class="p-3 text-center bg-white"
@@ -225,6 +226,10 @@
             <router-link :to="'/users/'+current_form.user_id">
               <b>{{current_form.name}}</b>
             </router-link>
+          </div>
+          <div class="text-left">
+            <p class="m-0">Khoảng thời gian</p>
+            <b>{{current_form.begin_time + ' -> '+ current_form.end_time + ' ' + current_form.date}}</b>
           </div>
           <div class="text-left">
             <p class="m-0">Người xác minh</p>

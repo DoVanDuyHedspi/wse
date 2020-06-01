@@ -12,6 +12,11 @@ import EditRequestCheckCamera from './EditRequestCheckCameraComponent';
 import UsersRequestCheckCamera from './UsersRequestCheckCameraComponent';
 import CheckCamera from './CheckCameraComponent';
 import ConfirmWorked from './ConfirmWorkedComponent';
+import IndexRequestLeave from './IndexRequestLeave';
+import NewRequestLeave from './NewRequestLeave';
+import EditRequestLeave from './EditRequestLeave';
+import UsersRequestLeave from './UsersRequestLeave';
+
 export default [
   {
     path: '/other_request', component: IndexOtherLeaves, name: 'other_request.index'
@@ -63,6 +68,20 @@ export default [
   {
     path: '/users_requests/check_camera', component: CheckCamera, name: 'check_camera', meta: {
       permission: 'approve-requests',
+    }
+  },
+  {
+    path: '/request_leave', component: IndexRequestLeave, name: 'request_leave.index'
+  },
+  {
+    path: '/request_leave/new', component: NewRequestLeave, name: 'request_leave.new'
+  },
+  {
+    path: '/request_leave/edit/:id', component: EditRequestLeave, name: 'request_leave.edit'
+  },
+  {
+    path: '/users_requests/leave', component: UsersRequestLeave, name: 'users_requests_leave.index', meta: {
+      permission: 'check-requests',
     }
   },
 ]

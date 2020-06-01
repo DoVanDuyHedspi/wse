@@ -15,14 +15,14 @@
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-office-building"></i>
-              <span slot="title">Quản lý tổ chức</span>
+              <span slot="title">Quản lý</span>
             </template>
             <el-menu-item-group>
               <span slot="title">Nhân sự</span>
               <router-link to="/users">
                 <el-menu-item index="1-1">
                   <!-- <i class="el-icon-user"></i> -->
-                  <span slot="title">Thành viên</span>
+                  <span slot="title">Hồ sơ nhân viên</span>
                 </el-menu-item>
               </router-link>
               <router-link to="/manage_timesheets">
@@ -45,7 +45,7 @@
                     <span slot="title">Làm ngoài giờ, remote</span>
                   </el-menu-item>
                 </router-link>
-                <router-link to="/users_requests/leaves">
+                <router-link to="/users_requests/leave">
                   <el-menu-item index="1-3-3">
                     <span slot="title">Nghỉ phép</span>
                   </el-menu-item>
@@ -113,7 +113,7 @@
                 <span slot="title">Làm ngoài giờ, remote</span>
               </el-menu-item>
             </router-link>
-            <router-link to="/request_leaves">
+            <router-link to="/request_leave">
               <el-menu-item index="4-3">
                 <span slot="title">Nghỉ phép</span>
               </el-menu-item>

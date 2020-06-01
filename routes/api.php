@@ -13,6 +13,10 @@ $router->get('/form_requests/users/ot_rm', 'Api\FormRequestController@usersOtRmR
 $router->post('/form_requests/users/ot_rm/confirm', 'Api\FormRequestController@confirmOtRmRequests');
 $router->post('/form_requests/approve_request', 'Api\FormRequestController@approveRequest');
 
+$router->apiResource('form_leaves', 'Api\FormLeaveController');
+$router->get('/form_leave/manage/requests', 'Api\FormLeaveController@usersRequests');
+$router->post('/form_leave/manage/approve', 'Api\FormLeaveController@approveRequest');
+
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 
 $router->apiResource('form_complain', 'Api\FormComplainController');

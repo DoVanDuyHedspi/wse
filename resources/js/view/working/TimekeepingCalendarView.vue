@@ -2,8 +2,18 @@
   <div id="timesheets">
     <div class="p-3 bg-white">
       <el-row :gutter="20">
-        <el-col :span="8" :offset="8" class="text-center">
-          <h2>BẢNG THỜI GIAN</h2>
+        <el-col :span="8">
+          <el-button size="mini" type="primary">
+            <i class="el-icon-date"></i>
+          </el-button>
+          <router-link to="/timekeeping/table_view">
+            <el-button size="mini" type="default">
+              <i class="el-icon-s-order"></i>
+            </el-button>
+          </router-link>
+        </el-col>
+        <el-col :span="8" class="text-center">
+          <h2>BẢNG CHẤM CÔNG</h2>
         </el-col>
         <el-col :span="8" class="text-right">
           <span style="cursor: pointer;" @click="handleNote" id="note">
@@ -42,20 +52,35 @@
       </el-row>
     </div>
     <div class="mt-3 pl-2">
-      <div class="mb-3">
-        <b>Nhân viên:</b>
-        <el-autocomplete
-          class="inline-input search-user"
-          prefix-icon="el-icon-search"
-          v-model="employee"
-          :fetch-suggestions="querySearch"
-          placeholder="Tìm kiếm"
-          @select="handleSelect"
-          size="medium"
-        ></el-autocomplete>
-      </div>
-      <b>Cập nhật lúc:</b>
-      <span>{{timeUpdateTimekeepingData}}</span>
+      <el-row class="m-0" :gutter="20">
+        <el-col :span="12">
+          <b>Nhân viên:</b>
+          <el-autocomplete
+            class="inline-input search-user"
+            prefix-icon="el-icon-search"
+            v-model="employee"
+            :fetch-suggestions="querySearch"
+            placeholder="Tìm kiếm"
+            @select="handleSelect"
+            size="medium"
+          ></el-autocomplete>
+        </el-col>
+        <el-col :span="12" class="text-right">
+          <el-dropdown size="medium" split-button type="primary">
+            <i class="el-icon-download"></i>Xuất
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <i class="el-icon-download"></i> Xuất xlsx
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <i class="el-icon-download"></i> Xuất csv
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
+      </el-row>
+      <!-- <b>Cập nhật lúc:</b>
+      <span>{{timeUpdateTimekeepingData}}</span>-->
     </div>
     <div class="bh-white p-2">
       <calendar-view
@@ -129,6 +154,29 @@
         </span>
       </el-dialog>
     </div>
+    <div id="footer-calendar" class="py-2 px-3">
+      <span class="mr-3">
+        <span class="dot ktc"></span> Không được tính công
+      </span>
+      <span class="mr-3">
+        <span class="dot dmvs"></span>Vào trễ, ra sớm
+      </span>
+      <span class="mr-3">
+        <span class="dot dlb"></span>Đã làm bù
+      </span>
+      <span class="mr-3">
+        <span class="dot dg"></span>Đúng giờ
+      </span>
+      <span class="mr-3">
+        <span class="dot weeken"></span>Cuối tuần
+      </span>
+      <span class="mr-3">
+        <span class="dot ncl"></span>Nghỉ phép có lương/ Nghỉ lễ
+      </span>
+      <span class="mr-3">
+        <span class="dot nkl"></span>Nghỉ phép không lương
+      </span>
+    </div>
   </div>
 </template>
 <script>
@@ -163,6 +211,7 @@ export default {
   },
   created() {
     let now = new Date().toJSON().slice(0, 10);
+    console.log(now);
     this.fetchData(now, this.$root.user.employee_code);
     this.getTimeUpdate();
     // this.employee = user.user_code + ' ' + user.name;
@@ -174,7 +223,7 @@ export default {
       return this.$store.getters.getListSuggestions;
     },
     currentUser(state) {
-      return state.user.employee_code + ' ' + state.user.name;
+      return state.user.employee_code + " " + state.user.name;
     }
   }),
   methods: {
@@ -206,7 +255,9 @@ export default {
         month = "0" + month;
       }
       var currentDate = fullDate.getFullYear() + "-" + month;
-      var employee_code = this.employee ? this.employee.split(" ")[0] : this.$root.user.employee_code;
+      var employee_code = this.employee
+        ? this.employee.split(" ")[0]
+        : this.$root.user.employee_code;
       this.fetchData(currentDate, employee_code);
     },
     fetchData(date, id) {
@@ -275,13 +326,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
 .search-user input {
   border-top: 0;
   border-right: 0;
   border-left: 0;
   width: 300px;
-  color: #409EFF;
+  color: #409eff;
 }
 
 .theme-default .cv-event {
@@ -310,20 +361,138 @@ export default {
   background-color: #f7f7f7 !important;
 }
 
-.theme-default .cv-event.default {
+.theme-default .cv-event.ktc {
+  border: 1.3px solid #909399;
+  background-color: rgb(244, 244, 245);
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: #909399;
+  }
+}
+
+.ktc {
+  border: 1.3px solid #909399;
+  background-color: rgb(244, 244, 245);
+  &:hover {
+    background-color: #909399;
+  }
+}
+
+.theme-default .cv-event.weeken {
+  border: 1.3px solid #909399;
   background-color: white;
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: #909399;
+  }
 }
 
-.theme-default .cv-event.green {
-  background-color: #0f0 ;
+.weeken {
+  border: 1.3px solid #909399;
+  background-color: white;
+  &:hover {
+    background-color: #909399;
+  }
 }
 
-.theme-default .cv-event.red {
-  background-color: #fa0404b9;
+.theme-default .cv-event.dg {
+  border: 1.3px solid #67c23a;
+  background-color: rgb(225, 243, 216);
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: #67c23a;
+  }
 }
 
-.theme-default .cv-event.pink {
-  background-color: pink;
+.dg {
+  border: 1.3px solid #67c23a;
+  background-color: rgb(225, 243, 216);
+  &:hover {
+    background-color: #67c23a;
+  }
+}
+
+.theme-default .cv-event.ncl {
+  border: 1.3px solid yellow;
+  background-color: rgba(255, 247, 3, 0.15);
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: yellow;
+  }
+}
+
+.ncl {
+  border: 1.3px solid yellow;
+  background-color: rgba(255, 247, 3, 0.15);
+  &:hover {
+    background-color: yellow;
+  }
+}
+
+.theme-default .cv-event.nkl {
+  border: 1.3px solid #e6a23c;
+  background-color: rgb(250, 236, 216);
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: #e6a23c;
+  }
+}
+
+.nkl {
+  border: 2px solid #e6a23c;
+  background-color: rgb(250, 236, 216);
+  &:hover {
+    background-color: #e6a23c;
+  }
+}
+
+.theme-default .cv-event.dmvs {
+  border: 1.3px solid red;
+  background-color: rgb(253, 226, 226);
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: red;
+  }
+}
+
+.dmvs {
+  border: 1.3px solid red;
+  background-color: rgb(253, 226, 226);
+  &:hover {
+    background-color: red;
+  }
+}
+
+.theme-default .cv-event.dlb {
+  border: 1.3px solid pink;
+  background-color: rgb(254, 240, 240);
+  color: rgb(81, 77, 106);
+  &:hover {
+    background-color: pink;
+  }
+}
+
+.dlb {
+  border: 1.3px solid pink;
+  background-color: rgb(254, 240, 240);
+  &:hover {
+    background-color: pink;
+  }
+}
+
+#footer-calendar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  border-top: 2px solid rgba(128, 128, 128, 0.3);
+  .dot {
+    height: 12px;
+    width: 12px;
+    margin-right: 10px;
+    border-radius: 100%;
+    display: inline-block;
+  }
 }
 
 .theme-default .cv-header {

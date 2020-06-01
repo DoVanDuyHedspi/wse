@@ -6,12 +6,22 @@
           <router-link to="/users_requests/request_check_camera">
             <el-button type="default" size="medium">Yêu cầu khiếu nại</el-button>
           </router-link>
+          <router-link to="/users_requests/leave">
+            <el-button type="default" size="medium">Yêu cầu nghỉ phép</el-button>
+          </router-link>
           <el-button type="primary" size="medium">Yêu cầu OT, Remote</el-button>
           <router-link to="/users_requests/other">
             <el-button type="default" size="medium">Yêu cầu khác</el-button>
           </router-link>
         </div>
-        <el-divider></el-divider>
+        <el-divider class="mb-1"></el-divider>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24" class="text-right">
+        <router-link to="/users_requests/confirm_worked">
+          <el-button type="success" icon="el-icon-caret-right">Xác nhận đã làm việc</el-button>
+        </router-link>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -77,13 +87,6 @@
       </el-col>
       <el-col :span="4">
         <el-button class="w-100" type="primary" @click="filterFormRequests" size="medium">Lọc</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="24" class="text-center">
-        <router-link to="/users_requests/confirm_worked">
-          <el-button type="success" icon="el-icon-caret-right">Xác nhận đã làm việc</el-button>
-        </router-link>
       </el-col>
     </el-row>
     <el-row>

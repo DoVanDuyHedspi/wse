@@ -1,11 +1,18 @@
 <template>
-  <div class="new_request bg-white">
-    <div>
+  <div class="new_request ">
+    <div class="text-right my-2">
+      <router-link to="/other_request">
+        <el-button size="medium" type="primary">
+          <i class="el-icon-s-order"></i> Danh sách
+        </el-button>
+      </router-link>
+    </div>
+    <div class="bg-white">
       <div class="header text-center">
         <h4 class="m-0">Yêu cầu IL, LE, LO, QQ</h4>
       </div>
       <div class="body">
-        <div class="content p-3">
+        <div class="content py-3">
           <el-form
             :model="form"
             :rules="rules"
@@ -14,16 +21,22 @@
             class="form-request"
             label-position="top"
           >
-            <el-form-item label="Tên nhân viên">
-              <el-input :disabled="true" v-model="user.name"></el-input>
-            </el-form-item>
-            <el-form-item label="Mã số nhân viên">
-              <el-input :disabled="true" v-model="user.employee_code"></el-input>
-            </el-form-item>
-            <el-row :gutter="20">
+            <el-row :gutter="20" class="mb-0">
+              <el-col :span="12">
+                <el-form-item label="Tên nhân viên">
+                  <el-input :disabled="true" v-model="user.name" size="medium"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="Mã số nhân viên">
+                  <el-input :disabled="true" v-model="user.employee_code" size="medium"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="mb-0">
               <el-col :span="12">
                 <el-form-item label="Chi nhánh">
-                  <el-select v-model="user.branch_id" class="w-100" :disabled="true">
+                  <el-select v-model="user.branch_id" class="w-100" :disabled="true" size="medium">
                     <el-option
                       v-for="(type,index) in infoCompany.branches"
                       :label="type.name"
@@ -42,6 +55,7 @@
                     clearable
                     class="w-100"
                     :disabled="true"
+                    size="medium"
                   ></el-cascader>
                 </el-form-item>
               </el-col>
@@ -52,6 +66,7 @@
                 @change="hanldeChangeType()"
                 placeholder="Chọn hình thức"
                 style="width: 100%"
+                size="medium"
               >
                 <el-option label="Đến muộn sáng" value="ILM"></el-option>
                 <el-option label="Đến muộn chiều" value="ILA"></el-option>
@@ -75,6 +90,7 @@
                   value-format="dd-MM-yyyy HH:mm"
                   v-model="form.leave_time_end"
                   style="width: 50%"
+                  size="medium"
                   @blur="validateIL('ILM',specified_working_time.morning_late, specified_working_time.morning_begin)"
                 ></el-date-picker>
               </el-form-item>
@@ -89,6 +105,7 @@
                   value-format="dd-MM-yyyy HH:mm"
                   v-model="form.leave_time_end"
                   style="width: 50%"
+                  size="medium"
                   @blur="validateIL('ILA',specified_working_time.afternoon_late, specified_working_time.afternoon_begin)"
                 ></el-date-picker>
               </el-form-item>
@@ -103,6 +120,7 @@
                   value-format="dd-MM-yyyy HH:mm"
                   v-model="form.leave_time_begin"
                   style="width: 50%"
+                  size="medium"
                   @blur="validateLE('LEM',specified_working_time.morning_late, specified_working_time.morning_end)"
                 ></el-date-picker>
               </el-form-item>
@@ -117,6 +135,7 @@
                   value-format="dd-MM-yyyy HH:mm"
                   v-model="form.leave_time_begin"
                   style="width: 50%"
+                  size="medium"
                   @blur="validateLE('LEA',specified_working_time.afternoon_late, specified_working_time.afternoon_end)"
                 ></el-date-picker>
               </el-form-item>
@@ -127,6 +146,7 @@
                   value-format="dd-MM-yyyy HH:mm"
                   v-model="form.work_time_begin"
                   style="width: 50%"
+                  size="medium"
                 ></el-date-picker>
               </el-form-item>
               <el-form-item label="Thời gian về " v-if="form.type == 'QQV'" prop="work_time_end">
@@ -136,9 +156,10 @@
                   value-format="dd-MM-yyyy HH:mm"
                   v-model="form.work_time_end"
                   style="width: 50%"
+                  size="medium"
                 ></el-date-picker>
               </el-form-item>
-              <el-row :gutter="20" v-if="form.type == 'LO'">
+              <el-row :gutter="20" v-if="form.type == 'LO'" class="mb-0">
                 <el-col :span="12">
                   <el-form-item label="Từ" prop="leave_time_begin">
                     <el-date-picker
@@ -148,6 +169,7 @@
                       v-model="form.leave_time_begin"
                       style="width: 100%"
                       @blur="validateLO()"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -160,11 +182,12 @@
                       v-model="form.leave_time_end"
                       style="width: 100%"
                       @blur="validateLO()"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="20" v-if="form.type == 'QQF'">
+              <el-row :gutter="20" v-if="form.type == 'QQF'" class="mb-0">
                 <el-col :span="12">
                   <el-form-item label="Thời gian đến" prop="work_time_begin">
                     <el-date-picker
@@ -173,6 +196,7 @@
                       value-format="dd-MM-yyyy HH:mm"
                       v-model="form.work_time_begin"
                       style="width: 100%"
+                      size="medium"
                       @blur="validateQQF()"
                     ></el-date-picker>
                   </el-form-item>
@@ -186,6 +210,7 @@
                       v-model="form.work_time_end"
                       style="width: 100%"
                       @blur="validateQQF()"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -193,7 +218,7 @@
             </div>
             <div v-if="form.type != 'QQD' && form.type != 'QQV' && form.type != 'QQF'">
               <b>Đăng ký thời gian làm bù</b>
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="mb-0">
                 <el-col :span="12">
                   <el-form-item label="Làm bù từ" prop="work_time_begin">
                     <el-date-picker
@@ -203,6 +228,7 @@
                       format="dd-MM-yyyy HH:mm"
                       value-format="dd-MM-yyyy HH:mm"
                       @blur="validateWorkBegin()"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -215,6 +241,7 @@
                       v-model="form.work_time_end"
                       style="width: 100%"
                       @blur="validateWorkEnd()"
+                      size="medium"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -749,6 +776,7 @@ export default {
           font-weight: bolder;
           padding: 0px;
           color: black;
+          margin: 0;
         }
       }
     }
