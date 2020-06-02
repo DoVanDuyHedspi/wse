@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Branch;
 use App\EmployeeType;
+use App\Exports\Shiftwork;
 use App\Exports\UsersExport;
+use App\Exports\WorkdayOfMembers;
 use App\Group;
 use App\Permission;
 use App\Position;
@@ -22,7 +24,7 @@ use App\Http\Resources\NotificationResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -240,6 +242,27 @@ class UserController extends Controller
 
   public function exportCsv(Request $request)
   {
-    return Excel::download(new UsersExport($request->listUserIds), 'users.csv');
+    try {
+      $type = $request->type;
+      // dd($request);
+      return Excel::download(new UsersExport($request->listUserIds), 'users.' . $type);
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function shiftwork(Request $request)
+  {
+    try {
+      return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'shiftwork.csv');
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
   }
 }

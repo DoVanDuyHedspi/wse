@@ -124,7 +124,9 @@
               Xuất excel
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <i class="el-icon-download"></i> Xuất bảng ngày công
+                  <span @click="downloadShiftwork()">
+                    <i class="el-icon-download"></i> Xuất bảng ngày công
+                  </span>
                 </el-dropdown-item>
                 <el-dropdown-item>
                   <i class="el-icon-download"></i> Xuất bảng đi muộn/về sớm
@@ -333,6 +335,35 @@ export default {
     }
   }),
   methods: {
+    forceFileDownload(response, type) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      // if (type == "csv") {
+      //   link.setAttribute("download", "users.csv");
+      // } else if (type == "xlsx") {
+      link.setAttribute("download", "shiftwork.xlsx");
+      // }
+
+      document.body.appendChild(link);
+      link.click();
+    },
+    downloadShiftwork(type) {
+      console.log(this.$store.getters.getListUserIds('shiftwork'));
+      axios({
+        method: "post",
+        url: "/api/users/export/shiftwork/",
+        responseType: "arraybuffer",
+        data: {
+          listUserIds: this.$store.getters.getListUserIds('shiftwork'),
+          month: this.filter.month
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response, type);
+        })
+        .catch(() => console.log("error occured"));
+    },
     querySearch(queryString, cb) {
       var suggestions = this.listSuggestions;
       var results = queryString
@@ -490,6 +521,7 @@ export default {
   background: white;
   border-top: 1px solid rgba(128, 128, 128, 0.3);
   padding-left: 10% !important;
+  z-index: 100000;
 }
 .dot {
   height: 10px;
