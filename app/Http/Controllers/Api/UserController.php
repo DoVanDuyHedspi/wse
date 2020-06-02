@@ -257,7 +257,8 @@ class UserController extends Controller
   public function shiftwork(Request $request)
   {
     try {
-      return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'shiftwork.csv');
+      $month = date('m-Y', strtotime($request->month));
+      return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'Bangchamcong-'.$month.'.xlsx');
     } catch (Exception $e) {
       return response([
         'status' => false,

@@ -187,27 +187,49 @@
                 <el-button
                   plain
                   size="mini"
-                  type="warning"
+                  class="weeken"
                   @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-if="isSunday(date)"
+                  v-if="scope.row.events[index].classes == 'weeken'"
                 >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
                 <el-button
                   plain
                   size="mini"
-                  type="success"
+                  class="ncl"
                   @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].type === null"
+                  v-else-if="scope.row.events[index].classes == 'ncl'"
                 >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
                 <el-button
                   plain
                   size="mini"
-                  type="danger"
+                  class="nkl"
                   @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].status == 1"
+                  v-else-if="scope.row.events[index].classes == 'nkl'"
                 >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
                 <el-button
                   plain
                   size="mini"
+                  class="ktc"
+                  @click="handleOpen(scope.row, scope.row.events[index])"
+                  v-else-if="scope.row.events[index].classes == 'ktc'"
+                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                <el-button
+                  plain
+                  size="mini"
+                  class="dmvs"
+                  @click="handleOpen(scope.row, scope.row.events[index])"
+                  v-else-if="scope.row.events[index].classes == 'dmvs'"
+                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                <el-button
+                  plain
+                  size="mini"
+                  class="dlb"
+                  @click="handleOpen(scope.row, scope.row.events[index])"
+                  v-else-if="scope.row.events[index].classes == 'dlb'"
+                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                <el-button
+                  plain
+                  size="mini"
+                  class="dg"
                   @click="handleOpen(scope.row, scope.row.events[index])"
                   v-else
                 >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
@@ -263,18 +285,27 @@
         ></el-pagination>
       </div>
     </div>
-    <div id="footer" class="p-3">
+    <div id="footer-table" class="py-2 px-3">
       <span class="mr-3">
-        <span style="background: #E6A23C" class="dot"></span> Không tính công
+        <span class="dot ktc"></span> Không được tính công
       </span>
       <span class="mr-3">
-        <span style="background: #F56C6C" class="dot"></span>Vào trễ, ra sớm
+        <span class="dot dmvs"></span>Vào trễ, ra sớm
       </span>
       <span class="mr-3">
-        <span style="background: #FFFFFF; border: 1px black solid" class="dot"></span>Chấm công đúng giờ
+        <span class="dot dlb"></span>Đã làm bù
       </span>
       <span class="mr-3">
-        <span style="background: #67C23A" class="dot"></span>Không đủ thời gian làm tối thiểu
+        <span class="dot dg"></span>Đúng giờ
+      </span>
+      <span class="mr-3">
+        <span class="dot weeken"></span>Cuối tuần
+      </span>
+      <span class="mr-3">
+        <span class="dot ncl"></span>Nghỉ phép có lương/ Nghỉ lễ
+      </span>
+      <span class="mr-3">
+        <span class="dot nkl"></span>Nghỉ phép không lương
       </span>
     </div>
   </div>
@@ -342,20 +373,20 @@ export default {
       // if (type == "csv") {
       //   link.setAttribute("download", "users.csv");
       // } else if (type == "xlsx") {
-      link.setAttribute("download", "shiftwork.xlsx");
+      link.setAttribute("download", "Bangchamcong.xlsx");
       // }
 
       document.body.appendChild(link);
       link.click();
     },
     downloadShiftwork(type) {
-      console.log(this.$store.getters.getListUserIds('shiftwork'));
+      console.log(this.$store.getters.getListUserIds("shiftwork"));
       axios({
         method: "post",
         url: "/api/users/export/shiftwork/",
         responseType: "arraybuffer",
         data: {
-          listUserIds: this.$store.getters.getListUserIds('shiftwork'),
+          listUserIds: this.$store.getters.getListUserIds("shiftwork"),
           month: this.filter.month
         }
       })
@@ -514,20 +545,75 @@ export default {
 .th-date {
   background: #e3e3e3;
 }
-#footer {
+#footer-table {
   position: fixed;
   bottom: 0;
   width: 100%;
   background: white;
-  border-top: 1px solid rgba(128, 128, 128, 0.3);
-  padding-left: 10% !important;
-  z-index: 100000;
+  border-top: 2px solid rgba(128, 128, 128, 0.3);
 }
+
 .dot {
-  height: 10px;
-  width: 10px;
+  height: 12px;
+  width: 12px;
   margin-right: 10px;
   border-radius: 100%;
   display: inline-block;
+}
+
+.ktc {
+  border: 1.3px solid #909399 !important;
+  background-color: rgb(244, 244, 245) !important;
+  &:hover {
+    background-color: #909399 !important;
+  }
+}
+
+.weeken {
+  border: 1.3px solid #909399 !important;
+  background-color: white !important;
+  &:hover {
+    background-color: white !important;
+  }
+}
+
+.dg {
+  border: 1.3px solid #67c23a !important;
+  background-color: rgb(225, 243, 216) !important;
+  &:hover {
+    background-color: #67c23a !important;
+  }
+}
+
+.ncl {
+  border: 1.3px solid yellow !important;
+  background-color: rgba(255, 247, 3, 0.15) !important;
+  &:hover {
+    background-color: yellow !important;
+  }
+}
+
+.nkl {
+  border: 1.3px solid #e6a23c !important;
+  background-color: rgb(250, 236, 216) !important;
+  &:hover {
+    background-color: #e6a23c !important;
+  }
+}
+
+.dmvs {
+  border: 1.3px solid red !important;
+  background-color: rgb(253, 226, 226) !important;
+  &:hover {
+    background-color: red !important;
+  }
+}
+
+.dlb {
+  border: 1.3px solid pink !important;
+  background-color: rgb(254, 240, 240) !important;
+  &:hover {
+    background-color: pink !important;
+  }
 }
 </style>
