@@ -383,7 +383,7 @@ export default {
   background-color: white;
   color: rgb(81, 77, 106);
   &:hover {
-    background-color: #909399;
+    background-color: white;
   }
 }
 
@@ -391,7 +391,7 @@ export default {
   border: 1.3px solid #909399;
   background-color: white;
   &:hover {
-    background-color: #909399;
+    background-color: white;
   }
 }
 

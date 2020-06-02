@@ -401,7 +401,7 @@ export default {
   border: 1.3px solid #909399;
   background-color: white;
   &:hover {
-    background-color: #909399;
+    background-color: white;
   }
 }
 
