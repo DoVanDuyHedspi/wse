@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white">
     <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
@@ -7,7 +7,7 @@
         <el-breadcrumb-item>Chấm công</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="p-4 mt-3">
+    <div class="p-4">
       <div class="mb-2">
         <el-row :gutter="20">
           <el-col :span="24" class="text-center">
@@ -124,12 +124,14 @@
               Xuất excel
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <span @click="downloadShiftwork()">
+                  <span @click="downloadShiftwork('xlsx')">
                     <i class="el-icon-download"></i> Xuất bảng ngày công
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <i class="el-icon-download"></i> Xuất bảng đi muộn/về sớm
+                  <span @click="downloadILLE('xlsx')">
+                    <i class="el-icon-download"></i> Xuất bảng đi muộn/về sớm
+                  </span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -179,61 +181,63 @@
             <el-table-column
               v-for="(date, index) in dateOfMonth"
               :key="index"
-              :label="getDay(date)"
+              :label="date"
               width="135"
               class-name="text-center"
             >
-              <template slot-scope="scope" class="text-center">
-                <el-button
-                  plain
-                  size="mini"
-                  class="weeken"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-if="scope.row.events[index].classes == 'weeken'"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  class="ncl"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].classes == 'ncl'"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  class="nkl"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].classes == 'nkl'"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  class="ktc"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].classes == 'ktc'"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  class="dmvs"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].classes == 'dmvs'"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  class="dlb"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].classes == 'dlb'"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  class="dg"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-              </template>
+              <el-table-column width="135" class-name="text-center" :label="getDay(date)">
+                <template slot-scope="scope" class="text-center">
+                  <el-button
+                    plain
+                    size="mini"
+                    class="weeken"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-if="scope.row.events[index].classes == 'weeken'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="ncl"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'ncl'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="nkl"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'nkl'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="ktc"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'ktc'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="dmvs"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'dmvs'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="dlb"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'dlb'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="dg"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                </template>
+              </el-table-column>
             </el-table-column>
           </el-table>
         </el-row>
@@ -366,32 +370,46 @@ export default {
     }
   }),
   methods: {
-    forceFileDownload(response, type) {
+    forceFileDownload(response, type, name) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
       // if (type == "csv") {
       //   link.setAttribute("download", "users.csv");
       // } else if (type == "xlsx") {
-      link.setAttribute("download", "Bangchamcong.xlsx");
+      link.setAttribute("download", name + "." + type);
       // }
 
       document.body.appendChild(link);
       link.click();
     },
     downloadShiftwork(type) {
-      console.log(this.$store.getters.getListUserIds("shiftwork"));
       axios({
         method: "post",
         url: "/api/users/export/shiftwork/",
         responseType: "arraybuffer",
         data: {
-          listUserIds: this.$store.getters.getListUserIds("shiftwork"),
+          listUserIds: this.$store.getters.getListUserIds("work"),
           month: this.filter.month
         }
       })
         .then(response => {
-          this.forceFileDownload(response, type);
+          this.forceFileDownload(response, type, "BangChamCong");
+        })
+        .catch(() => console.log("error occured"));
+    },
+    downloadILLE(type) {
+      axios({
+        method: "post",
+        url: "/api/users/export/inLateLeaveEarly/",
+        responseType: "arraybuffer",
+        data: {
+          listUserIds: this.$store.getters.getListUserIds("work"),
+          month: this.filter.month
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response, type, "DiMuonVeSom");
         })
         .catch(() => console.log("error occured"));
     },
@@ -429,19 +447,19 @@ export default {
       var day = myDate.getDay();
       switch (day) {
         case 0:
-          return date + " CN";
+          return "Chủ nhật";
         case 1:
-          return date + " T2";
+          return "Thứ 2";
         case 2:
-          return date + " T3";
+          return "Thứ 3";
         case 3:
-          return date + " T4";
+          return "Thứ 4";
         case 4:
-          return date + " T5";
+          return "Thứ 5";
         case 5:
-          return date + " T6";
+          return "Thứ 6";
         case 6:
-          return date + " T7";
+          return "Thứ 7";
       }
     },
     handleGroupChange() {

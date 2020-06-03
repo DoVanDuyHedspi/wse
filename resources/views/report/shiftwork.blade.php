@@ -35,7 +35,7 @@
       <td>{{ $user->group->name }}</td>
       <td>{{ $user->position->name }}</td>
       @foreach($daysOfMonth as $date)
-      <th>{{$user[$date]}}</th>
+      <td>{{$user[$date]}}</td>
       @endforeach
       <td>{{ $user->total_works }}</td>
       <td>{{ $user->total_faults }}</td>

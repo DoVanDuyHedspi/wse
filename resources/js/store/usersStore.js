@@ -99,7 +99,7 @@ const usersStore = new Vuex.Store({
     },
     getListUserIds: (state) => (type) =>  {
       let list_id = [];
-      if (type == 'shiftwork') {
+      if (type == 'work') {
         state.users_timesheets.map(function (user) {
           list_id.push(user.id);
         })

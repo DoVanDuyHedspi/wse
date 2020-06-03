@@ -260,7 +260,7 @@ export default {
     downloadCsv(type) {
       axios({
         method: "post",
-        url: "/api/users/export/csv/",
+        url: "/api/users/export/users/",
         responseType: "arraybuffer",
         data: {
           listUserIds: this.$store.getters.getListUserIds('users'),

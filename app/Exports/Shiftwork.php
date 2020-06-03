@@ -66,7 +66,7 @@ class Shiftwork implements FromView
             $total_nkl += 1;
           }
         }
-        if ($event == null || UserHelper::isWeeken($date)) {
+        if ($event == null || UserHelper::isWeeken($date) || $isNcl || $holiday) {
           $this->users[$key][$date] = 0;
         } else if ($event->type == 3) {
           $this->users[$key][$date] = 1;
@@ -95,7 +95,7 @@ class Shiftwork implements FromView
       //tong ngay nghi khong luong
       $this->users[$key]['total_nkl'] = $total_nkl;
       //tong cong tinh luong
-      $this->users[$key]['total_cl'] = $total_works + $total_ncl + $total_ot; 
+      $this->users[$key]['total_cl'] = $total_works + $total_ncl + $total_ot + $total_holiday; 
 
       
     }

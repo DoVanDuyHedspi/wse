@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Branch;
 use App\EmployeeType;
+use App\Exports\InLateLeaveEarly;
 use App\Exports\Shiftwork;
 use App\Exports\UsersExport;
 use App\Exports\WorkdayOfMembers;
@@ -259,6 +260,19 @@ class UserController extends Controller
     try {
       $month = date('m-Y', strtotime($request->month));
       return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'Bangchamcong-'.$month.'.xlsx');
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function inLateLeaveEarly(Request $request)
+  {
+    try {
+      $month = date('m-Y', strtotime($request->month));
+      return Excel::download(new InLateLeaveEarly($request->listUserIds, $request->month), 'DiMuonVeSom-'.$month.'.xlsx');
     } catch (Exception $e) {
       return response([
         'status' => false,
