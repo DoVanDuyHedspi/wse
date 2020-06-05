@@ -1,18 +1,21 @@
-<table>
+<table style="width: 100%;">
   <thead>
-    <tr><th colspan="30">Vi phạm lỗi đi muộn về sớm</th></tr>
+    <tr><th colspan="30"><b>Vi phạm lỗi đi muộn về sớm</b></th></tr>
+    <tr>
+      <th colspan="30"></th>
+    </tr>
     <tr>
       <th rowspan="2"><b>STT</b></th>
-      <th rowspan="2"><b>Tên</b></th>
-      <th rowspan="2"><b>Phòng ban</b></th>
-      <th rowspan="2"><b>Vị trí</b></th>
+      <th rowspan="2" colspan="2"><b>Tên</b></th>
+      <th rowspan="2" colspan="2"><b>Phòng ban</b></th>
+      <th rowspan="2" colspan="2"><b>Vị trí</b></th>
       @foreach($daysOfMonth as $date)
       <th><b>{{date('d-m', strtotime($date))}}</b></th>
       @endforeach
-      <th rowspan="2"><b>Số lần đi muộn</b></th>
-      <th rowspan="2"><b>Số lần về sớm</b></th>
-      <th rowspan="2"><b>Tổng số lần</b></th>
-      <th rowspan="2"><b>Tổng số phút</b></th>
+      <th rowspan="2" colspan="2"><b>Số lần đi muộn</b></th>
+      <th rowspan="2" colspan="2"><b>Số lần về sớm</b></th>
+      <th rowspan="2" colspan="2"><b>Tổng số lần</b></th>
+      <th rowspan="2" colspan="2"><b>Tổng số phút</b></th>
     </tr>
     <tr>
       @foreach($daysOfMonth as $date)
@@ -28,9 +31,9 @@
     @foreach($users as $index => $user)
     <tr>
       <td>{{ $index + 1}}</td>
-      <td>{{ $user->name }}</td>
-      <td>{{ $user->group->name }}</td>
-      <td>{{ $user->position->name }}</td>
+      <td colspan="2">{{ $user->name }}</td>
+      <td colspan="2">{{ $user->group->name }}</td>
+      <td colspan="2">{{ $user->position->name }}</td>
       @foreach($daysOfMonth as $date)
       <td>
         @if($user[$date]['IL'] && $user[$date]['LE'])
@@ -42,10 +45,10 @@
         @endif
       </td>
       @endforeach
-      <td>{{ $user->total_il }}</td>
-      <td>{{ $user->total_le }}</td>
-      <td>{{ $user->total_faults }}</td>
-      <td>{{ $user->total_time }}</td>
+      <td colspan="2" style="text-align: center;">{{ $user->total_il }}</td>
+      <td colspan="2" style="text-align: center;">{{ $user->total_le }}</td>
+      <td colspan="2" style="text-align: center;">{{ $user->total_faults }}</td>
+      <td colspan="2" style="text-align: center;">{{ $user->total_time }}</td>
     </tr>
     @endforeach
   </tbody>

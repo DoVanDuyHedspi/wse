@@ -31,9 +31,10 @@ $router->resource('/users', 'Api\UserController');
 $router->get('/users/{id}/notifications', 'Api\UserController@notification');
 $router->post('/users/notifications/{id}/read', 'Api\UserController@markAsReadNoti');
 $router->post('/users/export/users/', 'Api\UserController@exportCsv');
-$router->post('/users/export/shiftwork/', 'Api\UserController@shiftwork');
-$router->post('/users/export/inLateLeaveEarly/', 'Api\UserController@inLateLeaveEarly');
-$router->post('/users/export/timeInTimeOut/', 'Api\UserController@timeInTimeOut');
+$router->post('/users/export/shiftwork/', 'Api\UserController@exportShiftwork');
+$router->post('/users/export/inLateLeaveEarly/', 'Api\UserController@exportInLateLeaveEarly');
+$router->post('/users/export/checkInOut/', 'Api\UserController@exportCheckInOut');
+$router->post('/users/export/timesheetsEmployee/', 'Api\UserController@exportTimesheetsEmployee');
 
 $router->resource('/permissions', 'Api\PermissionController');
 

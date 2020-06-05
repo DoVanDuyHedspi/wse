@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Branch;
 use App\EmployeeType;
+use App\Exports\CheckInOut;
 use App\Exports\InLateLeaveEarly;
 use App\Exports\Shiftwork;
+use App\Exports\TimesheetsEmployee;
 use App\Exports\UsersExport;
 use App\Exports\WorkdayOfMembers;
 use App\Group;
@@ -255,11 +257,11 @@ class UserController extends Controller
     }
   }
 
-  public function shiftwork(Request $request)
+  public function exportShiftwork(Request $request)
   {
     try {
       $month = date('m-Y', strtotime($request->month));
-      return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'Bangchamcong-'.$month.'.xlsx');
+      return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'Bangchamcong-' . $month . '.xlsx');
     } catch (Exception $e) {
       return response([
         'status' => false,
@@ -268,11 +270,37 @@ class UserController extends Controller
     }
   }
 
-  public function inLateLeaveEarly(Request $request)
+  public function exportInLateLeaveEarly(Request $request)
   {
     try {
       $month = date('m-Y', strtotime($request->month));
-      return Excel::download(new InLateLeaveEarly($request->listUserIds, $request->month), 'DiMuonVeSom-'.$month.'.xlsx');
+      return Excel::download(new InLateLeaveEarly($request->listUserIds, $request->month), 'DiMuonVeSom-' . $month . '.xlsx');
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function exportCheckInOut(Request $request)
+  {
+    try {
+      $date = date('Y-m-d', strtotime($request->date));
+      return Excel::download(new CheckInOut($request->listUserIds, $date), 'LichSuVaRa-' . $date . '.' . $request->type);
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function exportTimesheetsEmployee(Request $request)
+  {
+    try {
+      $month = date('Y-m', strtotime($request->month));
+      return Excel::download(new TimesheetsEmployee($request->employee_code, $month), 'BangChamCong-' . $month . '.' . $request->type);
     } catch (Exception $e) {
       return response([
         'status' => false,

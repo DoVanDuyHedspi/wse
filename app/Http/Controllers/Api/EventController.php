@@ -176,8 +176,6 @@ class EventController extends Controller
               }
             }
           }
-
-
           $working_day = 0;
           $fined_time = 0;
           $number_of_fines = 0;

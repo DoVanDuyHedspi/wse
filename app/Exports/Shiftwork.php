@@ -32,7 +32,8 @@ class Shiftwork implements FromView
   {
     return view('report.shiftwork', [
       'users' => $this->users,
-      'daysOfMonth' => $this->allDaysOfMonth
+      'daysOfMonth' => $this->allDaysOfMonth,
+      'month' => $this->month,
     ]);
   }
 

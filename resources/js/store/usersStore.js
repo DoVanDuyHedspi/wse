@@ -27,6 +27,7 @@ const usersStore = new Vuex.Store({
       position_id: "",
       branch_id: "",
       employee_type_id: "",
+      employee_code: "",
       group_id: [],
       vehicle: {
         type: "",

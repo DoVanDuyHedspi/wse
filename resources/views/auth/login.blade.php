@@ -59,8 +59,8 @@
                 <img class="d-block img-fluid" src="/storage/login_image/photo1.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
-                    <h2>This is Heaven</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+                    <h2>Quản lý chấm công</h2>
+                    <p>WSE là công cụ giúp nhà quản lý có thể dễ dàng quản lý dữ liệu chấm công của nhân viên. Ngoài ra, quản lý cũng có thể xuất file excel, csv các loại báo cáo.</p>
                   </div>
                 </div>
               </div>
@@ -68,8 +68,8 @@
                 <img class="d-block img-fluid" src="/storage/login_image/photo2.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
-                    <h2>This is Heaven</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+                    <h2>Làm đơn thư</h2>
+                    <p>WSE là công cụ giúp nhân viên có thể làm đơn thư gửi đến nhà quản lý. Quản lý có thể dễ dàng quản lý đơn thư đã được phân loại và dễ dàng phê duyệt.</p>
                   </div>
                 </div>
               </div>
@@ -77,8 +77,8 @@
                 <img class="d-block img-fluid" src="/storage/login_image/photo3.jpeg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
-                    <h2>This is Heaven</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+                    <h2>Lưu trữ video</h2>
+                    <p>WSE lưu trữ toàn bộ video thu được từ máy chấm công nhằm phục vụ nghiệp vụ xác minh chấm công sau này.</p>
                   </div>
                 </div>
               </div>
