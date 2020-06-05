@@ -48,7 +48,7 @@
 
           <!-- </el-col> -->
           <!-- <el-col :span="4"> -->
-          <el-button type="primary" @click="filterReport" size="medium">Lọc</el-button>
+          <el-button type="primary" @click="filterReport" size="medium"><i class="el-icon-search"></i></el-button>
           <!-- </el-col> -->
         </el-row>
         <div class="error" v-if="error.message.length">
@@ -59,7 +59,6 @@
         ref="multipleTable"
         :data="dataTable"
         style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
-        border
       >
         <!-- <el-table-column type="selection" width="55"></el-table-column> -->
         <el-table-column label="Stt" class-name="text-center" width="50px">

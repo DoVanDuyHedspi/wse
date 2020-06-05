@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Branch;
 use App\EmployeeType;
+use App\Exports\CheckInOut;
+use App\Exports\InLateLeaveEarly;
+use App\Exports\Shiftwork;
+use App\Exports\TimesheetsEmployee;
 use App\Exports\UsersExport;
+use App\Exports\WorkdayOfMembers;
 use App\Group;
 use App\Permission;
 use App\Position;
@@ -22,7 +27,7 @@ use App\Http\Resources\NotificationResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -240,6 +245,67 @@ class UserController extends Controller
 
   public function exportCsv(Request $request)
   {
-    return Excel::download(new UsersExport($request->listUserIds), 'users.csv');
+    try {
+      $type = $request->type;
+      // dd($request);
+      return Excel::download(new UsersExport($request->listUserIds), 'users.' . $type);
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function exportShiftwork(Request $request)
+  {
+    try {
+      $month = date('m-Y', strtotime($request->month));
+      return Excel::download(new Shiftwork($request->listUserIds, $request->month), 'Bangchamcong-' . $month . '.xlsx');
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function exportInLateLeaveEarly(Request $request)
+  {
+    try {
+      $month = date('m-Y', strtotime($request->month));
+      return Excel::download(new InLateLeaveEarly($request->listUserIds, $request->month), 'DiMuonVeSom-' . $month . '.xlsx');
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function exportCheckInOut(Request $request)
+  {
+    try {
+      $date = date('Y-m-d', strtotime($request->date));
+      return Excel::download(new CheckInOut($request->listUserIds, $date), 'LichSuVaRa-' . $date . '.' . $request->type);
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
+  }
+
+  public function exportTimesheetsEmployee(Request $request)
+  {
+    try {
+      $month = date('Y-m', strtotime($request->month));
+      return Excel::download(new TimesheetsEmployee($request->employee_code, $month), 'BangChamCong-' . $month . '.' . $request->type);
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
   }
 }

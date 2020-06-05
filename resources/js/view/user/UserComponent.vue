@@ -7,7 +7,7 @@
         <el-breadcrumb-item>Nhân sự</el-breadcrumb-item>
         <el-breadcrumb-item>Thành viên</el-breadcrumb-item>
       </el-breadcrumb>
-    </div> -->
+    </div>-->
     <div class="p-4 mt-3">
       <div class="mb-2">
         <el-row :gutter="20">
@@ -38,6 +38,11 @@
                     <i class="el-icon-download"></i> Xuất csv
                   </span>
                 </el-dropdown-item>
+                <!-- <el-dropdown-item>
+                  <span @click="downloadCsv('pdf')">
+                    <i class="el-icon-download"></i> In pdf
+                  </span>
+                </el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
@@ -103,64 +108,58 @@
                 @change="filterUsers"
                 size="medium"
               ></el-autocomplete>
-              <el-button
-                type="primary"
-                icon="el-icon-search"
-                @click="filterUsers()"
-                size="medium"
-              ></el-button>
+              <el-button type="primary" icon="el-icon-search" @click="filterUsers()" size="medium"></el-button>
             </div>
           </el-col>
         </el-row>
 
-          <el-table
-            :data="dataTable"
-            style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
-            stripe
-            id="printMe"
-          >
-            <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="150"></el-table-column>
-            <el-table-column fixed property="name" label="Tên nhân viên" width="150">
-              <template slot-scope="scope">
-                <router-link :to="'/users/'+scope.row.id">
-                  <span>{{scope.row.name}}</span>
-                </router-link>
-              </template>
-            </el-table-column>
-            <el-table-column prop="email" label="Email" width="200"></el-table-column>
-            <el-table-column prop="position.name" label="Vị trí" width="150"></el-table-column>
-            <el-table-column prop="gender" label="Giới tính" width="100"></el-table-column>
-            <el-table-column prop="birthday" label="Ngày sinh" width="150"></el-table-column>
-            <el-table-column prop="employee_type.name" label="Loại nhân viên" width="200"></el-table-column>
-            <el-table-column prop="group.name" label="Phòng ban" width="200"></el-table-column>
-            <el-table-column prop="branch.name" label="Chi nhánh" width="150"></el-table-column>
-            <el-table-column prop="phone_number" label="SĐT" width="150"></el-table-column>
-            <el-table-column prop="current_address" label="Địa chỉ hiện tại" width="250"></el-table-column>
-            <el-table-column prop="pernentment_address" label="Địa chỉ thường chú" width="250"></el-table-column>
-            <el-table-column prop="identity_card_passport.code" label="CMND/Hộ chiếu" width="150"></el-table-column>
-            <el-table-column fixed="right" label="Thao tác" width="200" align="center">
-              <template slot-scope="scope" class="text-center">
-                <router-link :to="'/users/edit/' + scope.row.id">
-                  <el-button size="mini">
-                    <i class="el-icon-edit"></i>
-                  </el-button>
-                </router-link>
-                <router-link :to="'/users/' + scope.row.id">
-                  <el-button size="mini" type="primary">
-                    <i class="el-icon-view"></i>
-                  </el-button>
-                </router-link>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click.native.prevent="deleteUser(scope.$index, scope.row)"
-                >
-                  <i class="el-icon-delete"></i>
+        <el-table
+          :data="dataTable"
+          style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
+          stripe
+          id="printMe"
+        >
+          <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="150"></el-table-column>
+          <el-table-column fixed property="name" label="Tên nhân viên" width="150">
+            <template slot-scope="scope">
+              <router-link :to="'/users/'+scope.row.id">
+                <span>{{scope.row.name}}</span>
+              </router-link>
+            </template>
+          </el-table-column>
+          <el-table-column prop="email" label="Email" width="200"></el-table-column>
+          <el-table-column prop="position.name" label="Vị trí" width="150"></el-table-column>
+          <el-table-column prop="gender" label="Giới tính" width="100"></el-table-column>
+          <el-table-column prop="birthday" label="Ngày sinh" width="150"></el-table-column>
+          <el-table-column prop="employee_type.name" label="Loại nhân viên" width="200"></el-table-column>
+          <el-table-column prop="group.name" label="Phòng ban" width="200"></el-table-column>
+          <el-table-column prop="branch.name" label="Chi nhánh" width="150"></el-table-column>
+          <el-table-column prop="phone_number" label="SĐT" width="150"></el-table-column>
+          <el-table-column prop="current_address" label="Địa chỉ hiện tại" width="250"></el-table-column>
+          <el-table-column prop="pernentment_address" label="Địa chỉ thường chú" width="250"></el-table-column>
+          <el-table-column prop="identity_card_passport.code" label="CMND/Hộ chiếu" width="150"></el-table-column>
+          <el-table-column fixed="right" label="Thao tác" width="200" align="center">
+            <template slot-scope="scope" class="text-center">
+              <router-link :to="'/users/edit/' + scope.row.id">
+                <el-button size="mini">
+                  <i class="el-icon-edit"></i>
                 </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-row>
+              </router-link>
+              <router-link :to="'/users/' + scope.row.id">
+                <el-button size="mini" type="primary">
+                  <i class="el-icon-view"></i>
+                </el-button>
+              </router-link>
+              <el-button
+                size="mini"
+                type="danger"
+                @click.native.prevent="deleteUser(scope.$index, scope.row)"
+              >
+                <i class="el-icon-delete"></i>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
 
       <div class="my-5 text-center">
@@ -239,25 +238,33 @@ export default {
       this.filterUsers();
     },
     forceFileDownload(response, type) {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      if (type == "csv") {
-        link.setAttribute("download", "users.csv");
-      } else if (type == "xlsx") {
-        link.setAttribute("download", "users.xlsx");
-      }
+      // if (type == pdf) {
+      //   const url = window.URL.createObjectURL(
+      //     new Blob([response.data], { type: "application/pdf" })
+      //   );
+      //   printJS(pdfUrl);
+      // } else {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        if (type == "csv") {
+          link.setAttribute("download", "users.csv");
+        } else if (type == "xlsx") {
+          link.setAttribute("download", "users.xlsx");
+        } 
 
-      document.body.appendChild(link);
-      link.click();
+        document.body.appendChild(link);
+        link.click();
+      // }
     },
     downloadCsv(type) {
       axios({
         method: "post",
-        url: "/api/users/export/csv/",
+        url: "/api/users/export/users/",
         responseType: "arraybuffer",
         data: {
-          listUserIds: this.$store.getters.getListUserIds
+          listUserIds: this.$store.getters.getListUserIds('users'),
+          type: type
         }
       })
         .then(response => {

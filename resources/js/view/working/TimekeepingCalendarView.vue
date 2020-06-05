@@ -70,10 +70,14 @@
             <i class="el-icon-download"></i>Xuất
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <i class="el-icon-download"></i> Xuất xlsx
+                <span @click="downloadCsv('xlsx')">
+                  <i class="el-icon-download"></i> Xuất xlsx
+                </span>
               </el-dropdown-item>
               <el-dropdown-item>
-                <i class="el-icon-download"></i> Xuất csv
+                <span @click="downloadCsv('csv')">
+                  <i class="el-icon-download"></i> Xuất csv
+                </span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -227,6 +231,41 @@ export default {
     }
   }),
   methods: {
+    forceFileDownload(response, type) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      if (type == "csv") {
+        link.setAttribute("download", "BangChamCongNhanVien.csv");
+      } else if (type == "xlsx") {
+        link.setAttribute("download", "BangChamCongNhanVien.xlsx");
+      }
+
+      document.body.appendChild(link);
+      link.click();
+    },
+    downloadCsv(type) {
+      let fullDate = new Date(this.showDate);
+      let month = fullDate.getMonth() + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
+      var currentMonth = fullDate.getFullYear() + "-" + month;
+      axios({
+        method: "post",
+        url: "/api/users/export/timesheetsEmployee/",
+        responseType: "arraybuffer",
+        data: {
+          employee_code: this.employee.split(" ")[0],
+          type: type,
+          month: currentMonth
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response, type);
+        })
+        .catch(() => console.log("error occured"));
+    },
     querySearch(queryString, cb) {
       var suggestions = this.listSuggestions;
       var results = queryString

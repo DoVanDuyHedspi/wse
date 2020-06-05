@@ -121,18 +121,20 @@
               Xuất
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <i class="el-icon-download"></i> Xuất xlsx
+                  <span @click="downloadCsv('xlsx')">
+                    <i class="el-icon-download"></i> Xuất xlsx
+                  </span>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <i class="el-icon-download"></i> Xuất csv
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <span v-print="'#table'">
-                    <i class="el-icon-printer"></i> In
+                  <span @click="downloadCsv('csv')">
+                    <i class="el-icon-download"></i> Xuất csv
                   </span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
+            <el-button size="medium" type="primary" v-print="'#table'">
+              <i class="el-icon-printer"></i> In
+            </el-button>
           </el-col>
         </el-row>
         <el-row id="table">
@@ -140,7 +142,6 @@
             :data="dataTable"
             style="width: 100%;  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)"
             stripe
-            border
             header-cell-class-name="text-center"
             v-loading="loading"
             element-loading-text="Loading..."
@@ -153,34 +154,34 @@
               width="150"
               class-name="text-center"
             ></el-table-column>
-            <el-table-column fixed property="name" label="Tên nhân viên" width="150">
+            <el-table-column fixed property="name" label="Tên nhân viên">
               <template slot-scope="scope">
                 <router-link :to="'/users/'+scope.row.id">
                   <span>{{scope.row.name}}</span>
                 </router-link>
               </template>
             </el-table-column>
-            <el-table-column prop="group.name" label="Phòng ban" width="120"></el-table-column>
-            <el-table-column prop="position.name" label="Chức vụ" width="120"></el-table-column>
-            <el-table-column label="Ngày" width="120" class-name="text-center">
+            <el-table-column prop="group.name" label="Phòng ban"></el-table-column>
+            <el-table-column prop="position.name" label="Chức vụ"></el-table-column>
+            <el-table-column label="Ngày" class-name="text-center">
               <template slot-scope="scope">
                 <div v-if="scope.row.event">{{scope.row.event.date}}</div>
                 <div v-else>{{filter.date}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="Vào đầu tiên" width="120" class-name="text-center">
+            <el-table-column label="Vào đầu tiên" class-name="text-center">
               <template slot-scope="scope">
                 <div v-if="scope.row.event">{{scope.row.event.time_in}}</div>
                 <div v-else>-</div>
               </template>
             </el-table-column>
-            <el-table-column label="Ra cuối cùng" width="120" class-name="text-center">
+            <el-table-column label="Ra cuối cùng" class-name="text-center">
               <template slot-scope="scope">
                 <div v-if="scope.row.event && scope.row.event.time_out">{{scope.row.event.time_out}}</div>
                 <div v-else>-</div>
               </template>
             </el-table-column>
-            <el-table-column label="Số phút đi muộn/về sớm" width="120" class-name="text-center">
+            <!-- <el-table-column label="Số phút đi muộn/về sớm" class-name="text-center">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.event && scope.row.event.fined_time"
@@ -188,7 +189,7 @@
                 >{{scope.row.event.fined_time}}</div>
                 <div v-else>-</div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </el-row>
       </div>
@@ -245,6 +246,35 @@ export default {
     }
   }),
   methods: {
+    forceFileDownload(response, type) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      if (type == "csv") {
+        link.setAttribute("download", "LichSuVaoRa.csv");
+      } else if (type == "xlsx") {
+        link.setAttribute("download", "LichSuVaoRa.xlsx");
+      }
+
+      document.body.appendChild(link);
+      link.click();
+    },
+    downloadCsv(type) {
+      axios({
+        method: "post",
+        url: "/api/users/export/checkInOut/",
+        responseType: "arraybuffer",
+        data: {
+          listUserIds: this.$store.getters.getListUserIds("users"),
+          type: type,
+          date: this.filter.date,
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response, type);
+        })
+        .catch(() => console.log("error occured"));
+    },
     querySearch(queryString, cb) {
       var suggestions = this.listSuggestions;
       var results = queryString

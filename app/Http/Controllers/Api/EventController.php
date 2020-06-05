@@ -46,6 +46,20 @@ class EventController extends Controller
         $ILA = 0;
         $LEA = 0;
         foreach ($allDayOfMonth as $date) {
+          $classes = 'ktc';
+          $isHoliday = UserHelper::isHoliday($date);
+          $isWeeken = UserHelper::isWeeken($date);
+          $isNPKL = UserHelper::isNPKL($employee->employee_code, $date);
+          $isNPCL = UserHelper::isNPCL($employee->employee_code, $date);
+          if ($isHoliday || $isNPCL) {
+            $classes = 'ncl';
+          }
+          if ($isNPKL) {
+            $classes = 'nkl';
+          }
+          if ($isWeeken) {
+            $classes = 'weeken';
+          }
           if (date('Y-m-d') >= date('Y-m-d', strtotime($date))) {
             $event = Event::where('user_code', $employee->employee_code)->where('date', $date)->first();
             if ($event == null) {
@@ -55,23 +69,39 @@ class EventController extends Controller
                 'status' => '',
                 'type' => null,
                 'date' => date('d-m-Y', strtotime($date)),
+                'classes' => $classes,
               ]);
             } else {
-              if ($event->type == 1 || $event->type == 2) {
-                $number_working_days += 0.5;
-              } else if ($event->type == 3) {
-                $number_working_days += 1;
+              if ($classes == 'ktc') {
+                $classes = 'dg';
+                if (date('Y-m-d') !== date('Y-m-d', strtotime($event->date))) {
+                  if ($event->type == null) {
+                    $classes = 'ktc';
+                  } else if ($event->status == 1) {
+                    $classes = 'dmvs';
+                  } else if ($event->status == 2) {
+                    $classes = 'dlb';
+                  }
+                }
               }
-              $ILM += $event->ILM;
-              $LEM += $event->LEM;
-              $ILA += $event->ILA;
-              $LEA += $event->LEA;
+              if (!$isWeeken && !$isHoliday && !$isNPCL && !$isNPKL) {
+                if ($event->type == 1 || $event->type == 2) {
+                  $number_working_days += 0.5;
+                } else if ($event->type == 3) {
+                  $number_working_days += 1;
+                }
+                $ILM += $event->ILM;
+                $LEM += $event->LEM;
+                $ILA += $event->ILA;
+                $LEA += $event->LEA;
+              }
               array_push($events,  [
                 'time_in' => date('H:i', strtotime($event->time_in)),
                 'time_out' => $event->time_out ? date('H:i', strtotime($event->time_out)) : '--:--',
                 'status' => $event->status,
                 'type' => $event->type,
                 'date' => date('d-m-Y', strtotime($date)),
+                'classes' => $classes,
               ]);
             }
           }
@@ -146,8 +176,6 @@ class EventController extends Controller
               }
             }
           }
-
-
           $working_day = 0;
           $fined_time = 0;
           $number_of_fines = 0;

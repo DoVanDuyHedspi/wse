@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white">
     <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
@@ -7,7 +7,7 @@
         <el-breadcrumb-item>Chấm công</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="p-4 mt-3">
+    <div class="p-4">
       <div class="mb-2">
         <el-row :gutter="20">
           <el-col :span="24" class="text-center">
@@ -124,10 +124,14 @@
               Xuất excel
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <i class="el-icon-download"></i> Xuất bảng ngày công
+                  <span @click="downloadShiftwork('xlsx')">
+                    <i class="el-icon-download"></i> Xuất bảng ngày công
+                  </span>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <i class="el-icon-download"></i> Xuất bảng đi muộn/về sớm
+                  <span @click="downloadILLE('xlsx')">
+                    <i class="el-icon-download"></i> Xuất bảng đi muộn/về sớm
+                  </span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -177,39 +181,63 @@
             <el-table-column
               v-for="(date, index) in dateOfMonth"
               :key="index"
-              :label="getDay(date)"
+              :label="date"
               width="135"
               class-name="text-center"
             >
-              <template slot-scope="scope" class="text-center">
-                <el-button
-                  plain
-                  size="mini"
-                  type="warning"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-if="isSunday(date)"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  type="success"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].type === null"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  type="danger"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else-if="scope.row.events[index].status == 1"
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-                <el-button
-                  plain
-                  size="mini"
-                  @click="handleOpen(scope.row, scope.row.events[index])"
-                  v-else
-                >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
-              </template>
+              <el-table-column width="135" class-name="text-center" :label="getDay(date)">
+                <template slot-scope="scope" class="text-center">
+                  <el-button
+                    plain
+                    size="mini"
+                    class="weeken"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-if="scope.row.events[index].classes == 'weeken'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="ncl"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'ncl'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="nkl"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'nkl'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="ktc"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'ktc'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="dmvs"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'dmvs'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="dlb"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else-if="scope.row.events[index].classes == 'dlb'"
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    class="dg"
+                    @click="handleOpen(scope.row, scope.row.events[index])"
+                    v-else
+                  >{{scope.row.events[index].time_in}} | {{scope.row.events[index].time_out}}</el-button>
+                </template>
+              </el-table-column>
             </el-table-column>
           </el-table>
         </el-row>
@@ -261,18 +289,27 @@
         ></el-pagination>
       </div>
     </div>
-    <div id="footer" class="p-3">
+    <div id="footer-table" class="py-2 px-3">
       <span class="mr-3">
-        <span style="background: #E6A23C" class="dot"></span> Không tính công
+        <span class="dot ktc"></span> Không được tính công
       </span>
       <span class="mr-3">
-        <span style="background: #F56C6C" class="dot"></span>Vào trễ, ra sớm
+        <span class="dot dmvs"></span>Vào trễ, ra sớm
       </span>
       <span class="mr-3">
-        <span style="background: #FFFFFF; border: 1px black solid" class="dot"></span>Chấm công đúng giờ
+        <span class="dot dlb"></span>Đã làm bù
       </span>
       <span class="mr-3">
-        <span style="background: #67C23A" class="dot"></span>Không đủ thời gian làm tối thiểu
+        <span class="dot dg"></span>Đúng giờ
+      </span>
+      <span class="mr-3">
+        <span class="dot weeken"></span>Cuối tuần
+      </span>
+      <span class="mr-3">
+        <span class="dot ncl"></span>Nghỉ phép có lương/ Nghỉ lễ
+      </span>
+      <span class="mr-3">
+        <span class="dot nkl"></span>Nghỉ phép không lương
       </span>
     </div>
   </div>
@@ -333,6 +370,49 @@ export default {
     }
   }),
   methods: {
+    forceFileDownload(response, type, name) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      // if (type == "csv") {
+      //   link.setAttribute("download", "users.csv");
+      // } else if (type == "xlsx") {
+      link.setAttribute("download", name + "." + type);
+      // }
+
+      document.body.appendChild(link);
+      link.click();
+    },
+    downloadShiftwork(type) {
+      axios({
+        method: "post",
+        url: "/api/users/export/shiftwork/",
+        responseType: "arraybuffer",
+        data: {
+          listUserIds: this.$store.getters.getListUserIds("work"),
+          month: this.filter.month
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response, type, "BangChamCong");
+        })
+        .catch(() => console.log("error occured"));
+    },
+    downloadILLE(type) {
+      axios({
+        method: "post",
+        url: "/api/users/export/inLateLeaveEarly/",
+        responseType: "arraybuffer",
+        data: {
+          listUserIds: this.$store.getters.getListUserIds("work"),
+          month: this.filter.month
+        }
+      })
+        .then(response => {
+          this.forceFileDownload(response, type, "DiMuonVeSom");
+        })
+        .catch(() => console.log("error occured"));
+    },
     querySearch(queryString, cb) {
       var suggestions = this.listSuggestions;
       var results = queryString
@@ -367,19 +447,19 @@ export default {
       var day = myDate.getDay();
       switch (day) {
         case 0:
-          return date + " CN";
+          return "Chủ nhật";
         case 1:
-          return date + " T2";
+          return "Thứ 2";
         case 2:
-          return date + " T3";
+          return "Thứ 3";
         case 3:
-          return date + " T4";
+          return "Thứ 4";
         case 4:
-          return date + " T5";
+          return "Thứ 5";
         case 5:
-          return date + " T6";
+          return "Thứ 6";
         case 6:
-          return date + " T7";
+          return "Thứ 7";
       }
     },
     handleGroupChange() {
@@ -483,19 +563,75 @@ export default {
 .th-date {
   background: #e3e3e3;
 }
-#footer {
+#footer-table {
   position: fixed;
   bottom: 0;
   width: 100%;
   background: white;
-  border-top: 1px solid rgba(128, 128, 128, 0.3);
-  padding-left: 10% !important;
+  border-top: 2px solid rgba(128, 128, 128, 0.3);
 }
+
 .dot {
-  height: 10px;
-  width: 10px;
+  height: 12px;
+  width: 12px;
   margin-right: 10px;
   border-radius: 100%;
   display: inline-block;
+}
+
+.ktc {
+  border: 1.3px solid #909399 !important;
+  background-color: rgb(244, 244, 245) !important;
+  &:hover {
+    background-color: #909399 !important;
+  }
+}
+
+.weeken {
+  border: 1.3px solid #909399 !important;
+  background-color: white !important;
+  &:hover {
+    background-color: white !important;
+  }
+}
+
+.dg {
+  border: 1.3px solid #67c23a !important;
+  background-color: rgb(225, 243, 216) !important;
+  &:hover {
+    background-color: #67c23a !important;
+  }
+}
+
+.ncl {
+  border: 1.3px solid yellow !important;
+  background-color: rgba(255, 247, 3, 0.15) !important;
+  &:hover {
+    background-color: yellow !important;
+  }
+}
+
+.nkl {
+  border: 1.3px solid #e6a23c !important;
+  background-color: rgb(250, 236, 216) !important;
+  &:hover {
+    background-color: #e6a23c !important;
+  }
+}
+
+.dmvs {
+  border: 1.3px solid red !important;
+  background-color: rgb(253, 226, 226) !important;
+  &:hover {
+    background-color: red !important;
+  }
+}
+
+.dlb {
+  border: 1.3px solid pink !important;
+  background-color: rgb(254, 240, 240) !important;
+  &:hover {
+    background-color: pink !important;
+  }
 }
 </style>

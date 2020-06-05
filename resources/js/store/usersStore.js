@@ -27,6 +27,7 @@ const usersStore = new Vuex.Store({
       position_id: "",
       branch_id: "",
       employee_type_id: "",
+      employee_code: "",
       group_id: [],
       vehicle: {
         type: "",
@@ -97,11 +98,17 @@ const usersStore = new Vuex.Store({
     getUsersDataTable: (state) => {
       return state.users.slice(0, 10)
     },
-    getListUserIds: (state) => {
+    getListUserIds: (state) => (type) =>  {
       let list_id = [];
-      state.users.map(function (user) {
-        list_id.push(user.id);
-      })
+      if (type == 'work') {
+        state.users_timesheets.map(function (user) {
+          list_id.push(user.id);
+        })
+      } else if(type == 'users') {
+        state.users.map(function (user) {
+          list_id.push(user.id);
+        })
+      }
       return list_id;
     },
     getListSuggestions: (state) => {
@@ -120,7 +127,7 @@ const usersStore = new Vuex.Store({
       state.events.map(function (event) {
         actual_penalty_time += event.fined_time;
         // if (event.number_of_fines == 1) {
-        number_of_fines+= event.number_of_fines;
+        number_of_fines += event.number_of_fines;
         // }
         number_working_days += event.working_day;
         total_overtime = event.overtime;
