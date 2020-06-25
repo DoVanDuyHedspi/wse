@@ -1,12 +1,12 @@
 <template>
   <div id="group-setting">
-    <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
+    <!-- <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
         <el-breadcrumb-item>Thiết lập tổ chức</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="container">
       <div class="text-center mt-3 mb-5">
         <h3>THIẾT LẬP TỔ CHỨC</h3>

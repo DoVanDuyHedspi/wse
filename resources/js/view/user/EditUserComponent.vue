@@ -1,19 +1,31 @@
 <template>
   <div>
-    <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
+    <!-- <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Hồ sơ nhân viên</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
-    <div class="error" v-if="error.message.length">
+    </div>-->
+    <!-- <div class="error" v-if="error.message.length">
       <div class="alert alert-danger" role="alert">{{ error.message }}</div>
     </div>
     <div class="noti" v-if="noti.length">
       <div class="alert alert-success" role="alert">{{ noti }}</div>
-    </div>
+    </div>-->
+
     <div class="container">
-      <div class="content" v-if="user">
+      <div>
+        <el-row :gutter="20">
+          <el-col :span="24" class="text-right my-2">
+            <router-link to="/users">
+              <el-button size="medium" type="primary">
+                <i class="el-icon-s-order"></i>Danh sách
+              </el-button>
+            </router-link>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="content bg-white" v-if="user">
         <div class="content-header">
           <b>Chỉnh sửa thông tin cá nhân</b>
         </div>
@@ -22,7 +34,11 @@
             <el-col :span="6">
               <div class="grid-content">
                 <el-card :body-style="{ padding: '0px' }">
-                  <img :src="user.avatar" class="image" style="max-width: 250px; margin: auto; max-height: 250px;" />
+                  <img
+                    :src="user.avatar"
+                    class="image"
+                    style="max-width: 250px; margin: auto; max-height: 250px;"
+                  />
                   <div class="px-3">
                     <div class="bottom clearfix text-center">
                       <div class="upload-btn-wrapper" v-if="user.can_update_adv">
@@ -553,7 +569,6 @@ export default {
         })
         .then(response => {
           if (response.data.status === false) {
-            this.error.message = response.data.message;
             this.$notify.error({
               title: "Thất bại",
               message: response.data.message,
@@ -576,7 +591,6 @@ export default {
       this.user.roles_has_pers = this.role_has_permissions.sort();
       axios.put("/api/users/" + this.user.id, this.user).then(response => {
         if (response.data.status === false) {
-          this.error.message = response.data.message;
           this.$notify.error({
             title: "Thất bại",
             message: response.data.message,

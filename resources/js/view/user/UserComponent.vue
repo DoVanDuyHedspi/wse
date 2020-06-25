@@ -8,25 +8,22 @@
         <el-breadcrumb-item>Thành viên</el-breadcrumb-item>
       </el-breadcrumb>
     </div>-->
-    <div class="p-4 mt-3">
+    <div class="p-4">
       <div class="mb-2">
         <el-row :gutter="20">
-          <el-col :span="12">
-            <div class="grid-content">
-              <h3>
+          <el-col :span="24">
+            <div class="grid-content text-center">
+              <h2>
                 Danh sách thành viên
-                <el-tooltip effect="dark" :content="info" placement="right-start">
-                  <i class="el-icon-question" style="font-size: 20px"></i>
-                </el-tooltip>
-              </h3>
+              </h2>
             </div>
           </el-col>
-          <el-col :span="12" class="text-right">
+          <el-col :span="24" class="text-right">
             <router-link to="/users/create">
               <el-button icon="el-icon-plus" type="primary" size="medium">Thêm mới</el-button>
             </router-link>
             <el-dropdown size="medium" split-button type="primary">
-              <i class="el-icon-download mr-1"></i>Xuất
+              Xuất 
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
                   <span @click="downloadCsv('xlsx')">
@@ -119,7 +116,7 @@
           stripe
           id="printMe"
         >
-          <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="150"></el-table-column>
+          <el-table-column fixed prop="employee_code" label="Mã nhân viên" width="120"></el-table-column>
           <el-table-column fixed property="name" label="Tên nhân viên" width="150">
             <template slot-scope="scope">
               <router-link :to="'/users/'+scope.row.id">
@@ -128,11 +125,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="email" label="Email" width="200"></el-table-column>
-          <el-table-column prop="position.name" label="Vị trí" width="150"></el-table-column>
+          <el-table-column prop="group.name" label="Phòng ban" width="150"></el-table-column>
+          <el-table-column prop="position.name" label="Vị trí" width="120"></el-table-column>
           <el-table-column prop="gender" label="Giới tính" width="100"></el-table-column>
           <el-table-column prop="birthday" label="Ngày sinh" width="150"></el-table-column>
           <el-table-column prop="employee_type.name" label="Loại nhân viên" width="200"></el-table-column>
-          <el-table-column prop="group.name" label="Phòng ban" width="200"></el-table-column>
+          
           <el-table-column prop="branch.name" label="Chi nhánh" width="150"></el-table-column>
           <el-table-column prop="phone_number" label="SĐT" width="150"></el-table-column>
           <el-table-column prop="current_address" label="Địa chỉ hiện tại" width="250"></el-table-column>
@@ -194,7 +192,7 @@ export default {
         search: ""
       },
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 10,
       dataTable: [],
       info:
         "Danh sách thành viên có thể xem thông tin trong quyền của người dùng này"

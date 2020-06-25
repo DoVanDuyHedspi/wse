@@ -1,12 +1,12 @@
 <template>
   <div class="bg-white">
-    <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
+    <!-- <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
         <el-breadcrumb-item>Chấm công</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="p-4">
       <div class="mb-2">
         <el-row :gutter="20">
