@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
+    <!-- <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Báo cáo</el-breadcrumb-item>
         <el-breadcrumb-item>Mặt giả</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="container mt-3">
       <div class="my-4">
         <el-row :gutter="20">
