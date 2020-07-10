@@ -162,19 +162,23 @@ class EventController extends Controller
             'status' => '',
             'type' => null,
             'date' => date('D, d-m-Y', strtotime($date)),
+            'checkin_capture' => '',
+            'checkout_capture' => '',
           ]);
         } else {
           if ($classes == 'ktc') {
-            $classes = 'dg';
-            if (date('Y-m-d') !== date('Y-m-d', strtotime($event->date))) {
+            // $classes = 'dg';
+            // if (date('Y-m-d') !== date('Y-m-d', strtotime($event->date))) {
               if ($event->type == null) {
                 $classes = 'ktc';
               } else if ($event->status == 1) {
                 $classes = 'dmvs';
               } else if ($event->status == 2) {
                 $classes = 'dlb';
+              } else {
+                $classes = 'dg';
               }
-            }
+            // }
           }
           $working_day = 0;
           $fined_time = 0;
@@ -214,6 +218,8 @@ class EventController extends Controller
             'status' => $event->status,
             'type' => $event->type,
             'date' => date('D, d-m-Y', strtotime($date)),
+            'checkin_capture' => $event->getFirstMediaUrl('check_in'),
+            'checkout_capture' => $event->getFirstMediaUrl('check_out'),
           ]);
         }
       }

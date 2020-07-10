@@ -7,7 +7,7 @@
         <el-breadcrumb-item>Mặt giả</el-breadcrumb-item>
       </el-breadcrumb>
     </div> -->
-    <div class="container mt-3">
+    <div class="p-3 mt-3">
       <div class="my-4">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -24,7 +24,7 @@
             <div class></div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="text-right">
+        <el-row :gutter="20" class="text-right m-0">
           <!-- <el-col :span="8"> -->
           <el-date-picker
             v-model="filter.range_date"

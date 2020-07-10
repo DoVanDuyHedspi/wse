@@ -12,7 +12,7 @@
           <el-menu-item index="0" class="text-center">
             <span slot="title" id="logo">WSE</span>
           </el-menu-item>
-          <el-submenu index="1">
+          <el-submenu index="1" v-if="checkRoleManager">
             <template slot="title">
               <i class="el-icon-office-building"></i>
               <span slot="title">Quản lý</span>
@@ -57,7 +57,7 @@
                 </router-link>
               </el-submenu>
             </el-menu-item-group>
-            <el-menu-item-group title="Thiết lập">
+            <el-menu-item-group title="Thiết lập" v-if="checkRoleCEO">
               <router-link to="/organization">
                 <el-menu-item index="1-3">
                   <span slot="title">Tổ chức</span>
@@ -69,7 +69,7 @@
                 </el-menu-item>
               </router-link>
             </el-menu-item-group>
-            <el-menu-item-group title="Phân quyền hệ thống">
+            <el-menu-item-group title="Phân quyền hệ thống" v-if="checkRoleCEO">
               <router-link to="/role">
                 <el-menu-item index="1-5">
                   <span slot="title">Nhóm quyền</span>
@@ -130,7 +130,7 @@
               <span slot="title">Dữ liệu workspace</span>
             </el-menu-item>
           </router-link>
-          <el-submenu index="6">
+          <el-submenu index="6" v-if="checkRoleManager">
             <template slot="title">
               <i class="el-icon-s-flag"></i>
               <span slot="title">Báo cáo</span>
@@ -252,6 +252,7 @@
 
 <script>
 import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -265,11 +266,20 @@ export default {
     if (this.$route.path == "/") {
       this.goToUserInfo();
     }
-
+    
     this.$store.dispatch("fetch");
+    this.$store.dispatch("fetchCurrentUser", this.$root.user);
     this.$store.dispatch("fetchCompanyInfo");
     this.$store.dispatch("fetchTimekeeping");
     this.fetchNotifications();
+  },
+  computed: {
+    checkRoleManager: function() {
+      return this.$store.getters.checkRoleManage;
+    },
+    checkRoleCEO: function() {
+      return this.$store.getters.checkRoleCEO;
+    }
   },
   methods: {
     fetchNotifications: async function() {

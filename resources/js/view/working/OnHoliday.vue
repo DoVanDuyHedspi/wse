@@ -6,7 +6,7 @@
         <el-button type="default" size="medium">Thiết lập nghỉ phép</el-button>
       </router-link>
     </div>
-    <el-divider></el-divider>
+    <el-divider class="mb-0"></el-divider>
     <div class="p-3">
       <div class="text-right mb-3">
         <router-link to="/working-day/on-holiday/create">

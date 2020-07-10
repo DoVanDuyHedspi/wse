@@ -9,6 +9,7 @@ use App\Lib\WorkLib;
 use App\SettingCompany;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class WorkingTimesheets extends Command
 {
@@ -43,6 +44,7 @@ class WorkingTimesheets extends Command
    */
   public function handle()
   {
+    Log::info("Running!");
     $data = new WorkLib();
     $res = $data->getTimeKeepingData();
     if (isset($res['info']['SearchInfo'])) {
@@ -59,20 +61,28 @@ class WorkingTimesheets extends Command
           $new_event->user_code = $event['CustomizeID'];
           $new_event->status = 1;
           $new_event->save();
+          $new_event->addMediaFromBase64($event["SnapPicinfo"])->toMediaCollection('check_in');
         } else if ($ev->time_out == null) {
+          $image_collection = "";
           if (date('H:i', strtotime($ev->time_in)) > $time) {
             $ev->time_out = $ev->time_in;
             $ev->time_in = $time;
+            $image_collection = "check_in";
           } else {
             $ev->time_out = $time;
+            $image_collection = "check_out";
           }
           $ev_update = EventHelper::updateEventInfo($ev);
           $ev_update->save();
+          $ev->clearMediaCollection($image_collection);
+          $ev->addMediaFromBase64($event["SnapPicinfo"])->toMediaCollection($image_collection);
           self::updateFormRequest($ev_update);
         } else if (date('H:i', strtotime($ev->time_out)) <= $time) {
           $ev->time_out = $time;
           $ev_update = EventHelper::updateEventInfo($ev);
           $ev_update->save();
+          $ev->clearMediaCollection('check_out');
+          $ev->addMediaFromBase64($event["SnapPicinfo"])->toMediaCollection('check_out');
           self::updateFormRequest($ev_update);
         }
       }

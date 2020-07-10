@@ -13,7 +13,7 @@
       <div class="alert alert-success" role="alert">{{ noti }}</div>
     </div>-->
     <div class="container">
-      <div>
+      <div v-if="checkRoleManager">
         <el-row :gutter="20">
           <el-col :span="24" class="text-right my-2">
             <router-link to="/users">
@@ -106,7 +106,7 @@
                         <div class="grid-content">{{user.gender}}</div>
                       </el-col>
                     </el-row>
-                    <el-row class="row" :gutter="20">
+                    <el-row class="row" :gutter="20" style="border-bottom: 1px solid rgba(128, 128, 128, 0.3)">
                       <el-col :span="6">
                         <div class="grid-content">
                           <i class="el-icon-present"></i>
@@ -117,7 +117,7 @@
                         <div class="grid-content">{{user.birthday}}</div>
                       </el-col>
                     </el-row>
-                    <el-tabs>
+                    <el-tabs class="mt-3">
                       <el-tab-pane label="Thông tin công việc">
                         <el-row class="row" :gutter="20">
                           <el-col :span="6">
@@ -346,9 +346,9 @@
                 </div>
               </div>
               <el-row class="mt-3">
-                <el-button type="primary">Đổi mật khẩu</el-button>
+                <!-- <el-button type="primary">Đổi mật khẩu</el-button> -->
                 <router-link :to="'/users/edit/' + user.id">
-                  <el-button type="primary">Chỉnh sửa người dùng</el-button>
+                  <el-button type="primary">Cập nhật hồ sơ</el-button>
                 </router-link>
               </el-row>
             </el-col>
@@ -383,9 +383,15 @@ export default {
       }
     );
   },
-  computed: {
-    ...mapState(["user"])
-  },
+  // computed: {
+  //   ...mapState(["user"])
+  // },
+  computed: mapState({
+    user: state => state.user,
+    checkRoleManager() {
+      return this.$store.getters.checkRoleManage;
+    },
+  }),
   methods: {}
 };
 </script>

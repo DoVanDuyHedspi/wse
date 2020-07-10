@@ -16,8 +16,8 @@
       <div class="noti" v-if="noti.length">
         <div class="alert alert-success" role="alert">{{ noti }}</div>
       </div>
-      <el-row :gutter="20">
-        <el-col :span="6">
+      <el-row :gutter="50">
+        <el-col :span="24">
           <h5 class="grid-content">
             Có tổng số
             <b>{{ branches.length}}</b> văn phòng

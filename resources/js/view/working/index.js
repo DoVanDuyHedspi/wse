@@ -27,21 +27,33 @@ export default [
     }
   },
   {
-    path: '/working-day/on-holiday', component: OnHoliday, name: 'working.onHoliday'
+    path: '/working-day/on-holiday', component: OnHoliday, name: 'working.onHoliday', meta: {
+      permission: 'crud-holiday', 
+    }
   },
   {
-    path: '/working-day/on-holiday/create', component: OnHolidayCreate, name: 'working.onHoliday.create'
+    path: '/working-day/on-holiday/create', component: OnHolidayCreate, name: 'working.onHoliday.create', meta: {
+      permission: 'crud-holiday', 
+    }
   },
   {
-    path: '/working-day/on-holiday/edit/:id', component: OnHolidayEdit, name: 'working.onHoliday.edit'
+    path: '/working-day/on-holiday/edit/:id', component: OnHolidayEdit, name: 'working.onHoliday.edit', meta: {
+      permission: 'crud-holiday', 
+    }
   },
   {
-    path: '/working-day/on-leave-type', component: OnLeaveType, name: 'working.onLeaveType'
+    path: '/working-day/on-leave-type', component: OnLeaveType, name: 'working.onLeaveType', meta: {
+      permission: 'crud-leavetype', 
+    }
   },
   {
-    path: '/working-day/on-leave-type/create', component: OnLeaveTypeCreate, name: 'working.onLeaveType.create'
+    path: '/working-day/on-leave-type/create', component: OnLeaveTypeCreate, name: 'working.onLeaveType.create', meta: {
+      permission: 'crud-leavetype', 
+    }
   },
   {
-    path: '/working-day/on-leave-type/edit/:id', component: OnLeaveTypeEdit, name: 'working.onLeaveType.edit'
+    path: '/working-day/on-leave-type/edit/:id', component: OnLeaveTypeEdit, name: 'working.onLeaveType.edit', meta: {
+      permission: 'crud-leavetype', 
+    }
   },
 ]

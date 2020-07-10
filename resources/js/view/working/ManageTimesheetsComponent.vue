@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-white">
+  <div class="bg-white" id="manage-timesheets">
     <!-- <div class="bg-white p-3" style="border-bottom: 1px solid rgba(128,128,128, 0.3)">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
         <el-breadcrumb-item>Quản lý tổ chức</el-breadcrumb-item>
         <el-breadcrumb-item>Chấm công</el-breadcrumb-item>
       </el-breadcrumb>
-    </div> -->
+    </div>-->
     <div class="p-4">
       <div class="mb-2">
         <el-row :gutter="20">
@@ -334,7 +334,7 @@ export default {
         month: moment().format("DD-MM-YYYY")
       },
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 20,
       dataTable: [],
       drawer: false,
       form: {
@@ -553,85 +553,88 @@ export default {
 </script>
 
 <style lang="scss" scope>
-.filter {
-  width: 100%;
-}
-
-.text-red {
-  color: red;
-}
-.th-date {
-  background: #e3e3e3;
-}
-#footer-table {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: white;
-  border-top: 2px solid rgba(128, 128, 128, 0.3);
-}
-
-.dot {
-  height: 12px;
-  width: 12px;
-  margin-right: 10px;
-  border-radius: 100%;
-  display: inline-block;
-}
-
-.ktc {
-  border: 1.3px solid #909399 !important;
-  background-color: rgb(244, 244, 245) !important;
-  &:hover {
-    background-color: #909399 !important;
+#manage-timesheets {
+  .filter {
+    width: 100%;
   }
-}
 
-.weeken {
-  border: 1.3px solid #909399 !important;
-  background-color: white !important;
-  &:hover {
+  .text-red {
+    color: red;
+  }
+  .th-date {
+    background: #e3e3e3;
+  }
+  #footer-table {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    border-top: 2px solid rgba(128, 128, 128, 0.3);
+    z-index: 1000;
+  }
+
+  .dot {
+    height: 12px;
+    width: 12px;
+    margin-right: 10px;
+    border-radius: 100%;
+    display: inline-block;
+  }
+
+  .ktc {
+    border: 1.3px solid #909399 !important;
+    background-color: rgb(244, 244, 245) !important;
+    &:hover {
+      background-color: #909399 !important;
+    }
+  }
+
+  .weeken {
+    border: 1.3px solid #909399 !important;
     background-color: white !important;
+    &:hover {
+      background-color: white !important;
+    }
   }
-}
 
-.dg {
-  border: 1.3px solid #67c23a !important;
-  background-color: rgb(225, 243, 216) !important;
-  &:hover {
-    background-color: #67c23a !important;
+  .dg {
+    border: 1.3px solid #67c23a !important;
+    background-color: rgb(225, 243, 216) !important;
+    &:hover {
+      background-color: #67c23a !important;
+    }
   }
-}
 
-.ncl {
-  border: 1.3px solid yellow !important;
-  background-color: rgba(255, 247, 3, 0.15) !important;
-  &:hover {
-    background-color: yellow !important;
+  .ncl {
+    border: 1.3px solid yellow !important;
+    background-color: rgba(255, 247, 3, 0.15) !important;
+    &:hover {
+      background-color: yellow !important;
+    }
   }
-}
 
-.nkl {
-  border: 1.3px solid #e6a23c !important;
-  background-color: rgb(250, 236, 216) !important;
-  &:hover {
-    background-color: #e6a23c !important;
+  .nkl {
+    border: 1.3px solid #e6a23c !important;
+    background-color: rgb(250, 236, 216) !important;
+    &:hover {
+      background-color: #e6a23c !important;
+    }
   }
-}
 
-.dmvs {
-  border: 1.3px solid red !important;
-  background-color: rgb(253, 226, 226) !important;
-  &:hover {
-    background-color: red !important;
+  .dmvs {
+    border: 1.3px solid red !important;
+    background-color: rgb(253, 226, 226) !important;
+    &:hover {
+      background-color: red !important;
+    }
   }
-}
 
-.dlb {
-  border: 1.3px solid pink !important;
-  background-color: rgb(254, 240, 240) !important;
-  &:hover {
-    background-color: pink !important;
+  .dlb {
+    border: 1.3px solid pink !important;
+    background-color: rgb(254, 240, 240) !important;
+    &:hover {
+      background-color: pink !important;
+    }
   }
 }
 </style>

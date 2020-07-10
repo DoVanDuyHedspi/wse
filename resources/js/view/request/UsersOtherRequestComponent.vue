@@ -155,7 +155,7 @@
             <div>{{scope.row.work_time_begin + " - " + scope.row.work_time_end + " " + scope.row.work_date}}</div>
           </template>
         </el-table-column>
-        <el-table-column property="reason" label="Lý do" width="200"></el-table-column>
+        <el-table-column property="reason" label="Lý do" ></el-table-column>
         <el-table-column
           property="range_time"
           label="Thời gian (phút)"

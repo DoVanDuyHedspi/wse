@@ -15,13 +15,13 @@
         <el-col :span="8" class="text-center">
           <h2>BẢNG CHẤM CÔNG</h2>
         </el-col>
-        <el-col :span="8" class="text-right">
+        <!-- <el-col :span="8" class="text-right">
           <span style="cursor: pointer;" @click="handleNote" id="note">
             <i class="el-icon-info"></i> Chú thích
           </span>
-        </el-col>
+        </el-col> -->
       </el-row>
-      <el-row v-if="note" :gutter="20" class="container mx-auto my-4 note">
+      <!-- <el-row v-if="note" :gutter="20" class="container mx-auto my-4 note">
         <el-col :span="8">
           <span class="block penalty mr-2"></span> Đi muộn, về sớm (sáng/chiều) ngoài quota
         </el-col>
@@ -34,7 +34,7 @@
         <el-col :span="8">
           <span class="block today mr-2"></span> Hôm nay
         </el-col>
-      </el-row>
+      </el-row> -->
       <el-row :gutter="20">
         <el-col :span="8" class="text-right">Tổng số lần bị phạt: {{penalty.number_of_fines}} (lần)</el-col>
         <el-col :span="8" class="text-center">Tổng ngày đi làm: {{number_working_days}} (ngày)</el-col>
@@ -51,7 +51,7 @@
         >Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
       </el-row>
     </div>
-    <div class="mt-3 pl-2">
+    <div class="mt-3 pl-2" v-if="checkRoleManager">
       <el-row class="m-0" :gutter="20">
         <el-col :span="12">
           <b>Nhân viên:</b>
@@ -90,6 +90,7 @@
       <calendar-view
         :show-date="showDate"
         :events="events"
+        @click-event="onClickEvent"
         @click-date="onClickDay"
         class="theme-default"
       >
@@ -101,61 +102,122 @@
         />
       </calendar-view>
       <el-dialog
-        :title="'Làm đơn ngày ' + formForDate"
+        :title="'Ngày ' + formForDate"
         :visible.sync="dialogFormRequest"
-        :center="true"
+        :before-close="handleCloseDialog"
+        width="55%"
       >
+        <div class="mb-3">
+          <el-row :gutter="15">
+            <el-divider class="m-0 mb-3"></el-divider>
+            <div class="text-center mb-3">
+              <h5>Kết quả chấm công</h5>
+            </div>
+            <el-col :span="6">
+              <div>
+                <b>Chấm công lần đầu</b> 
+                <div>
+                  Thời gian :
+                  <span
+                    v-if="event"
+                    style="font-weight: bold;"
+                  >{{event.originalEvent.time_in}}</span>
+                </div>
+              </div>
+              <div>
+                Chi nhánh :
+                <b v-if="event && event.originalEvent.time_in">Hà Nội</b>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <el-image
+                v-if="event"
+                style="width: 130px; height: 130px"
+                :src="event.originalEvent.checkin_capture"
+                fit="cover"
+              ></el-image>
+            </el-col>
+            <el-col :span="6">
+              <div>
+                <b>Chấm công lần cuối</b> 
+                <div>
+                  Thời gian :
+                  <span v-if="event" style="font-weight: bold;">{{event.originalEvent.time_out}}</span>
+                </div>
+              </div>
+              <div>
+                Chi nhánh :
+                <b v-if="event && event.originalEvent.time_out">Hà Nội</b>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <el-image
+                v-if="event"
+                style="width: 130px; height: 130px"
+                :src="event.originalEvent.checkout_capture"
+                fit="cover"
+              ></el-image>
+            </el-col>
+          </el-row>
+        </div>
         <div class="text-center">
           <el-row :gutter="15">
             <el-col :span="24">
+              <el-divider class="m-0 mb-3"></el-divider>
               <div>
-                <b>Kiểu đơn:</b>
-                <el-radio v-model="formType" label="OT">Làm thêm</el-radio>
-                <el-radio v-model="formType" label="RM">Làm remote</el-radio>
-                <el-radio v-model="formType" label="leaves">Làm bù, quên chấm</el-radio>
-                <el-radio v-model="formType" label="complain">Khiếu nại</el-radio>
+                <h5>Làm đơn thư mới</h5>
               </div>
-              <el-divider class="mb-0"></el-divider>
+              <div>
+                <el-radio v-model="formType" label="leave">Xin nghỉ phép</el-radio>
+                <el-radio v-model="formType" label="OT">Xin làm thêm</el-radio>
+                <el-radio v-model="formType" label="RM">Xin làm remote</el-radio>
+                <el-radio v-model="formType" label="complain">Khiếu nại</el-radio>
+                <el-radio v-model="formType" label="other">Khác</el-radio>
+              </div>
             </el-col>
-            <el-col :span="24" v-if="formType == 'leaves'" class="text-left mt-3">
+            <el-col :span="24" v-if="formType == 'other'" class="text-left">
               <!-- <div class="text-center"><b>Loại</b></div> -->
+              <el-divider class="m-0 mt-3 mb-3"></el-divider>
               <el-row :gutter="15">
                 <el-col :span="8" :offset="4">
                   <div>
-                    <el-radio v-model="leaveType" label="ILM">Đến muộn sáng</el-radio>
+                    <el-radio v-model="other_request" label="ILM">Đến muộn sáng</el-radio>
                   </div>
                   <div>
-                    <el-radio v-model="leaveType" label="ILA">Đến muộn chiều</el-radio>
+                    <el-radio v-model="other_request" label="ILA">Đến muộn chiều</el-radio>
                   </div>
                   <div>
-                    <el-radio v-model="leaveType" label="LEM">Về sớm sáng</el-radio>
+                    <el-radio v-model="other_request" label="LEM">Về sớm sáng</el-radio>
                   </div>
                   <div>
-                    <el-radio v-model="leaveType" label="LEA">Về sớm chiều</el-radio>
-                  </div>
-                  <div>
-                    <el-radio v-model="leaveType" label="LO">Rời khỏi vị trí</el-radio>
+                    <el-radio v-model="other_request" label="LEA">Về sớm chiều</el-radio>
                   </div>
                 </el-col>
                 <el-col :span="10" :offset="2">
                   <div>
-                    <el-radio v-model="leaveType" label="QQD">Quên chấm đến</el-radio>
+                    <el-radio v-model="other_request" label="LO">Rời khỏi vị trí</el-radio>
                   </div>
                   <div>
-                    <el-radio v-model="leaveType" label="QQV">Quên chấm về</el-radio>
+                    <el-radio v-model="other_request" label="QQD">Quên chấm đến</el-radio>
                   </div>
                   <div>
-                    <el-radio v-model="leaveType" label="QQF">Quên chấm cả ngày</el-radio>
+                    <el-radio v-model="other_request" label="QQV">Quên chấm về</el-radio>
+                  </div>
+                  <div>
+                    <el-radio v-model="other_request" label="QQF">Quên chấm cả ngày</el-radio>
                   </div>
                 </el-col>
               </el-row>
+              <el-divider class="m-0"></el-divider>
+            </el-col>
+            <el-col :span="24" class="text-center mt-3">
+              <el-button type="primary" @click="makeForm" size="medium">
+                Làm đơn
+                <i class="el-icon-s-promotion"></i>
+              </el-button>
             </el-col>
           </el-row>
         </div>
-
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="makeForm">Tiến hành</el-button>
-        </span>
       </el-dialog>
     </div>
     <div id="footer-calendar" class="py-2 px-3">
@@ -205,8 +267,9 @@ export default {
       timeUpdateTimekeepingData: "",
       dialogFormRequest: false,
       formForDate: "",
-      formType: "leaves",
-      leaveType: "ILM"
+      formType: "leave",
+      other_request: "ILM",
+      event: ""
     };
   },
   components: {
@@ -228,7 +291,10 @@ export default {
     },
     currentUser(state) {
       return state.user.employee_code + " " + state.user.name;
-    }
+    },
+    checkRoleManager() {
+      return this.$store.getters.checkRoleManage;
+    },
   }),
   methods: {
     forceFileDownload(response, type) {
@@ -341,13 +407,25 @@ export default {
       );
       this.formForDate = date;
     },
+
+    onClickEvent(e) {
+      this.dialogFormRequest = true;
+      this.event = e;
+      let date = moment(e.id, "YYYY-MM-DD").format("DD-MM-YYYY");
+      this.formForDate = date;
+      console.log(e);
+    },
+    handleCloseDialog(done) {
+      this.event = "";
+      done();
+    },
     makeForm() {
-      if (this.formType == "leaves") {
+      if (this.formType == "other") {
         this.$router.push(
           "/other_request/new?date=" +
             this.formForDate +
             "&type=" +
-            this.leaveType
+            this.other_request
         );
       } else if (this.formType == "complain") {
         this.$router.push("/request_check_camera/new?date=" + this.formForDate);
@@ -359,6 +437,8 @@ export default {
         this.$router.push(
           "/request_ot/new?date=" + this.formForDate + "&type=" + this.formType
         );
+      } else if (this.formType == "leave") {
+        this.$router.push("/request_leave/new?date=" + this.formForDate);
       }
     }
   }
@@ -387,7 +467,7 @@ export default {
   background: white;
 }
 
-.theme-default .cv-day:hover {
+.theme-default .cv-event:hover {
   cursor: pointer;
 }
 
@@ -569,6 +649,9 @@ export default {
   color: #2c3e50;
   margin-left: auto;
   margin-right: auto;
+  .el-dialog .el-dialog__body {
+    padding-top: 0 !important;
+  }
 }
 
 .block {

@@ -94,7 +94,7 @@
           width="150"
           class-name="text-center"
         ></el-table-column>
-        <el-table-column property="reason" label="Lý do" width="120"></el-table-column>
+        <el-table-column property="reason" label="Lý do"></el-table-column>
         <el-table-column label="Đã làm?" width="120" class-name="text-center">
           <template slot-scope="scope">
             <div v-if="scope.row.has_worked">
@@ -158,7 +158,7 @@ export default {
     return {
       form_requests: [],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 20,
       dataTable: [],
       filter: {
         month: "",

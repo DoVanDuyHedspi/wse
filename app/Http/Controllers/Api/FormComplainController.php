@@ -203,6 +203,7 @@ class FormComplainController extends Controller
 
   public function approveRequest(Request $request)
   {
+    // dd($request);
     $validator = Validator::make($request->all(), [
       'action' => 'required',
       'request_id' => 'required'
@@ -302,6 +303,7 @@ class FormComplainController extends Controller
       foreach ($forms as $form) {
         $data = new WorkLib();
         $res = $data->searchEventOfUser($form->date, $form->begin_time, $form->end_time, $form->user_code);
+        // dd($res);
         $search_info = [];
         if (isset($res['info']['SearchInfo'])) {
           $events = $res['info']['SearchInfo'];

@@ -16,6 +16,7 @@ $router->post('/form_requests/approve_request', 'Api\FormRequestController@appro
 $router->apiResource('form_leaves', 'Api\FormLeaveController');
 $router->get('/form_leave/manage/requests', 'Api\FormLeaveController@usersRequests');
 $router->post('/form_leave/manage/approve', 'Api\FormLeaveController@approveRequest');
+$router->post('/form_leave/manage/getInfo', 'Api\FormLeaveController@getInfo');
 
 $router->get('/specifiedWorkingTime', 'Api\FormRequestController@specifiedWorkingTime');
 

@@ -32,10 +32,11 @@ class WorkLib
       "info" => [
         "DeviceID" => $this->device_id,
         "Picture" => 0,
-        "BeginTime" => Carbon::now('Asia/Ho_Chi_Minh')->subDay()->format('Y-m-d\\T H:i:s'),
+        "BeginTime" => Carbon::now('Asia/Ho_Chi_Minh')->subMinute(5)->format('Y-m-d\\T H:i:s'),
         "EndTime" => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d\\T H:i:s'),
         "RequestCount" => 100,
-        "Idtype" => 0
+        "Idtype" => 0,
+        "Picture" => 2,
       ]
     ];
     $body = json_encode($info, JSON_UNESCAPED_SLASHES);

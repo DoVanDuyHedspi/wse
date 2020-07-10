@@ -76,7 +76,7 @@
             <div>{{scope.row.date}}</div>
           </template>
         </el-table-column>
-        <el-table-column property="note" label="Ghi chú" width="120"></el-table-column>
+        <el-table-column property="note" label="Ghi chú" ></el-table-column>
         <el-table-column label="Kết quả" width="120" class-name="text-center">
           <template slot-scope="scope">
             <span v-if="scope.row.result == 'waiting'">
@@ -141,7 +141,7 @@ export default {
     return {
       form_requests: [],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 20,
       dataTable: [],
       filter: {
         month: "",

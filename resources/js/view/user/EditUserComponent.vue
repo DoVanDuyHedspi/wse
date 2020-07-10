@@ -14,7 +14,7 @@
     </div>-->
 
     <div class="container">
-      <div>
+      <div v-if="user.can_update_adv">
         <el-row :gutter="20">
           <el-col :span="24" class="text-right my-2">
             <router-link to="/users">
@@ -207,7 +207,7 @@
                             </el-col>
                           </el-row>
                         </el-tab-pane>
-                        <el-tab-pane label="Vai trò và quyền">
+                        <el-tab-pane label="Vai trò và quyền" v-if="user.can_update_adv">
                           <el-row :gutter="20" class="mb-3 mx-0">
                             <el-col :span="24" class="label text-left">
                               Vai trò trong hệ thống

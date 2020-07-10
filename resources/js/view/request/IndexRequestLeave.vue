@@ -126,7 +126,7 @@ export default {
     return {
       form_leaves: [],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 20,
       dataTable: [],
       filter: {
         month: "",

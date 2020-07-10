@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 const usersStore = new Vuex.Store({
   state: {
+    currentUser: {},
     users: [],
     user: {
       name: "",
@@ -72,6 +73,9 @@ const usersStore = new Vuex.Store({
     }
   },
   mutations: {
+    SET_CURRENT_USER(state, user) {
+      state.currentUser = user;
+    },
     SET_USERS(state, users) {
       state.users = users;
     },
@@ -95,16 +99,35 @@ const usersStore = new Vuex.Store({
     }
   },
   getters: {
+    getCurrentUser: (state) => {
+      return state.currentUser;
+    },
+    checkRoleManage: (state) => {
+      var userRoles = state.currentUser.roles;
+      var list = [];
+      userRoles.map(function (role) {
+        list.push(role.slug);
+      })
+      return (list.includes("admin") || list.includes("manager") || list.includes("group-manager"));
+    },
+    checkRoleCEO: (state) => {
+      var userRoles = state.currentUser.roles;
+      var list = [];
+      userRoles.map(function (role) {
+        list.push(role.slug);
+      })
+      return (list.includes("admin") || list.includes("manager"));
+    },
     getUsersDataTable: (state) => {
       return state.users.slice(0, 10)
     },
-    getListUserIds: (state) => (type) =>  {
+    getListUserIds: (state) => (type) => {
       let list_id = [];
       if (type == 'work') {
         state.users_timesheets.map(function (user) {
           list_id.push(user.id);
         })
-      } else if(type == 'users') {
+      } else if (type == 'users') {
         state.users.map(function (user) {
           list_id.push(user.id);
         })
@@ -182,6 +205,9 @@ const usersStore = new Vuex.Store({
     }
   },
   actions: {
+    fetchCurrentUser({ commit }, user) {
+      commit('SET_CURRENT_USER', user);
+    },
     fetch({ commit }) {
       return new Promise((resolve, reject) => {
         axios.get('api/users')

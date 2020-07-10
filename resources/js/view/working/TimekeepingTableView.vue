@@ -32,10 +32,10 @@
         >Tổng thời gian phạt thực tế: {{penalty.actual_penalty_time}} (phút)</el-col>
       </el-row>
     </div>
-    <div class="mt-3 p-2">
+    <div class="mt-2 p-2">
       <div class="mb-2">
-        <el-row class="m-0">
-          <el-col :span="8">
+        <el-row class="m-0 mb-2" >
+          <el-col :span="8" v-if="checkRoleManager">
             <b>Nhân viên:</b>
             <el-autocomplete
               class="inline-input search-user mb-3"
@@ -47,7 +47,7 @@
               size="medium"
             ></el-autocomplete>
           </el-col>
-          <el-col :span="8" class="text-center">
+          <el-col :span="8" class="text-center" v-if="checkRoleManager">
             <el-date-picker
               v-model="month"
               type="month"
@@ -58,7 +58,18 @@
               @change="filterMonth"
             ></el-date-picker>
           </el-col>
-          <el-col :span="8" class="text-right">
+          <el-col :span="24" class="text-center" v-else>
+            <el-date-picker
+              v-model="month"
+              type="month"
+              size="medium"
+              placeholder="Pick a month"
+              format="MM-yyyy"
+              value-format="DD-MM-yyyy"
+              @change="filterMonth"
+            ></el-date-picker>
+          </el-col>
+          <el-col :span="8" class="text-right" v-if="checkRoleManager">
             <el-dropdown size="medium" split-button type="primary">
               <i class="el-icon-download"></i>Xuất
               <el-dropdown-menu slot="dropdown">
@@ -247,7 +258,10 @@ export default {
     },
     currentUser(state) {
       return state.user.employee_code + " " + state.user.name;
-    }
+    },
+    checkRoleManager() {
+      return this.$store.getters.checkRoleManage;
+    },
   }),
   methods: {
     forceFileDownload(response, type) {

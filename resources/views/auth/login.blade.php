@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('login') }}" id="login">
   @csrf
-  <section class="login-block">
+  <section class="login-block" style="height: 672px;">
     <div class="container">
       <div class="row">
         <div class="col-md-4 login-sec">
@@ -52,28 +52,28 @@
             <ol class="carousel-indicators">
               <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+              <!-- <li data-target="#carouselExampleIndicators" data-slide-to="2"></li> -->
             </ol>
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
                 <img class="d-block img-fluid" src="/storage/login_image/photo1.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
-                  <div class="banner-text">
+                  <!-- <div class="banner-text">
                     <h2>Quản lý chấm công</h2>
                     <p>WSE là công cụ giúp nhà quản lý có thể dễ dàng quản lý dữ liệu chấm công của nhân viên. Ngoài ra, quản lý cũng có thể xuất file excel, csv các loại báo cáo.</p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="carousel-item">
                 <img class="d-block img-fluid" src="/storage/login_image/photo2.jpg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
-                  <div class="banner-text">
+                  <!-- <div class="banner-text">
                     <h2>Làm đơn thư</h2>
                     <p>WSE là công cụ giúp nhân viên có thể làm đơn thư gửi đến nhà quản lý. Quản lý có thể dễ dàng quản lý đơn thư đã được phân loại và dễ dàng phê duyệt.</p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-              <div class="carousel-item">
+              <!-- <div class="carousel-item">
                 <img class="d-block img-fluid" src="/storage/login_image/photo3.jpeg" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                   <div class="banner-text">
@@ -81,7 +81,7 @@
                     <p>WSE lưu trữ toàn bộ video thu được từ máy chấm công nhằm phục vụ nghiệp vụ xác minh chấm công sau này.</p>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
           </div>

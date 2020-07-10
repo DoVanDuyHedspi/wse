@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Event extends Model
+class Event extends Model implements HasMedia
 {
+  use HasMediaTrait;
   protected $fillable = [
     'date', 'user_code', 'time_in', 'time_out', 'ILM', 'ILA', 'LEM', 'LEA', 'QQD', 'QQV'
   ];

@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
    * @var array
    */
   protected $commands = [
-    'App\Console\Commands\WorkingTimesheets'
+    \App\Console\Commands\WorkingTimesheets::class,
   ];
 
   /**
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
    */
   protected function schedule(Schedule $schedule)
   {
-    
+    $schedule->command('user:timekeeping')->everyMinute();
   }
 
   /**

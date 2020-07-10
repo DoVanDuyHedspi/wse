@@ -12,6 +12,18 @@
         <h4 class="m-0">Yêu cầu nghỉ phép</h4>
       </div>
       <div class="body">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-table :data="infoLeave" style="width: 100%" border>
+              <el-table-column prop="name" label="Loại nghỉ phép" width="200"></el-table-column>
+              <el-table-column prop="total" label="Tổng số ngày nghỉ" width="200"></el-table-column>
+              <el-table-column prop="currentYear" label="Số ngày nghỉ năm nay" width="200"></el-table-column>
+              <el-table-column prop="oldYear" label="Tồn năm trước"></el-table-column>
+              <el-table-column prop="numberLeavedDays" label="Đã nghỉ"></el-table-column>
+              <el-table-column prop="daysLeft" label="Còn lại"></el-table-column>
+            </el-table>
+          </el-col>
+        </el-row>
         <div class="content py-3">
           <el-form
             :model="form"
@@ -60,6 +72,7 @@
                 </el-form-item>
               </el-col>
             </el-row>-->
+
             <el-form-item label="Loại nghỉ phép" prop="leave_type_id">
               <el-select
                 v-model="form.leave_type_id"
@@ -131,6 +144,7 @@ export default {
       error: {
         message: ""
       },
+      infoLeave: [],
       leave_types: [],
       form: {
         user_code: "",
@@ -162,9 +176,11 @@ export default {
   created() {
     this.getUser();
     this.getLeaveType();
+    this.getInfoLeave();
     if (Object.keys(this.$route.query).length !== 0) {
-      if (this.$route.query.type) {
-        this.form.type = this.$route.query.type;
+      if (this.$route.query.date) {
+        this.form.begin_leave_date = this.$route.query.date;
+        this.form.end_leave_date = this.$route.query.date;
       }
     }
   },
@@ -192,6 +208,15 @@ export default {
           console.log(error);
         }
       );
+    },
+    getInfoLeave: async function() {
+      await axios
+        .post("/api/form_leave/manage/getInfo", {
+          user_code: this.$root.user.employee_code
+        })
+        .then(response => {
+          this.infoLeave = response.data;
+        });
     },
     validateLeaveEnd() {
       this.validateDate();

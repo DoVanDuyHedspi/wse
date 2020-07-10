@@ -63,8 +63,12 @@ class FormLeaveController extends Controller
       $form->status = 'waiting';
       $begin_leave_date = date('Y-m-d', strtotime($request->begin_leave_date));
       $end_leave_date = date('Y-m-d', strtotime($request->end_leave_date));
+      $today = date('Y-m-d');
       if ($end_leave_date < $begin_leave_date) {
         $message = $message . "\n" . "Ngày kết thúc nghỉ phải cùng ngày hoặc sau ngày bắt đầu nghỉ";
+      }
+      if ($begin_leave_date <= $today) {
+        $message = $message . "\n" . "Đơn xin nghỉ phải trước ít nhất một ngày";
       }
       $form->begin_leave_date = $begin_leave_date;
       $form->end_leave_date = $end_leave_date;
@@ -135,8 +139,12 @@ class FormLeaveController extends Controller
       $form->user_code = $request->user_code;
       $begin_leave_date = date('Y-m-d', strtotime($request->begin_leave_date));
       $end_leave_date = date('Y-m-d', strtotime($request->end_leave_date));
+      $today = date('Y-m-d');
       if ($end_leave_date < $begin_leave_date) {
         $message = $message . "\n" . "Ngày kết thúc nghỉ phải cùng ngày hoặc sau ngày bắt đầu nghỉ";
+      }
+      if ($begin_leave_date <= $today) {
+        $message = $message . "\n" . "Đơn xin nghỉ phải trước ít nhất một ngày";
       }
       $form->begin_leave_date = $begin_leave_date;
       $form->end_leave_date = $end_leave_date;
@@ -248,5 +256,43 @@ class FormLeaveController extends Controller
       'status' => false,
       'message' => 'Bạn không có quyền kiểm tra, duyệt yêu cầu'
     ], 200);
+  }
+
+  public function getInfo(Request $request) {
+    try {
+      // dd($request);
+      $validator = Validator::make($request->all(), [
+        'user_code' => 'required',
+      ]);
+      if ($validator->fails()) {
+        return response([
+          'status' => false,
+          'message' => 'Hãy nhập đủ thông tin!'
+        ], 200);
+      }
+      $leaveTypes = LeaveType::all();
+      $list = [];
+      foreach($leaveTypes as $leaveType) {
+        $numberLeavedDays = FormLeave::where('user_code', $request->user_code)
+          ->where('leave_type_id', $leaveType->id)->where('status', 'accept')->sum('number_days');
+        $oldYear = 0;
+        $total = $leaveType->number_days + $oldYear;
+        $daysLeft = $total - $numberLeavedDays;
+        $leave = [];
+        $leave['name'] = $leaveType->name;
+        $leave['total'] = $total;
+        $leave['currentYear'] = $leaveType->number_days;
+        $leave['oldYear'] = $oldYear;
+        $leave['numberLeavedDays'] = $numberLeavedDays;
+        $leave['daysLeft'] = $daysLeft;
+        array_push($list, $leave);
+      }
+      return $list;
+    } catch (Exception $e) {
+      return response([
+        'status' => false,
+        'message' => $e->getMessage(),
+      ], 200);
+    }
   }
 }

@@ -397,7 +397,8 @@ export default {
           .post("/api/form_complain/manage/approve", {
             request_id: this.drawer.request_id,
             action: "success",
-            time: this.drawer.time
+            time: this.drawer.time,
+            reply: this.drawer.reply
           })
           .then(response => {
             if (response.data.status === false) {

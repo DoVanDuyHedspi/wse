@@ -109,7 +109,7 @@
             <div>{{scope.row.work_time_begin + " - " + scope.row.work_time_end + " " + scope.row.work_date}}</div>
           </template>
         </el-table-column>
-        <el-table-column property="reason" label="Lý do" width="120"></el-table-column>
+        <el-table-column property="reason" label="Lý do" ></el-table-column>
         <el-table-column
           property="range_time"
           label="Thời gian (phút)"
@@ -182,7 +182,7 @@ export default {
     return {
       form_requests: [],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 20,
       dataTable: [],
       filter: {
         month: "",
